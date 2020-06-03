@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "316063715906",
+    "firebase_url": "https://app-emprendedores.firebaseio.com",
+    "project_id": "app-emprendedores",
+    "storage_bucket": "app-emprendedores.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:316063715906:android:148a7d23fd1c26a5a2d3db",
+        "android_client_info": {
+          "package_name": "com.valdemar.emprendedores"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "316063715906-2l28jo1e5dcpjoqacebgp4jn07kvvtma.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.valdemar.emprendedores",
+            "certificate_hash": "c2b0d0971f9d094a9eb3ff42d55a47c3fded32cf"
+          }
+        },
+        {
+          "client_id": "316063715906-hl6n3r5r17hcdg8ccqe151bc3r3ialc0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDt2KYxgQ7KEoAOLJhHQjWO0BU5GL6E39k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "316063715906-hl6n3r5r17hcdg8ccqe151bc3r3ialc0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
