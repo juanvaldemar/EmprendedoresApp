@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#eee"
-    tools:context="com.valdemar.SplashActivity">
+    android:background="#eee" >
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -22,6 +21,7 @@
         <ImageView
             android:id="@+id/image_logo_splash"
             android:layout_width="180dp"
+            android:visibility="gone"
             android:layout_height="180dp"
             android:background="#eee"/>
 
@@ -29,9 +29,9 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Spook"
-            android:textColor="#eee"
-            android:textSize="60dp" />
+            android:text="Splash"
+            android:textColor="@color/black"
+            android:textSize="40dp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
