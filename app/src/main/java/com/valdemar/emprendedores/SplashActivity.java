@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.FirebaseApp;
+import com.valdemar.emprendedores.auth.AccessRelato;
 
 public class SplashActivity extends AppCompatActivity {
     private TextView mTitle;
@@ -21,7 +22,7 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashActivity.this, SplashActivity.class));
+                startActivity(new Intent(SplashActivity.this, AccessRelato.class));
                 finish();
             }
         },1000);
