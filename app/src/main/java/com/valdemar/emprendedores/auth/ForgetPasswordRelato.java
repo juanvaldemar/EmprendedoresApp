@@ -59,7 +59,7 @@ public class ForgetPasswordRelato extends AppCompatActivity {
         title = (TextView) findViewById(R.id.forget_title_sangrienta_lectura);
         String text = "<font color='#da152c'>Reiniciar</font> Password";
         Log.v("textq1",text);
-        title.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
+        //title.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
 
         mAuth = FirebaseAuth.getInstance();
         mProgress = new ProgressDialog(this);
