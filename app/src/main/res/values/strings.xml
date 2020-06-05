@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">EmprendedoresApp</string>
+
+
+
+    <string name="facebook_app_id">468214920501582</string>
+    <string name="fb_login_protocol_scheme">fb468214920501582</string>
 </resources>

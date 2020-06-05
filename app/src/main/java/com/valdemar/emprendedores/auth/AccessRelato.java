@@ -71,7 +71,7 @@ public class AccessRelato extends AppCompatActivity {
     private TextView splash_text_spook;
 
     private CallbackManager callbackManager;
-    private Button loginButton;
+    private LoginButton loginButton;
 
     //Login Google
     Button mAccessRelatoGoogle;
@@ -135,7 +135,7 @@ public class AccessRelato extends AppCompatActivity {
     }
 
     private void facebookInit() {
-        loginButton = findViewById(R.id.login_button);
+        loginButton = findViewById(R.id.login_button2);
         //loginButton.setReadPermissions("email", "public_profile");
         callbackManager = CallbackManager.Factory.create();
 
@@ -145,7 +145,7 @@ public class AccessRelato extends AppCompatActivity {
         //loginButton.setFragment(this);
 
         // Callback registration
-       /* loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+      loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 // App code
@@ -168,7 +168,7 @@ public class AccessRelato extends AppCompatActivity {
                 Log.v("TAG_FACEBOOK","SUCCESS");
             }
         });
-        */
+
 
     }
 
