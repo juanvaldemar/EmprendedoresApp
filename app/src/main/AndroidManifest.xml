@@ -27,6 +27,12 @@
         <activity android:name=".auth.AccessRelato">
         </activity>
 
-    </application>
+        <activity android:name=".auth.ForgetPasswordRelato">
+        </activity>
 
+        <activity android:name=".auth.RegisterRelato">
+        </activity>
+
+    </application>
+    BloodLust
 </manifest>
