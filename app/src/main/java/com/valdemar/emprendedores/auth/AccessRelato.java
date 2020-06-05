@@ -21,6 +21,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -40,6 +41,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.auth.util.ValidarEmail;
+
+import java.util.Arrays;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
@@ -72,6 +75,7 @@ public class AccessRelato extends AppCompatActivity {
 
     private CallbackManager callbackManager;
     private LoginButton loginButton;
+    private Button loginButtonNew;
 
     //Login Google
     Button mAccessRelatoGoogle;
@@ -136,6 +140,7 @@ public class AccessRelato extends AppCompatActivity {
 
     private void facebookInit() {
         loginButton = findViewById(R.id.login_button2);
+        loginButtonNew = findViewById(R.id.login_button);
         //loginButton.setReadPermissions("email", "public_profile");
         callbackManager = CallbackManager.Factory.create();
 
@@ -145,7 +150,18 @@ public class AccessRelato extends AppCompatActivity {
         //loginButton.setFragment(this);
 
         // Callback registration
-      loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        loginButtonNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AccessToken accessToken = AccessToken.getCurrentAccessToken();
+                if(accessToken==null) {
+                    LoginManager.getInstance().logInWithReadPermissions(AccessRelato.this, Arrays.asList("public_profile", "user_friends"));
+
+                }
+            }
+        });
+
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 // App code
@@ -168,6 +184,8 @@ public class AccessRelato extends AppCompatActivity {
                 Log.v("TAG_FACEBOOK","SUCCESS");
             }
         });
+
+
 
 
     }
