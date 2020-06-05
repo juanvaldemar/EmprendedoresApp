@@ -15,7 +15,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,16 +22,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".auth.AccessRelato">
-        </activity>
-
-        <activity android:name=".auth.ForgetPasswordRelato">
-        </activity>
-
-        <activity android:name=".auth.RegisterRelato">
-        </activity>
+        <activity android:name=".auth.AccessRelato"></activity>
+        <activity android:name=".auth.ForgetPasswordRelato"></activity>
+        <activity android:name=".auth.RegisterRelato"></activity>
+        <activity android:name=".auth.ViewSpook"></activity>
 
     </application>
-    BloodLust
+
 </manifest>
