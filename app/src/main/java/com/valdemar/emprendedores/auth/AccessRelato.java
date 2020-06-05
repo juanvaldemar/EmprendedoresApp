@@ -74,7 +74,7 @@ public class AccessRelato extends AppCompatActivity {
     private Button loginButton;
 
     //Login Google
-    FrameLayout mAccessRelatoGoogle;
+    Button mAccessRelatoGoogle;
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 1;
 
@@ -96,7 +96,7 @@ public class AccessRelato extends AppCompatActivity {
     }
 
     private void googleInit() {
-        mAccessRelatoGoogle = (FrameLayout) findViewById(R.id.accessRelatoGoogle);
+        mAccessRelatoGoogle = findViewById(R.id.accessRelatoGoogle);
         //-------------------GOOGLE-----------------------//
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
