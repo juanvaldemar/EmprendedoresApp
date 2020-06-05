@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.SplashActivity;
@@ -25,6 +26,7 @@ public class ViewSpook extends AppCompatActivity {
         mBtnCerrarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LoginManager.getInstance().logOut();
                 FirebaseAuth.getInstance().signOut();
                 Intent i = new Intent(ViewSpook.this, SplashActivity.class);
                 startActivity(i);
