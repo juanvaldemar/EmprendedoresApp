@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -326,8 +327,12 @@ public class AccessRelato extends AppCompatActivity {
         if (!validarEmail(display_email)){
             showSnackBar("Email no válido.");
             mAccesso_login_email.setError("Email no válido.");
+            Toast.makeText(AccessRelato.this,"Este email es inválido.",Toast.LENGTH_LONG).show();
+
         }else if(display_password.length() < 6){
             showSnackBar("La contraseña es muy corta.");
+            Toast.makeText(AccessRelato.this,"La contraseña debe ser mayor a 6 digitos.",Toast.LENGTH_LONG).show();
+
             mAccesso_login_password.setError("Mínimo 6 dígitos.");
         }else{
             //showSnackBar("Accediendo");
@@ -350,6 +355,7 @@ public class AccessRelato extends AppCompatActivity {
         mProgress.setCancelable(false);
         mProgress.setMessage("Accediendo ...");
         mProgress.show();
+        hideSoftKeyboard();
 
         mAuth.signInWithEmailAndPassword(display_email,display_password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -358,9 +364,11 @@ public class AccessRelato extends AppCompatActivity {
                         if(task.isSuccessful()){
                             accesoPermitido();
                         }else{
+
                             Log.v("task_valdemar",""+task);
                             mProgress.hide();
-                            showSnackBar("Acceso denegado, Intente nuevamente.");
+                            Toast.makeText(AccessRelato.this,"Usuario y/o contraseña incorrecta.",Toast.LENGTH_LONG).show();
+                            showSnackBar("Usuario y/o contraseña incorrecta.");
                             mProgress.dismiss();
                         }
                     }

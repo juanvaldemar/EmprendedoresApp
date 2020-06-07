@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -111,6 +112,7 @@ public class ForgetPasswordRelato extends AppCompatActivity {
                                     }else{
                                         mProgress.hide();
                                         mForget_user_email.setError("Email no válido.");
+                                        Toast.makeText(ForgetPasswordRelato.this,"Email no registrado.",Toast.LENGTH_LONG).show();
                                         showSnackBar("Email no registrado. "+display_email);
                                     }
                                 }
