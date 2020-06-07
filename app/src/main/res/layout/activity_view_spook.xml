@@ -12,9 +12,16 @@
         android:layout_height="wrap_content"
         android:textSize="30dp"
         android:gravity="center"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="30dp"
         android:text="Bienvenido a tu futuro."
         android:textColor="@color/black"/>
+
+    <ImageView
+        android:id="@+id/menu_profile_image"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:scaleType="centerCrop"
+        android:layout_marginBottom="40dp"/>
 
     <Button
         android:id="@+id/btnCerrarSesion"

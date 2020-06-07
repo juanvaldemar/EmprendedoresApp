@@ -155,7 +155,7 @@ public class AccessRelato extends AppCompatActivity {
             public void onClick(View v) {
                 AccessToken accessToken = AccessToken.getCurrentAccessToken();
                 if(accessToken==null) {
-                    LoginManager.getInstance().logInWithReadPermissions(AccessRelato.this, Arrays.asList("public_profile", "user_friends"));
+                    LoginManager.getInstance().logInWithReadPermissions(AccessRelato.this, Arrays.asList("email"));
 
                 }
             }
