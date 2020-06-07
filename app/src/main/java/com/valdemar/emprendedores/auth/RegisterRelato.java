@@ -49,6 +49,8 @@ public class RegisterRelato extends AppCompatActivity {
     //private Animation mUp_to_down,mhide_to_bottom;
     private LinearLayout mRelato_regis_body;
 
+    private TextView mTerminosPoliticas;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,10 @@ public class RegisterRelato extends AppCompatActivity {
     }
 
     private void initView() {
+        mTerminosPoliticas = findViewById(R.id.politicas);
+        String sourceString = "Al continuar, aceptás nuestros. <b>Términos  y \n Condiciones de Uso</b> y nuestras "+"<b>Políticas de privacidad.</b>" ;
+        mTerminosPoliticas.setText(Html.fromHtml(sourceString));
+
         mProgress = new ProgressDialog(this);
 
         mAuth = FirebaseAuth.getInstance();
