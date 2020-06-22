@@ -18,13 +18,15 @@
         <activity
             android:name=".MenuLateralActivity"
             android:label="@string/title_activity_menu_lateral"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".SplashActivity">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".SplashActivity">
+
         </activity>
         <activity android:name=".auth.AccessRelato" />
         <activity android:name=".auth.ForgetPasswordRelato" />

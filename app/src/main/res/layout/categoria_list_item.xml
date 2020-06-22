@@ -17,16 +17,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageButton
-            android:background="@drawable/design_one"
+        <ImageView
+            android:id="@+id/imgbtn_categoria"
             android:layout_gravity="center"
-            android:padding="14dp"
-            android:layout_marginBottom="8dp"
+            android:padding="8dp"
             android:src="@drawable/agregar_foto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
+            android:id="@+id/tv_nombre_categoria"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Categoría"
