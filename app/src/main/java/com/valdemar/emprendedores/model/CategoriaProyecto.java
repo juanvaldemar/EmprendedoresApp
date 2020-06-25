@@ -1,12 +1,22 @@
 package com.valdemar.emprendedores.model;
 
 public class CategoriaProyecto {
+    int idCategoria;
     String nombre;
     int imagen;
 
-    public CategoriaProyecto(String nombre, int imagen) {
+    public CategoriaProyecto(int idCategoria,String nombre, int imagen) {
+        this.idCategoria = idCategoria;
         this.nombre = nombre;
         this.imagen = imagen;
+    }
+
+    public int getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(int idCategoria) {
+        this.idCategoria = idCategoria;
     }
 
     public String getNombre() {

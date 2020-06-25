@@ -25,7 +25,7 @@ import java.util.List;
  * Use the {@link CategoriasFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CategoriasFragment extends Fragment {
+public class CategoriasFragment extends Fragment implements CategoriasAdapter.OnCategoriaClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,6 +36,7 @@ public class CategoriasFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private RecyclerView rvCategorias;
+    private CategoriasAdapter categoriasAdapter;
 
     public CategoriasFragment() {
         // Required empty public constructor
@@ -80,8 +81,10 @@ public class CategoriasFragment extends Fragment {
         rvCategorias = (RecyclerView) root.findViewById(R.id.recycler_view_categorias);
         GridLayoutManager glmCategorias = new GridLayoutManager(getActivity(), 3);
         rvCategorias.setLayoutManager(glmCategorias);
-        CategoriasAdapter categoriasAdapter = new CategoriasAdapter(generarListaCategorias());
+        categoriasAdapter = new CategoriasAdapter(generarListaCategorias());
+        categoriasAdapter.setOnCategoriaClickListener(this);
         rvCategorias.setAdapter(categoriasAdapter);
+
         Button btnSiguiente = root.findViewById(R.id.btn_categorias_sgte);
         btnSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,30 +94,29 @@ public class CategoriasFragment extends Fragment {
         });
     }
 
-    private void navegarSiguiente() {
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.nav_host_fragment, CrearProyectoFragment.newInstance("",""));
-        ft.addToBackStack(null);
-        ft.commit();
-    }
 
     private List<CategoriaProyecto> generarListaCategorias(){
         List<CategoriaProyecto> listaCategorias = new ArrayList<>();
 
-        listaCategorias.add(new CategoriaProyecto("Comida", R.drawable.ic_categoria_comida));
-        listaCategorias.add(new CategoriaProyecto("Ropa", R.drawable.ic_categoria_ropa));
-        listaCategorias.add(new CategoriaProyecto("Tecnología", R.drawable.ic_categoria_tecnologia));
-        listaCategorias.add(new CategoriaProyecto("Salud", R.drawable.ic_categoria_salud));
-        listaCategorias.add(new CategoriaProyecto("Entretenimiento", R.drawable.ic_categoria_entretenimiento));
-        listaCategorias.add(new CategoriaProyecto("Deportes", R.drawable.ic_categoria_deportes));
-        listaCategorias.add(new CategoriaProyecto("Videojuegos", R.drawable.ic_categoria_videojuegos));
-        listaCategorias.add(new CategoriaProyecto("Consultorías", R.drawable.ic_categoria_consultorias));
-        listaCategorias.add(new CategoriaProyecto("Transportes", R.drawable.ic_categoria_transportes));
-        listaCategorias.add(new CategoriaProyecto("Marketing", R.drawable.ic_categoria_marketing));
-        listaCategorias.add(new CategoriaProyecto("Finanzas", R.drawable.ic_categoria_finanzas));
-        listaCategorias.add(new CategoriaProyecto("Hogar", R.drawable.ic_categoria_hogar));
-        listaCategorias.add(new CategoriaProyecto("Otros", R.drawable.ic_categoria_otros));
+        listaCategorias.add(new CategoriaProyecto(0,"Comida", R.drawable.ic_categoria_comida));
+        listaCategorias.add(new CategoriaProyecto(1,"Ropa", R.drawable.ic_categoria_ropa));
+        listaCategorias.add(new CategoriaProyecto(2,"Tecnología", R.drawable.ic_categoria_tecnologia));
+        listaCategorias.add(new CategoriaProyecto(3,"Salud", R.drawable.ic_categoria_salud));
+        listaCategorias.add(new CategoriaProyecto(4,"Entretenimiento", R.drawable.ic_categoria_entretenimiento));
+        listaCategorias.add(new CategoriaProyecto(5,"Deportes", R.drawable.ic_categoria_deportes));
+        listaCategorias.add(new CategoriaProyecto(6,"Videojuegos", R.drawable.ic_categoria_videojuegos));
+        listaCategorias.add(new CategoriaProyecto(7,"Consultorías", R.drawable.ic_categoria_consultorias));
+        listaCategorias.add(new CategoriaProyecto(8,"Transportes", R.drawable.ic_categoria_transportes));
+        listaCategorias.add(new CategoriaProyecto(9,"Marketing", R.drawable.ic_categoria_marketing));
+        listaCategorias.add(new CategoriaProyecto(10,"Finanzas", R.drawable.ic_categoria_finanzas));
+        listaCategorias.add(new CategoriaProyecto(11,"Hogar", R.drawable.ic_categoria_hogar));
+        listaCategorias.add(new CategoriaProyecto(12,"Otros", R.drawable.ic_categoria_otros));
 
         return listaCategorias;
+    }
+
+    @Override
+    public void onCategoriaClick() {
+        categoriasAdapter.notifyDataSetChanged();
     }
 }

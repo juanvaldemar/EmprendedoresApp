@@ -13,7 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical">
         <ScrollView
             android:layout_weight="1"
@@ -40,9 +40,11 @@
                     android:hint="Escribe el nombre de tu Proyecto ..."
                     android:textSize="14sp"
                     android:layout_marginTop="10dp"
+                    android:lines="1"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/design_one"
                     android:textColor="@color/black"
+                    android:nextFocusForward="@id/edt_concepto_proyecto"
                     android:gravity="left" />
 
 
@@ -60,6 +62,7 @@
                     android:layout_marginTop="10dp"
                     android:text=""
                     android:textColor="@color/black"
+                    android:nextFocusForward="@id/edt_socio1"
                     android:gravity="left" />
 
                 <LinearLayout
@@ -101,68 +104,300 @@
                         android:layout_height="wrap_content"/>
 
                 </LinearLayout>
-                <EditText
-                    android:id="@+id/edt_socio"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="14dp"
-                    android:hint="Ingrese un socio. Ejemplo: Diseñador ..."
-                    android:textSize="14sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/design_one"
-                    android:textColor="@color/black"
-                    android:gravity="left" />
 
-                <EditText
-                    android:id="@+id/edt_socio2"
+                <LinearLayout
+                    android:id="@+id/ll_socio1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="14dp"
-                    android:hint="Ingrese un socio. Ejemplo: Diseñador ..."
-                    android:textSize="14sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/design_one"
-                    android:textColor="@color/black"
-                    android:gravity="left" />
-                <EditText
-                    android:id="@+id/edt_socio3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="14dp"
-                    android:hint="Ingrese un socio. Ejemplo: Diseñador ..."
-                    android:textSize="14sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/design_one"
-                    android:textColor="@color/black"
-                    android:gravity="left" />
-                <EditText
-                    android:id="@+id/edt_socio4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="14dp"
-                    android:hint="Ingrese un socio. Ejemplo: Diseñador ..."
-                    android:textSize="14sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/design_one"
-                    android:textColor="@color/black"
-                    android:gravity="left" />
+                    android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/edt_socio5"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/edt_socio1"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:padding="14dp"
+                            android:hint="@string/crearproyecto.hint.socio"
+                            android:textSize="14sp"
+                            android:lines="1"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/design_one"
+                            android:textColor="@color/black"
+                            android:gravity="left" />
+
+                        <Button
+                            android:id="@+id/btn_agregar_socio1"
+                            android:layout_width="50dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_height="50dp"
+                            android:text="+"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:background="@drawable/radius_button"
+                            android:color="@color/black" />
+
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/edt_descripcion_socio1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="14dp"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="10dp"
+                        android:hint="@string/crearproyecto.hint.socio_descripcion"
+                        android:background="@drawable/design_one"
+                        android:inputType="textMultiLine"
+                        android:lines="3"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/black"
+                        android:gravity="left" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_socio2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="14dp"
-                    android:hint="Ingrese un socio. Ejemplo: Diseñador ..."
-                    android:textSize="14sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/design_one"
-                    android:textColor="@color/black"
-                    android:gravity="left" />
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/edt_socio2"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:padding="14dp"
+                            android:hint="@string/crearproyecto.hint.socio"
+                            android:textSize="14sp"
+                            android:lines="1"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/design_one"
+                            android:textColor="@color/black"
+                            android:gravity="left" />
+
+                        <Button
+                            android:id="@+id/btn_agregar_socio2"
+                            android:layout_width="50dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_height="50dp"
+                            android:text="+"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:background="@drawable/radius_button"
+                            android:color="@color/black" />
+
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/edt_descripcion_socio2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="14dp"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="10dp"
+                        android:hint="@string/crearproyecto.hint.socio_descripcion"
+                        android:background="@drawable/design_one"
+                        android:inputType="textMultiLine"
+                        android:lines="3"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/black"
+                        android:gravity="left" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_socio3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/edt_socio3"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:padding="14dp"
+                            android:hint="@string/crearproyecto.hint.socio"
+                            android:textSize="14sp"
+                            android:lines="1"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/design_one"
+                            android:textColor="@color/black"
+                            android:gravity="left" />
+
+                        <Button
+                            android:id="@+id/btn_agregar_socio3"
+                            android:layout_width="50dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_height="50dp"
+                            android:text="+"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:background="@drawable/radius_button"
+                            android:color="@color/black" />
+
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/edt_descripcion_socio3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="14dp"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="10dp"
+                        android:hint="@string/crearproyecto.hint.socio_descripcion"
+                        android:background="@drawable/design_one"
+                        android:inputType="textMultiLine"
+                        android:lines="3"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/black"
+                        android:gravity="left" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_socio4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/edt_socio4"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:padding="14dp"
+                            android:hint="@string/crearproyecto.hint.socio"
+                            android:textSize="14sp"
+                            android:lines="1"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/design_one"
+                            android:textColor="@color/black"
+                            android:gravity="left" />
+
+                        <Button
+                            android:id="@+id/btn_agregar_socio4"
+                            android:layout_width="50dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_height="50dp"
+                            android:text="+"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:background="@drawable/radius_button"
+                            android:color="@color/black" />
+
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/edt_descripcion_socio4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="14dp"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="10dp"
+                        android:hint="@string/crearproyecto.hint.socio_descripcion"
+                        android:background="@drawable/design_one"
+                        android:inputType="textMultiLine"
+                        android:lines="3"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/black"
+                        android:gravity="left" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_socio5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/edt_socio5"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:padding="14dp"
+                            android:hint="@string/crearproyecto.hint.socio"
+                            android:textSize="14sp"
+                            android:lines="1"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/design_one"
+                            android:textColor="@color/black"
+                            android:gravity="left" />
+
+                        <Button
+                            android:id="@+id/btn_agregar_socio5"
+                            android:layout_width="50dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_height="50dp"
+                            android:text="+"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:background="@drawable/radius_button"
+                            android:color="@color/black" />
+
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/edt_descripcion_socio5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="14dp"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="10dp"
+                        android:hint="@string/crearproyecto.hint.socio_descripcion"
+                        android:background="@drawable/design_one"
+                        android:inputType="textMultiLine"
+                        android:lines="3"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/black"
+                        android:gravity="left" />
+                </LinearLayout>
 
             </LinearLayout>
         </ScrollView>

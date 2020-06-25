@@ -8,11 +8,13 @@
     android:layout_marginLeft="11dp"
     android:layout_marginTop="11dp"
     android:layout_marginRight="11dp"
+    android:layout_marginBottom="11dp"
     android:foreground="?selectableItemBackground"
     android:orientation="vertical"
     app:cardCornerRadius="11dp">
 
     <LinearLayout
+        android:id="@+id/ll_item_categoria"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
