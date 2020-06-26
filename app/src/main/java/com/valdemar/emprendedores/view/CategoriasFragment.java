@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.gson.Gson;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.model.CategoriaProyecto;
 
@@ -31,12 +32,14 @@ public class CategoriasFragment extends Fragment implements CategoriasAdapter.On
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public static final String ARG_CATEGORIA_SELECCIONADA = "categoria_seleccionada";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private RecyclerView rvCategorias;
     private CategoriasAdapter categoriasAdapter;
+    private CategoriaProyecto mCategoriaSeleccionada;
 
     public CategoriasFragment() {
         // Required empty public constructor
@@ -89,7 +92,10 @@ public class CategoriasFragment extends Fragment implements CategoriasAdapter.On
         btnSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.next_action);
+                Bundle args = new Bundle();
+                String json = new Gson().toJson(mCategoriaSeleccionada);
+                args.putString(ARG_CATEGORIA_SELECCIONADA, json);
+                Navigation.findNavController(v).navigate(R.id.next_action,args);
             }
         });
     }
@@ -116,7 +122,8 @@ public class CategoriasFragment extends Fragment implements CategoriasAdapter.On
     }
 
     @Override
-    public void onCategoriaClick() {
+    public void onCategoriaClick(CategoriaProyecto categoriaSeleccionada) {
+        mCategoriaSeleccionada = categoriaSeleccionada;
         categoriasAdapter.notifyDataSetChanged();
     }
 }

@@ -35,5 +35,9 @@
     <fragment
         android:id="@+id/crearProyectoFragment"
         android:name="com.valdemar.emprendedores.view.CrearProyectoFragment"
-        android:label="CrearProyectoFragment" />
+        android:label="CrearProyectoFragment" >
+        <argument
+            android:name="categoria"
+            app:argType="com.valdemar.emprendedores.model.CategoriaProyecto" />
+    </fragment>
 </navigation>

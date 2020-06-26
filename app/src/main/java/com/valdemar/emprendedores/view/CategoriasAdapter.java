@@ -56,7 +56,7 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Vi
             @Override
             public void onClick(View v) {
                 indexSeleccionado = mListaCategorias.get(position).getIdCategoria();
-                mListener.onCategoriaClick();
+                mListener.onCategoriaClick(mListaCategorias.get(position));
             }
         });
     }
@@ -71,7 +71,7 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Vi
     }
 
     public interface OnCategoriaClickListener {
-        void onCategoriaClick();
+        void onCategoriaClick(CategoriaProyecto categoriaProyecto);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
