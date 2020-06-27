@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,20 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.valdemar.emprendedores.R;
 
 public class ProyectosFragment extends Fragment {
     private RecyclerView mRecyclerMisLecturas;
     private DatabaseReference mDatabaseMisLecturas;
     private ProgressDialog mProgress;
+    private DatabaseReference mDatabase;
+
+
+    private RecyclerView mRecyclerAsesinos,mRecyclerFantasmas,
+            mRecyclerLeyendasUrbandas,mRecyclerCreepypastas,
+            mRecyclerTerror,mRecyclerEpisodiosPerdidos;
+
 
     public ProyectosFragment() {
         // Required empty public constructor
@@ -34,7 +43,57 @@ public class ProyectosFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_proyectos, container, false);
         initView(root);
+        initCategoria(root);
         return root;
+
+    }
+
+    private void initCategoria(View root) {
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Proyectos");
+
+        Query queryEpisodiosPerdidos = mDatabase.orderByChild("category").equalTo("EpisodiosPerdidos");
+
+        mRecyclerEpisodiosPerdidos = (RecyclerView) root.findViewById(R.id.recyclerEpisodiosPerdidos);
+        mRecyclerEpisodiosPerdidos = (RecyclerView) root.findViewById(R.id.recyclerEpisodiosPerdidos);
+        mRecyclerEpisodiosPerdidos.setHasFixedSize(true);
+
+        LinearLayoutManager layoutManagermRecyclerEpisodiosPerdidos
+                = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+
+        layoutManagermRecyclerEpisodiosPerdidos.setReverseLayout(true);
+        layoutManagermRecyclerEpisodiosPerdidos.setStackFromEnd(true);
+
+        mRecyclerEpisodiosPerdidos.setLayoutManager(layoutManagermRecyclerEpisodiosPerdidos);
+
+        FirebaseRecyclerAdapter<Category, CategoryViewHolder> firebaseRecyclerAdaptermRecyclerEpisodiosPerdidos =
+                new FirebaseRecyclerAdapter<Category, CategoryViewHolder>(
+                        Category.class,
+                        R.layout.album_card,
+                        CategoryViewHolder.class,
+                        mDatabase
+                ) {
+                    @Override
+                    protected void populateViewHolder(CategoryViewHolder viewHolder, Category model, int position) {
+                        final String post_key = getRef(position).getKey();
+                        viewHolder.setTitle(model.getTitle());
+                        viewHolder.setSendBy(model.getAuthor());
+
+                        viewHolder.setImage(getActivity().getApplicationContext(),
+                                model.getImagen());
+
+                        Log.v("Seguimiento","dentro");
+
+                        viewHolder.mViewStructure_h.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                               // viewDetails(post_key);
+                            }
+                        });
+
+                    }
+                };
+
+        mRecyclerEpisodiosPerdidos.setAdapter(firebaseRecyclerAdaptermRecyclerEpisodiosPerdidos);
 
     }
 
@@ -43,7 +102,6 @@ public class ProyectosFragment extends Fragment {
         mProgress = new ProgressDialog(getContext());
         mDatabaseMisLecturas = FirebaseDatabase.getInstance().getReference().child("Proyectos");
 
-        mDatabaseMisLecturas.keepSynced(true);
         // mAdView = (AdView) root.findViewById(R.id.adView);
 
         // mAdView.loadAd(adRequest);
@@ -70,7 +128,8 @@ public class ProyectosFragment extends Fragment {
                 firebaseRecyclerAdapterMyLecturas = new FirebaseRecyclerAdapter<ItemFeed, RelatoViewHolderStructureMemes>(
                 ItemFeed.class,
                 R.layout.design_structure_relato_menu,
-                RelatoViewHolderStructureMemes.class,mDatabaseMisLecturas) {
+                RelatoViewHolderStructureMemes.class,
+                mDatabaseMisLecturas) {
             @Override
             protected void populateViewHolder(RelatoViewHolderStructureMemes viewHolder, final ItemFeed model, final int position) {
                 final String post_key = getRef(position).getKey();
