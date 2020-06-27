@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,10 +30,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
-import com.valdemar.emprendedores.MenuLateralActivity;
 import com.valdemar.emprendedores.R;
-import com.valdemar.emprendedores.SplashActivity;
-import com.valdemar.emprendedores.auth.AccessRelato;
 import com.valdemar.emprendedores.model.CategoriaProyecto;
 import com.valdemar.emprendedores.model.Proyecto;
 import java.sql.Timestamp;
@@ -192,16 +188,8 @@ public class CrearProyectoFragment extends Fragment {
         Button btnPublicarProyecto = (Button) view.findViewById(R.id.btn_registrar_proyecto);
         btnPublicarProyecto.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v) {
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        registrarProyecto(v);
-
-                    }
-                },1000);
-
+            public void onClick(View v) {
+                registrarProyecto(v);
             }
         });
 

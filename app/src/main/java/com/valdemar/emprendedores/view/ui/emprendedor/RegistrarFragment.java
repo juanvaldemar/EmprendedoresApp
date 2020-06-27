@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import android.widget.Spinner;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -43,6 +45,7 @@ public class RegistrarFragment extends Fragment {
     private ProgressDialog mProgresDialog;
     private StorageReference mStorage;
     private DatabaseReference mDatabase;
+    private FirebaseAuth mAuth;
     private Task<Uri> mRuta;
 
 
@@ -69,7 +72,7 @@ public class RegistrarFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_registrar, container, false);
-
+        mAuth = FirebaseAuth.getInstance();
         initListSpinner(root);
         initView(root);
 
@@ -119,70 +122,83 @@ public class RegistrarFragment extends Fragment {
         mProgresDialog.setMessage("Registrando Emprendedor");
         mProgresDialog.setCancelable(false);
         mProgresDialog.show();
-        if(mImageUri !=null){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
-            final StorageReference filepath = mStorage
-                    .child("Emprendedor_images")
-                    .child(mImageUri.getLastPathSegment());
-            filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
+                if(mImageUri !=null){
 
-                    //filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    final StorageReference filepath = mStorage
+                            .child("Emprendedor_images")
+                            .child(mImageUri.getLastPathSegment());
+                    filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
-                        public void onSuccess(Uri uri) {
-                            Uri downloadUrl = uri;
+                        public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
 
-                            mDatabase = FirebaseDatabase.getInstance().getReference().child("Proyectos");
+                            //filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Uri downloadUrl = uri;
+                                    mDatabase = FirebaseDatabase.getInstance().getReference().child("Proyectos");
+                                    DatabaseReference newPost = mDatabase.push();
 
-                            DatabaseReference newPost = mDatabase.push();
+                                    String user_id = mAuth.getCurrentUser().getUid();
 
-                            newPost.child("edt_nombres_emprendedor").setValue("");
-                            newPost.child("edt_apellidos_emprendedor").setValue("");
-                            newPost.child("spinner_dia").setValue("");
-                            newPost.child("spinner_mes").setValue("");
-                            newPost.child("spinner_anio").setValue("");
-                            newPost.child("spinner_genero").setValue("");
-                            newPost.child("edt_num_emprendedor").setValue("");
-                            newPost.child("edt_dni_emprendedor").setValue("");
-                            newPost.child("spinner_pais").setValue("");
-                            newPost.child("spinner_ciudad").setValue("");
-                            newPost.child("edt_direccion_emprendedor").setValue("");;
+                                    newPost.child("id_emprendedor").setValue(user_id);
 
-                            newPost.child("imagen").setValue(downloadUrl.toString());
+                                    newPost.child("edt_nombres_emprendedor").setValue(edt_nombres_emprendedor.getText().toString().trim());
+                                    newPost.child("edt_apellidos_emprendedor").setValue(edt_apellidos_emprendedor.getText().toString().trim());
+                                    newPost.child("spinner_dia").setValue(spinner_dia.getSelectedItem().toString());
+                                    newPost.child("spinner_mes").setValue(spinner_mes.getSelectedItem().toString());
+                                    newPost.child("spinner_anio").setValue(spinner_anio.getSelectedItem().toString());
+                                    newPost.child("spinner_genero").setValue(spinner_genero.getSelectedItem().toString());
+                                    newPost.child("edt_num_emprendedor").setValue(edt_num_emprendedor.getText().toString().trim());
+                                    newPost.child("edt_dni_emprendedor").setValue(edt_dni_emprendedor.getText().toString().trim());
+                                    newPost.child("spinner_pais").setValue(spinner_pais.getSelectedItem().toString());
+                                    newPost.child("spinner_ciudad").setValue(spinner_ciudad.getSelectedItem().toString());
+                                    newPost.child("edt_direccion_emprendedor").setValue(edt_direccion_emprendedor.getText().toString().trim());
 
-                            Timestamp fechaRegistro = getFecha();
-                            newPost.child("fechaRegistro").setValue(fechaRegistro);
-                            mProgresDialog.dismiss();
+                                    newPost.child("imagen").setValue(downloadUrl.toString());
+
+                                    Timestamp fechaRegistro = getFecha();
+                                    newPost.child("fechaRegistro").setValue(fechaRegistro);
+                                    mProgresDialog.dismiss();
+                                }
+                            });
+
+
                         }
+
                     });
+                }else{
+                    DatabaseReference newPost = mDatabase.push();
 
+                    String user_id = mAuth.getCurrentUser().getUid();
 
+                    newPost.child("id_emprendedor").setValue(user_id);
+
+                    newPost.child("edt_nombres_emprendedor").setValue(edt_nombres_emprendedor.getText().toString().trim());
+                    newPost.child("edt_apellidos_emprendedor").setValue(edt_apellidos_emprendedor.getText().toString().trim());
+                    newPost.child("spinner_dia").setValue(spinner_dia.getSelectedItem().toString());
+                    newPost.child("spinner_mes").setValue(spinner_mes.getSelectedItem().toString());
+                    newPost.child("spinner_anio").setValue(spinner_anio.getSelectedItem().toString());
+                    newPost.child("spinner_genero").setValue(spinner_genero.getSelectedItem().toString());
+                    newPost.child("edt_num_emprendedor").setValue(edt_num_emprendedor.getText().toString().trim());
+                    newPost.child("edt_dni_emprendedor").setValue(edt_dni_emprendedor.getText().toString().trim());
+                    newPost.child("spinner_pais").setValue(spinner_pais.getSelectedItem().toString());
+                    newPost.child("spinner_ciudad").setValue(spinner_ciudad.getSelectedItem().toString());
+                    newPost.child("edt_direccion_emprendedor").setValue(edt_direccion_emprendedor.getText().toString().trim());
+
+                    newPost.child("imagen").setValue("Vacio");
+
+                    Timestamp fechaRegistro = getFecha();
+                    newPost.child("fechaRegistro").setValue(fechaRegistro);
+                    mProgresDialog.dismiss();
                 }
 
-            });
-        }else{
-            DatabaseReference newPost = mDatabase.push();
-
-            newPost.child("edt_nombres_emprendedor").setValue("");
-            newPost.child("edt_apellidos_emprendedor").setValue("");
-            newPost.child("spinner_dia").setValue("");
-            newPost.child("spinner_mes").setValue("");
-            newPost.child("spinner_anio").setValue("");
-            newPost.child("spinner_genero").setValue("");
-            newPost.child("edt_num_emprendedor").setValue("");
-            newPost.child("edt_dni_emprendedor").setValue("");
-            newPost.child("spinner_pais").setValue("");
-            newPost.child("spinner_ciudad").setValue("");
-            newPost.child("edt_direccion_emprendedor").setValue("");;
-
-            newPost.child("imagen").setValue("Vacio");
-
-            Timestamp fechaRegistro = getFecha();
-            newPost.child("fechaRegistro").setValue(fechaRegistro);
-            mProgresDialog.dismiss();
-        }
+            }
+        },1000);
 
     }
 
