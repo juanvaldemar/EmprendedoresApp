@@ -1,5 +1,6 @@
 package com.valdemar.emprendedores.view;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -18,12 +19,21 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.model.CategoriaProyecto;
 import com.valdemar.emprendedores.model.Proyecto;
+import java.sql.Timestamp;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -65,6 +75,15 @@ public class CrearProyectoFragment extends Fragment {
     private int maxSociosActivos = 5;
 
     private CategoriaProyecto mCategoria;
+
+
+    private ProgressDialog mProgresDialog;
+    private StorageReference mStorage;
+    private  DatabaseReference mDatabase;
+    private Task<Uri> mRuta;
+
+    private Uri mImageUri = null;
+
 
 
     public CrearProyectoFragment() {
@@ -170,7 +189,7 @@ public class CrearProyectoFragment extends Fragment {
         btnPublicarProyecto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registrarProyecto();
+                registrarProyecto(v);
             }
         });
 
@@ -224,34 +243,59 @@ public class CrearProyectoFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == GALLERY_REQUEST && resultCode == RESULT_OK){
-            Uri mImageUri = data.getData();
+             mImageUri = data.getData();
 
             //mPostImageSelect.setImageURI(mImageUri);
             Glide.with(getActivity().getApplicationContext())
                     .load(mImageUri)
                     .into(mImgFoto);
+
         }
     }
 
-    private void registrarProyecto() {
-        if (validarCampos()) {
-            Proyecto proyecto = new Proyecto();
-            proyecto.setCategoria(mCategoria.getNombre());
-            proyecto.setNombre(mEdtNombreProyecto.getText().toString());
-            proyecto.setDescripcion(mEdtDescripcionProyecto.getText().toString());
-            proyecto.setSocio1(mEdtSocio1.getText().toString());
-            proyecto.setDescripcionSocio1(mEdtDescripcionSocio1.getText().toString());
-            proyecto.setSocio2(validarEditText(mEdtSocio2) ? mEdtSocio2.getText().toString() : null);
-            proyecto.setDescripcionSocio2(validarEditText(mEdtDescripcionSocio2) ? mEdtDescripcionSocio2.getText().toString() : null);
-            proyecto.setSocio4(validarEditText(mEdtSocio3) ? mEdtSocio3.getText().toString() : null);
-            proyecto.setDescripcionSocio3(validarEditText(mEdtDescripcionSocio3) ? mEdtDescripcionSocio3.getText().toString() : null);
-            proyecto.setSocio4(validarEditText(mEdtSocio4) ? mEdtSocio4.getText().toString() : null);
-            proyecto.setDescripcionSocio4(validarEditText(mEdtDescripcionSocio4) ? mEdtDescripcionSocio4.getText().toString() : null);
-            proyecto.setSocio5(validarEditText(mEdtSocio5) ? mEdtSocio5.getText().toString() : null);
-            proyecto.setDescripcionSocio5(validarEditText(mEdtDescripcionSocio5) ? mEdtDescripcionSocio5.getText().toString() : null);
-        };
+    private void registrarProyecto(View v) {
+
+        mStorage = FirebaseStorage.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Proyectos");
+        mProgresDialog= new ProgressDialog(getActivity());
+
+
+            mProgresDialog.setMessage("Publicando Proyecto");
+            mProgresDialog.setCancelable(false);
+            mProgresDialog.show();
+
+            DatabaseReference newPost = mDatabase.push();
+
+           newPost.child("titulo").setValue("Android sexo");
+
+
+
+        newPost.child("categoria").setValue("Software");
+        newPost.child("socio1").setValue("Desarollador");
+        newPost.child("socioDesc").setValue("lorem in´put ahahhwsu1q y3e ");
+
+            Timestamp fechaRegistro = getFecha();
+            newPost.child("fechaRegistro").setValue(fechaRegistro);
+
+
+
+
+
+            mProgresDialog.dismiss();
+            Toast.makeText(getActivity(), "Satisfactoriamente subido ", Toast.LENGTH_LONG).show(); //Upload Was Success Message
+
+
+
+
 
     }
+
+    public Timestamp getFecha(){
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+        return timestamp;
+    }
+
 
     private boolean validarCampos() {
         return true;

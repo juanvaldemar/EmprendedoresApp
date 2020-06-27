@@ -2,6 +2,7 @@ package com.valdemar.emprendedores.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+
 public class CategoriaProyecto implements Serializable{
     @SerializedName("idCategoria")
     int idCategoria;
