@@ -18,6 +18,56 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="crearproyecto.hint.socio">Qué socio necesitas?...</string>
     <string name="crearproyecto.hint.socio_descripcion">Descríbenos a ese socio ...</string>
+    <string name="registraremprendedor">RegistrarEmprendedor</string>
 
+    <string-array name="dia">
+        <item>Día</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>6</item>
+    </string-array>
+
+    <string-array name="mes">
+        <item>Mes</item>
+        <item>Enero</item>
+        <item>Febrero</item>
+        <item>Marzo</item>
+        <item>Abril</item>
+    </string-array>
+
+    <string-array name="anio">
+        <item>Año</item>
+        <item>1990</item>
+        <item>1991</item>
+        <item>1992</item>
+        <item>1993</item>
+        <item>1994</item>
+    </string-array>
+
+    <string-array name="genero">
+        <item>Género</item>
+        <item>Masculino</item>
+        <item>Femenino</item>
+        <item>Otro</item>
+    </string-array>
+
+
+    <string-array name="pais">
+        <item>País</item>
+        <item>Perú</item>
+        <item>Colombia</item>
+        <item>EEUU</item>
+    </string-array>
+
+    <string-array name="ciudad">
+        <item>Ciudad</item>
+        <item>Lima</item>
+        <item>Ica</item>
+        <item>Trujillo</item>
+    </string-array>
 
 </resources>

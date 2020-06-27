@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/nav_categorias"
         android:name="com.valdemar.emprendedores.view.ui.emprendedor.RegistrarFragment"
-        android:label="@string/menu_home"
+        android:label="@string/registraremprendedor"
         tools:layout="@layout/fragment_registrar" >
         <action
             android:id="@+id/next_action"

@@ -1,14 +1,253 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.ui.emprendedor.RegistrarFragment">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_marginTop="8dp"
+        android:orientation="vertical">
+        <ScrollView
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            app:layout_constraintBottom_toTopOf="@id/btn_registrar_proyecto"
+            android:layout_height="0dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:orientation="vertical">
 
-</FrameLayout>
+                <ImageView
+                    android:id="@+id/img_foto_emprendedor"
+                    android:src="@drawable/person_ic"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:layout_width="200dp" />
+
+                <EditText
+                    android:id="@+id/edt_nombres_emprendedor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:hint="Ingrese sus nombres"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    android:lines="1"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/design_one"
+                    android:textColor="@color/black"
+                    android:nextFocusForward="@id/edt_descripcion_proyecto"
+                    android:gravity="left" />
+
+                <EditText
+                    android:id="@+id/edt_apellidos_emprendedor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:hint="Ingrese sus apellidos"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    android:lines="1"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/design_one"
+                    android:textColor="@color/black"
+                    android:nextFocusForward="@id/edt_descripcion_proyecto"
+                    android:gravity="left" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha de nacimiento"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="15dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <Spinner
+                        android:id="@+id/spinner_dia"
+                        android:layout_width="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:layout_height="40dp" />
+
+                    <Spinner
+                        android:id="@+id/spinner_mes"
+                        android:layout_width="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:layout_height="40dp" />
+
+                    <Spinner
+                        android:id="@+id/spinner_anio"
+                        android:layout_width="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:layout_height="40dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Género"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="15dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center"
+                    android:orientation="horizontal">
+                    <Spinner
+                        android:id="@+id/spinner_genero"
+                        android:layout_width="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:layout_height="40dp" />
+
+                </LinearLayout>
+
+
+                <EditText
+                    android:id="@+id/edt_num_emprendedor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:hint="Número / Télefono"
+                    android:textSize="14sp"
+                    android:inputType="phone"
+
+                    android:layout_marginTop="10dp"
+                    android:lines="1"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/design_one"
+                    android:textColor="@color/black"
+                    android:nextFocusForward="@id/edt_descripcion_proyecto"
+                    android:gravity="left" />
+
+                <EditText
+                    android:id="@+id/edt_dni_emprendedor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:hint="Documento de identidad (Opcional)"
+                    android:textSize="14sp"
+                    android:inputType="phone"
+                    android:layout_marginTop="10dp"
+                    android:lines="1"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/design_one"
+                    android:textColor="@color/black"
+                    android:nextFocusForward="@id/edt_descripcion_proyecto"
+                    android:gravity="left" />
+
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ubicación del proyecto"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="15dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <Spinner
+                        android:id="@+id/spinner_pais"
+                        android:layout_width="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:layout_height="40dp" />
+
+                    <Spinner
+                        android:id="@+id/spinner_ciudad"
+                        android:layout_width="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:layout_height="40dp" />
+
+                </LinearLayout>
+
+
+                <EditText
+                    android:id="@+id/edt_direccion_emprendedor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:hint="Dirección (Opcional)"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    android:lines="1"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/design_one"
+                    android:textColor="@color/black"
+                    android:nextFocusForward="@id/edt_descripcion_proyecto"
+                    android:gravity="left" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+                    <Button
+                        android:gravity="center"
+                        android:id="@+id/login_facebook"
+                        android:layout_width="50dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_height="50dp"
+                        android:layout_marginRight="10dp"
+                        android:text="F"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:background="@drawable/radius_button"
+                        android:color="@color/black"
+                        />
+
+                    <Button
+                        android:gravity="center"
+                        android:id="@+id/login_gmail"
+                        android:layout_width="50dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="G"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:background="@drawable/radius_button"
+                        android:color="@color/black"
+                        />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </ScrollView>
+
+
+        <Button
+            android:id="@+id/btn_registrar_emprendedor"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="Registrar Emprendedor" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
