@@ -1,4 +1,4 @@
-package com.valdemar.emprendedores.view.ui.proyectos;
+package com.valdemar.emprendedores.view.ui.proyectos.lista;
 
 public class ItemFeed {
     private String titulo;

@@ -1,4 +1,4 @@
-package com.valdemar.emprendedores.view;
+package com.valdemar.emprendedores.view.ui.proyectos.registro;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,6 +32,8 @@ import com.google.gson.Gson;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.model.CategoriaProyecto;
 import com.valdemar.emprendedores.model.Proyecto;
+import com.valdemar.emprendedores.view.CategoriasFragment;
+
 import java.sql.Timestamp;
 
 import static android.app.Activity.RESULT_OK;
@@ -194,6 +195,7 @@ public class CrearProyectoFragment extends Fragment {
         });
 
 
+
     }
 
     public void agregarSocio() {
@@ -254,7 +256,7 @@ public class CrearProyectoFragment extends Fragment {
     }
 
     private void registrarProyecto(View v) {
-
+        final Proyecto proyecto = initDataProyecto();
         mStorage = FirebaseStorage.getInstance().getReference();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Proyectos");
         mProgresDialog= new ProgressDialog(getActivity());
@@ -280,8 +282,9 @@ public class CrearProyectoFragment extends Fragment {
 
                            DatabaseReference newPost = mDatabase.push();
 
-                           newPost.child("titulo").setValue("Android sexo");
-                           newPost.child("imagen").setValue(downloadUrl.toString());
+                           proyecto.setImagen(downloadUrl.toString());
+
+                           newPost.setValue(proyecto);
 
                            //Timestamp fechaRegistro = getFecha();
                            //newPost.child("fechaRegistro").setValue(fechaRegistro);
@@ -293,9 +296,31 @@ public class CrearProyectoFragment extends Fragment {
                 }
 
             });
-}
+        }
 
 
+    }
+
+    private Proyecto initDataProyecto() {
+        Proyecto proyecto = new Proyecto();
+
+
+            proyecto.setCategoria(mCategoria.getNombre());
+            proyecto.setNombre(mEdtNombreProyecto.getText().toString());
+            proyecto.setDescripcion(mEdtDescripcionProyecto.getText().toString());
+            proyecto.setSocio1(mEdtSocio1.getText().toString());
+            proyecto.setDescripcionSocio1(mEdtDescripcionSocio1.getText().toString());
+            proyecto.setSocio2(validarEditText(mEdtSocio2) ? mEdtSocio2.getText().toString() : "");
+            proyecto.setDescripcionSocio2(validarEditText(mEdtDescripcionSocio2) ? mEdtDescripcionSocio2.getText().toString() : "");
+            proyecto.setSocio4(validarEditText(mEdtSocio3) ? mEdtSocio3.getText().toString() : "");
+            proyecto.setDescripcionSocio3(validarEditText(mEdtDescripcionSocio3) ? mEdtDescripcionSocio3.getText().toString() : "");
+            proyecto.setSocio4(validarEditText(mEdtSocio4) ? mEdtSocio4.getText().toString() : "");
+            proyecto.setDescripcionSocio4(validarEditText(mEdtDescripcionSocio4) ? mEdtDescripcionSocio4.getText().toString() : "");
+            proyecto.setSocio5(validarEditText(mEdtSocio5) ? mEdtSocio5.getText().toString() : "");
+            proyecto.setDescripcionSocio5(validarEditText(mEdtDescripcionSocio5) ? mEdtDescripcionSocio5.getText().toString() : "");
+
+
+        return proyecto;
     }
 
     public Timestamp getFecha(){

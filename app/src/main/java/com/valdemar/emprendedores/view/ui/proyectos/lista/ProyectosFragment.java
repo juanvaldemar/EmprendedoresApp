@@ -1,4 +1,4 @@
-package com.valdemar.emprendedores.view.ui.proyectos;
+package com.valdemar.emprendedores.view.ui.proyectos.lista;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;

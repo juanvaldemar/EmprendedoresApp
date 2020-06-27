@@ -13,9 +13,9 @@
             android:id="@+id/next_action"
             app:destination="@id/crearProyectoFragment" />
     </fragment>
-<!--
+
     <fragment
-        android:id="@+id/nav_categorias"
+        android:id="@+id/nav_home"
         android:name="com.valdemar.emprendedores.view.CategoriasFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_categorias" >
@@ -23,16 +23,11 @@
             android:id="@+id/next_action"
             app:destination="@id/crearProyectoFragment" />
     </fragment>
--->
-    <fragment
-        android:id="@+id/nav_home"
-        android:name="com.valdemar.emprendedores.view.CrearProyectoFragment"
-        android:label="CrearProyectoFragment"
-        />
+
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.valdemar.emprendedores.view.ui.proyectos.ProyectosFragment"
+        android:name="com.valdemar.emprendedores.view.ui.proyectos.lista.ProyectosFragment"
         android:label="Lista de proyectos"
         tools:layout="@layout/fragment_proyectos" />
 
@@ -43,7 +38,7 @@
         tools:layout="@layout/fragment_slideshow" />
     <fragment
         android:id="@+id/crearProyectoFragment"
-        android:name="com.valdemar.emprendedores.view.CrearProyectoFragment"
+        android:name="com.valdemar.emprendedores.view.ui.proyectos.registro.CrearProyectoFragment"
         android:label="CrearProyectoFragment" >
         <argument
             android:name="categoria"

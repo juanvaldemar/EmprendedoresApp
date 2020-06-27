@@ -5,10 +5,8 @@ import android.view.View;
 import android.view.Menu;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.valdemar.emprendedores.view.CategoriasFragment;
-import com.valdemar.emprendedores.view.CrearProyectoFragment;
 
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
