@@ -7,15 +7,15 @@
         <item
             android:id="@+id/nav_categorias"
             android:icon="@drawable/ic_categoria_otros"
-            android:title="categorias" />
+            android:title="Registro emprendedor" />
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:title="Registro de proyecto" />
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:title="Listas Proyectos" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"

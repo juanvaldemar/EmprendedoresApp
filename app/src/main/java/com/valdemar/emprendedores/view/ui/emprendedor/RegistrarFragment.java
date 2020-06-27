@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -29,7 +30,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
 import com.valdemar.emprendedores.R;
+import com.valdemar.emprendedores.view.CategoriasFragment;
 
 import java.sql.Timestamp;
 
@@ -114,7 +117,7 @@ public class RegistrarFragment extends Fragment {
     }
 
 
-    private void registrarProyecto(View v) {
+    private void registrarProyecto(final View v) {
 
         mStorage = FirebaseStorage.getInstance().getReference();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Emprendedor");
@@ -140,7 +143,7 @@ public class RegistrarFragment extends Fragment {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     Uri downloadUrl = uri;
-                                    mDatabase = FirebaseDatabase.getInstance().getReference().child("Proyectos");
+                                    mDatabase = FirebaseDatabase.getInstance().getReference().child("Emprendedor");
                                     DatabaseReference newPost = mDatabase.push();
 
                                     String user_id = mAuth.getCurrentUser().getUid();
@@ -164,6 +167,7 @@ public class RegistrarFragment extends Fragment {
                                     Timestamp fechaRegistro = getFecha();
                                     newPost.child("fechaRegistro").setValue(fechaRegistro);
                                     mProgresDialog.dismiss();
+
                                 }
                             });
 
@@ -195,6 +199,9 @@ public class RegistrarFragment extends Fragment {
                     Timestamp fechaRegistro = getFecha();
                     newPost.child("fechaRegistro").setValue(fechaRegistro);
                     mProgresDialog.dismiss();
+
+
+
                 }
 
             }
