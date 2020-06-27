@@ -1,8 +1,13 @@
 package com.valdemar.emprendedores.model;
+import com.google.gson.annotations.SerializedName;
 
-public class CategoriaProyecto {
+import java.io.Serializable;
+public class CategoriaProyecto implements Serializable{
+    @SerializedName("idCategoria")
     int idCategoria;
+    @SerializedName("nombre")
     String nombre;
+    @SerializedName("imagen")
     int imagen;
 
     public CategoriaProyecto(int idCategoria,String nombre, int imagen) {
