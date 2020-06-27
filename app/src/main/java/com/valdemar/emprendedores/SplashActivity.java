@@ -27,7 +27,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if(user != null) {
-                    startActivity(new Intent(SplashActivity.this, ViewSpook.class));
+                    startActivity(new Intent(SplashActivity.this, MenuLateralActivity.class));
                 }else{
                     startActivity(new Intent(SplashActivity.this, AccessRelato.class));
                 }

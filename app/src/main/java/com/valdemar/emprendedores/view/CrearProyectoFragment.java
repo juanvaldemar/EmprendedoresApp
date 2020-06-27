@@ -259,33 +259,41 @@ public class CrearProyectoFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Proyectos");
         mProgresDialog= new ProgressDialog(getActivity());
 
-
-            mProgresDialog.setMessage("Publicando Proyecto");
+        if( mImageUri !=null){
+            mProgresDialog.setMessage("Publicando Proyectos");
             mProgresDialog.setCancelable(false);
             mProgresDialog.show();
+            final StorageReference filepath = mStorage
+                    .child("Proyectos_images")
+                    .child(mImageUri.getLastPathSegment());
+            filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
 
-            DatabaseReference newPost = mDatabase.push();
+                    //filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                       @Override
+                       public void onSuccess(Uri uri) {
+                           Uri downloadUrl = uri;
 
-           newPost.child("titulo").setValue("Android sexo");
+                           mDatabase = FirebaseDatabase.getInstance().getReference().child("Proyectos");
 
+                           DatabaseReference newPost = mDatabase.push();
 
+                           newPost.child("titulo").setValue("Android sexo");
+                           newPost.child("imagen").setValue(downloadUrl.toString());
 
-        newPost.child("categoria").setValue("Software");
-        newPost.child("socio1").setValue("Desarollador");
-        newPost.child("socioDesc").setValue("lorem in´put ahahhwsu1q y3e ");
-
-            Timestamp fechaRegistro = getFecha();
-            newPost.child("fechaRegistro").setValue(fechaRegistro);
-
-
-
-
-
-            mProgresDialog.dismiss();
-            Toast.makeText(getActivity(), "Satisfactoriamente subido ", Toast.LENGTH_LONG).show(); //Upload Was Success Message
-
+                           //Timestamp fechaRegistro = getFecha();
+                           //newPost.child("fechaRegistro").setValue(fechaRegistro);
+                           mProgresDialog.dismiss();
+                       }
+                    });
 
 
+                }
+
+            });
+}
 
 
     }
