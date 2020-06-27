@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.valdemar.emprendedores.MenuLateralActivity;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.auth.util.ValidarEmail;
 
@@ -186,7 +187,7 @@ public class RegisterRelato extends AppCompatActivity {
     }
 
     public void createRegister(){
-        Intent i = new Intent(RegisterRelato.this, ViewSpook.class);
+        Intent i = new Intent(RegisterRelato.this, MenuLateralActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         finish();
         startActivity(i);

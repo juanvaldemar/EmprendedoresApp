@@ -74,8 +74,8 @@ public class ProyectosFragment extends Fragment {
             @Override
             protected void populateViewHolder(RelatoViewHolderStructureMemes viewHolder, final ItemFeed model, final int position) {
                 final String post_key = getRef(position).getKey();
-                viewHolder.setTitle(model.getTitulo());
-                viewHolder.setCatergory("Memes");
+                viewHolder.setTitle(model.getNombre());
+                viewHolder.setCatergory(model.getCategoria());
 
                 viewHolder.setImage(getActivity().getApplicationContext(), model.getImagen());
 
@@ -86,17 +86,6 @@ public class ProyectosFragment extends Fragment {
                         mProgress.show();
                         //Toast.makeText(getContext(),"Identificador "+post_key,Toast.LENGTH_SHORT).show();
 
-
-
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mProgress.hide();
-                                mProgress.dismiss();
-                                //viewDetails(post_key);
-                               // initValidarAccess(model.getImage());
-                            }
-                        }, 200);
                     }
                 });
             }

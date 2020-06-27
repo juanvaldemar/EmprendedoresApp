@@ -40,6 +40,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.valdemar.emprendedores.MenuLateralActivity;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.auth.util.ValidarEmail;
 
@@ -390,7 +391,7 @@ public class AccessRelato extends AppCompatActivity {
         }
 
         mProgress.dismiss();
-        Intent i = new Intent(AccessRelato.this, ViewSpook.class);
+        Intent i = new Intent(AccessRelato.this, MenuLateralActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(i);
         finish();
