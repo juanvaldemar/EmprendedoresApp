@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,6 +51,25 @@ public class ProyectosFragment extends Fragment {
     }
 
     private void initCategoria(View root) {
+
+        Spinner spinner5,spinner6;
+
+        spinner5 = root.findViewById(R.id.spinner_pais);
+        spinner6 = root.findViewById(R.id.spinner_ciudad);
+
+        ArrayAdapter<CharSequence> adapter5 = ArrayAdapter.createFromResource(getActivity(),
+                R.array.pais, android.R.layout.simple_spinner_item);
+        adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner5.setAdapter(adapter5);
+
+        ArrayAdapter<CharSequence> adapter6 = ArrayAdapter.createFromResource(getActivity(),
+                R.array.ciudad, android.R.layout.simple_spinner_item);
+        adapter6.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner6.setAdapter(adapter6);
+
+
         mDatabase = FirebaseDatabase.getInstance().getReference().child("categorias");
 
         Query queryEpisodiosPerdidos = mDatabase.orderByChild("category").equalTo("EpisodiosPerdidos");
@@ -154,6 +175,7 @@ public class ProyectosFragment extends Fragment {
         mRecyclerMisLecturas.setAdapter(firebaseRecyclerAdapterMyLecturas);
 
     }
+
 
 
 }
