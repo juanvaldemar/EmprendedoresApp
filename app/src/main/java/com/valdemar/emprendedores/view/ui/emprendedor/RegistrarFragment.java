@@ -221,7 +221,7 @@ public class RegistrarFragment extends Fragment {
 
         if (!(validarEditText(edt_nombres_emprendedor)
                 && validarEditText(edt_apellidos_emprendedor)
-                && validarEditText(edt_dni_emprendedor) && validarEditText(edt_num_emprendedor)
+                && validarEditText(edt_num_emprendedor)
                 && !spinner_dia.getSelectedItem().toString().equals("Día")
                 && !spinner_mes.getSelectedItem().toString().equals("Mes")
                 && !spinner_anio.getSelectedItem().toString().equals("Año")
