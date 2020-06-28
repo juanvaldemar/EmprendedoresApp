@@ -138,7 +138,7 @@ public class ProyectosFragment extends Fragment {
                         mDatabase
                 ) {
                     @Override
-                    protected void populateViewHolder(CategoryViewHolder viewHolder, Category model, int position) {
+                    protected void populateViewHolder(CategoryViewHolder viewHolder, final Category model, int position) {
                         final String post_key = getRef(position).getKey();
 
                         viewHolder.setTitle(model.getTitulo());
@@ -152,7 +152,7 @@ public class ProyectosFragment extends Fragment {
                         viewHolder.mViewStructure_h.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                               // viewDetails(post_key);
+                               filterRecycler(root,null,null,model.getCategoria());
                             }
                         });
 
@@ -195,6 +195,32 @@ public class ProyectosFragment extends Fragment {
             mProgress.dismiss();
         }else{
             Query queryRef = mDatabaseMisLecturas.orderByChild("ciudad").equalTo(ciudad);
+            //Query queryRef = mDatabaseMisLecturas.orderByChild("IdMiLectura").equalTo(userId);
+            FirebaseRecyclerAdapter<ItemFeed, RelatoViewHolderStructureMemes>
+                    firebaseRecyclerAdapterMyLecturas = new FirebaseRecyclerAdapter<ItemFeed, RelatoViewHolderStructureMemes>(
+                    ItemFeed.class,
+                    R.layout.design_structure_relato_menu,
+                    RelatoViewHolderStructureMemes.class,
+                    queryRef) {
+                @Override
+                protected void populateViewHolder(RelatoViewHolderStructureMemes viewHolder, final ItemFeed model, final int position) {
+                    final String post_key = getRef(position).getKey();
+                    viewHolder.setTitle(model.getNombre());
+                    viewHolder.setCatergory(model.getPais()+" - "+model.getCiudad());
+
+                    viewHolder.setImage(getActivity().getApplicationContext(), model.getImagen());
+
+
+
+                }
+            };
+
+            mRecyclerMisLecturas.setAdapter(firebaseRecyclerAdapterMyLecturas);
+            mProgress.dismiss();
+        }
+
+        if(categoria != null){
+            Query queryRef = mDatabaseMisLecturas.orderByChild("categoria").equalTo(categoria);
             //Query queryRef = mDatabaseMisLecturas.orderByChild("IdMiLectura").equalTo(userId);
             FirebaseRecyclerAdapter<ItemFeed, RelatoViewHolderStructureMemes>
                     firebaseRecyclerAdapterMyLecturas = new FirebaseRecyclerAdapter<ItemFeed, RelatoViewHolderStructureMemes>(
