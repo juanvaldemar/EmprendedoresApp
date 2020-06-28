@@ -77,7 +77,7 @@ public class ProyectosFragment extends Fragment {
                         final String post_key = getRef(position).getKey();
 
                         viewHolder.setTitle(model.getTitulo());
-                        viewHolder.setSendBy(model.getAuthor());
+                        viewHolder.setSendBy(model.getCategoria());
 
                         viewHolder.setImage(getActivity().getApplicationContext(),
                                 model.getImagen());
