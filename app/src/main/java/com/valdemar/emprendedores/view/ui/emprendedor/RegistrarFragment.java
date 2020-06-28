@@ -51,7 +51,7 @@ public class RegistrarFragment extends Fragment {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private Task<Uri> mRuta;
-
+    private View mRoot;
 
 
     private ImageView mImgFoto;
@@ -75,12 +75,13 @@ public class RegistrarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_registrar, container, false);
+        mRoot = inflater.inflate(R.layout.fragment_registrar, container, false);
         mAuth = FirebaseAuth.getInstance();
-        initListSpinner(root);
-        initView(root);
+        initListSpinner(mRoot);
+        initView(mRoot);
 
-        return root;
+
+        return mRoot;
     }
 
     private void initView(View root) {
@@ -169,7 +170,7 @@ public class RegistrarFragment extends Fragment {
                                         Timestamp fechaRegistro = getFecha();
                                         newPost.child("fechaRegistro").setValue(fechaRegistro);
                                         mProgresDialog.dismiss();
-
+                                        Navigation.findNavController(mRoot).navigate(R.id.next_action_to_lista);
                                     }
                                 });
 
@@ -201,6 +202,7 @@ public class RegistrarFragment extends Fragment {
                         Timestamp fechaRegistro = getFecha();
                         newPost.child("fechaRegistro").setValue(fechaRegistro);
                         mProgresDialog.dismiss();
+                        Navigation.findNavController(mRoot).navigate(R.id.next_action_to_lista);
 
 
                     }

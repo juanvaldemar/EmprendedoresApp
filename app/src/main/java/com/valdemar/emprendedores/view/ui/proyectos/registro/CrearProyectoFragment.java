@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -90,6 +91,7 @@ public class CrearProyectoFragment extends Fragment {
     private boolean mFotoVideoSubido;
 
     private Uri mImageUri = null;
+    private View mRoot;
 
 
     public CrearProyectoFragment() {
@@ -130,9 +132,9 @@ public class CrearProyectoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_crear_proyecto, container, false);
-        initUI(view);
-        return view;
+        mRoot = inflater.inflate(R.layout.fragment_crear_proyecto, container, false);
+        initUI(mRoot);
+        return mRoot;
     }
 
     private void initUI(View view) {
@@ -318,6 +320,7 @@ public class CrearProyectoFragment extends Fragment {
                                 //Timestamp fechaRegistro = getFecha();
                                 //newPost.child("fechaRegistro").setValue(fechaRegistro);
                                 mProgresDialog.dismiss();
+                                Navigation.findNavController(mRoot).navigate(R.id.next_action_to_lista_proyectos);
                             }
                         });
 

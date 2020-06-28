@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_categorias">
+    app:startDestination="@+id/nav_gallery">
     <fragment
         android:id="@+id/nav_categorias"
         android:name="com.valdemar.emprendedores.view.ui.emprendedor.RegistrarFragment"
         android:label="@string/registraremprendedor"
         tools:layout="@layout/fragment_registrar" >
         <action
-            android:id="@+id/next_action"
-            app:destination="@id/crearProyectoFragment" />
+            android:id="@+id/next_action_to_lista"
+            app:destination="@id/nav_gallery" />
     </fragment>
 
     <fragment
@@ -43,6 +43,9 @@
         <argument
             android:name="categoria"
             app:argType="com.valdemar.emprendedores.model.CategoriaProyecto" />
+        <action
+            android:id="@+id/next_action_to_lista_proyectos"
+            app:destination="@id/nav_gallery" />
     </fragment>
 
 
