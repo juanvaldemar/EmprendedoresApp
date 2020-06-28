@@ -156,7 +156,7 @@ public class ProyectosFragment extends Fragment {
             protected void populateViewHolder(RelatoViewHolderStructureMemes viewHolder, final ItemFeed model, final int position) {
                 final String post_key = getRef(position).getKey();
                 viewHolder.setTitle(model.getNombre());
-                viewHolder.setCatergory(model.getCategoria());
+                viewHolder.setCatergory(model.getPais()+" - "+model.getCiudad());
 
                 viewHolder.setImage(getActivity().getApplicationContext(), model.getImagen());
 

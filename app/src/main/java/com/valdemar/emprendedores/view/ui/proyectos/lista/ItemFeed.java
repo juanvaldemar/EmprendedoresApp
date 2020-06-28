@@ -4,6 +4,8 @@ public class ItemFeed {
     private String nombre;
     private String imagen;
     private String categoria;
+    private String pais;
+    private String ciudad;
 
     public String getNombre() {
         return nombre;
@@ -27,5 +29,21 @@ public class ItemFeed {
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
     }
 }

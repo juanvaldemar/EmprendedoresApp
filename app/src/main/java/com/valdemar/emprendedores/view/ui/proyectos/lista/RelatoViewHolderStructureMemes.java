@@ -31,7 +31,7 @@ public class RelatoViewHolderStructureMemes extends RecyclerView.ViewHolder {
 
     public void setCatergory(String category) {
         mItem_recycler_structure_category = mViewStructure.findViewById(R.id.item_recycler_structure_category);
-        mItem_recycler_structure_category.setText("Categoria: " + category);
+        mItem_recycler_structure_category.setText("" + category);
     }
 
     public void setImage(Context context, String image) {
