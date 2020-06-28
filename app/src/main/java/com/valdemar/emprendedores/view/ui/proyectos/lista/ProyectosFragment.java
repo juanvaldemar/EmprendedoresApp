@@ -49,7 +49,7 @@ public class ProyectosFragment extends Fragment {
     }
 
     private void initCategoria(View root) {
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Proyectos");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("categorias");
 
         Query queryEpisodiosPerdidos = mDatabase.orderByChild("category").equalTo("EpisodiosPerdidos");
 
@@ -75,7 +75,8 @@ public class ProyectosFragment extends Fragment {
                     @Override
                     protected void populateViewHolder(CategoryViewHolder viewHolder, Category model, int position) {
                         final String post_key = getRef(position).getKey();
-                        viewHolder.setTitle(model.getTitle());
+
+                        viewHolder.setTitle(model.getTitulo());
                         viewHolder.setSendBy(model.getAuthor());
 
                         viewHolder.setImage(getActivity().getApplicationContext(),

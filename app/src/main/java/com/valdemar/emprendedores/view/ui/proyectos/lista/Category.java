@@ -5,7 +5,7 @@ public class Category {
     private String id;
     private String imagen;
     private String categoria;
-    private String title;
+    private String titulo;
     private String author;
 
     public String getId() {
@@ -32,12 +32,12 @@ public class Category {
         this.categoria = categoria;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public String getAuthor() {
