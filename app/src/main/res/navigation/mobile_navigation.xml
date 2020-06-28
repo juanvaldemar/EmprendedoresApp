@@ -44,4 +44,14 @@
             android:name="categoria"
             app:argType="com.valdemar.emprendedores.model.CategoriaProyecto" />
     </fragment>
+
+
+
+    <fragment
+        android:id="@+id/nav_logout"
+        android:name="com.valdemar.emprendedores.view.ui.logout.LogoutFragment"
+        android:label="Cerrar Sesión"
+        tools:layout="@layout/fragment_logout" />
+
+
 </navigation>
