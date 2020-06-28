@@ -30,6 +30,7 @@ public class ProyectosFragment extends Fragment {
     private DatabaseReference mDatabaseMisLecturas;
     private ProgressDialog mProgress;
     private DatabaseReference mDatabase;
+    private boolean switch_general;
 
 
     private RecyclerView mRecyclerAsesinos,mRecyclerFantasmas,
@@ -79,10 +80,29 @@ public class ProyectosFragment extends Fragment {
                  if(!selectedItem.equalsIgnoreCase("país"))
                  {
                      filterRecycler(root,spinner5.getSelectedItem().toString(),null,null);
+                     spinner6.setVisibility(View.VISIBLE);
+                     spinner6.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+                     {
+                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                         {
+                             String selectedItem = parent.getItemAtPosition(position).toString();
+                             if(!selectedItem.equalsIgnoreCase("país"))
+                             {
+                                 filterRecycler(root,spinner5.getSelectedItem().toString(),spinner6.getSelectedItem().toString(),null);
 
+                             }
+
+                             //  Toast.makeText(getContext(),"Identificador "+selectedItem,Toast.LENGTH_LONG).show();
+
+                         } // to close the onItemSelected
+                         public void onNothingSelected(AdapterView<?> parent)
+                         {
+
+                         }
+                     });
                  }
 
-                 Toast.makeText(getContext(),"Identificador "+selectedItem,Toast.LENGTH_LONG).show();
+               //  Toast.makeText(getContext(),"Identificador "+selectedItem,Toast.LENGTH_LONG).show();
 
             } // to close the onItemSelected
             public void onNothingSelected(AdapterView<?> parent)
@@ -147,29 +167,58 @@ public class ProyectosFragment extends Fragment {
        mProgress.setMessage("Accediendo...");
         mProgress.show();
         //Toast.makeText(getContext(),"Identificador "+post_key,Toast.LENGTH_SHORT).show();
-        Query queryRef = mDatabaseMisLecturas.orderByChild("pais").equalTo(pais);
-        //Query queryRef = mDatabaseMisLecturas.orderByChild("IdMiLectura").equalTo(userId);
 
-        FirebaseRecyclerAdapter<ItemFeed, RelatoViewHolderStructureMemes>
-                firebaseRecyclerAdapterMyLecturas = new FirebaseRecyclerAdapter<ItemFeed, RelatoViewHolderStructureMemes>(
-                ItemFeed.class,
-                R.layout.design_structure_relato_menu,
-                RelatoViewHolderStructureMemes.class,
-                queryRef) {
-            @Override
-            protected void populateViewHolder(RelatoViewHolderStructureMemes viewHolder, final ItemFeed model, final int position) {
-                final String post_key = getRef(position).getKey();
-                viewHolder.setTitle(model.getNombre());
-                viewHolder.setCatergory(model.getPais()+" - "+model.getCiudad());
+        if(ciudad != null){
+            Query queryRef = mDatabaseMisLecturas.orderByChild("pais").equalTo(pais);
+            //Query queryRef = mDatabaseMisLecturas.orderByChild("IdMiLectura").equalTo(userId);
 
-                viewHolder.setImage(getActivity().getApplicationContext(), model.getImagen());
+            FirebaseRecyclerAdapter<ItemFeed, RelatoViewHolderStructureMemes>
+                    firebaseRecyclerAdapterMyLecturas = new FirebaseRecyclerAdapter<ItemFeed, RelatoViewHolderStructureMemes>(
+                    ItemFeed.class,
+                    R.layout.design_structure_relato_menu,
+                    RelatoViewHolderStructureMemes.class,
+                    queryRef) {
+                @Override
+                protected void populateViewHolder(RelatoViewHolderStructureMemes viewHolder, final ItemFeed model, final int position) {
+                    final String post_key = getRef(position).getKey();
+                    viewHolder.setTitle(model.getNombre());
+                    viewHolder.setCatergory(model.getPais()+" - "+model.getCiudad());
+
+                    viewHolder.setImage(getActivity().getApplicationContext(), model.getImagen());
 
 
-            }
-        };
 
-        mRecyclerMisLecturas.setAdapter(firebaseRecyclerAdapterMyLecturas);
-        mProgress.dismiss();
+                }
+            };
+
+            mRecyclerMisLecturas.setAdapter(firebaseRecyclerAdapterMyLecturas);
+            mProgress.dismiss();
+        }else{
+            Query queryRef = mDatabaseMisLecturas.orderByChild("ciudad").equalTo(ciudad);
+            //Query queryRef = mDatabaseMisLecturas.orderByChild("IdMiLectura").equalTo(userId);
+            FirebaseRecyclerAdapter<ItemFeed, RelatoViewHolderStructureMemes>
+                    firebaseRecyclerAdapterMyLecturas = new FirebaseRecyclerAdapter<ItemFeed, RelatoViewHolderStructureMemes>(
+                    ItemFeed.class,
+                    R.layout.design_structure_relato_menu,
+                    RelatoViewHolderStructureMemes.class,
+                    queryRef) {
+                @Override
+                protected void populateViewHolder(RelatoViewHolderStructureMemes viewHolder, final ItemFeed model, final int position) {
+                    final String post_key = getRef(position).getKey();
+                    viewHolder.setTitle(model.getNombre());
+                    viewHolder.setCatergory(model.getPais()+" - "+model.getCiudad());
+
+                    viewHolder.setImage(getActivity().getApplicationContext(), model.getImagen());
+
+
+
+                }
+            };
+
+            mRecyclerMisLecturas.setAdapter(firebaseRecyclerAdapterMyLecturas);
+            mProgress.dismiss();
+        }
+
     }
 
 
