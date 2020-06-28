@@ -14,11 +14,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -72,6 +74,8 @@ public class CrearProyectoFragment extends Fragment {
     private EditText mEdtDescripcionSocio4;
     private EditText mEdtSocio5;
     private EditText mEdtDescripcionSocio5;
+    private Spinner mSpnPais;
+    private Spinner mSpnCiudad;
 
     private int nroSociosActivos = 1;
     private int maxSociosActivos = 5;
@@ -145,6 +149,20 @@ public class CrearProyectoFragment extends Fragment {
         mEdtDescripcionSocio4 = (EditText) view.findViewById(R.id.edt_descripcion_socio4);
         mEdtSocio4 = (EditText) view.findViewById(R.id.edt_socio4);
         mEdtDescripcionSocio5 = (EditText) view.findViewById(R.id.edt_descripcion_socio5);
+
+        mSpnPais = (Spinner) view.findViewById(R.id.spinner_pais);
+        ArrayAdapter<CharSequence> spnPaisAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.pais, android.R.layout.simple_spinner_item);
+        spnPaisAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpnPais.setAdapter(spnPaisAdapter);
+
+
+        mSpnCiudad = (Spinner) view.findViewById(R.id.spinner_ciudad);
+        ArrayAdapter<CharSequence> spnCiudadAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.ciudad, android.R.layout.simple_spinner_item);
+        spnCiudadAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpnCiudad.setAdapter(spnCiudadAdapter);
+
         ImageButton btnSubirFotoVideo = (ImageButton) view.findViewById(R.id.btn_subir_foto_video);
         mImgFoto = (ImageView) view.findViewById(R.id.img_foto_proyecto);
         btnSubirFotoVideo.setOnClickListener(new View.OnClickListener() {
@@ -158,6 +176,7 @@ public class CrearProyectoFragment extends Fragment {
         mLLSocio3 = (LinearLayout) view.findViewById(R.id.ll_socio3);
         mLLSocio4 = (LinearLayout) view.findViewById(R.id.ll_socio4);
         mLLSocio5 = (LinearLayout) view.findViewById(R.id.ll_socio5);
+
         Button btnAgregarSocio1 = view.findViewById(R.id.btn_agregar_socio1);
         btnAgregarSocio1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,14 +256,15 @@ public class CrearProyectoFragment extends Fragment {
     }
 
     private void abrirGaleria(String opcion) {
+        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
         switch (opcion) {
             case "F":
-                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
                 galleryIntent.setType("image/*");
                 startActivityForResult(galleryIntent, GALLERY_REQUEST);
                 break;
             case "V":
-
+                galleryIntent.setType("video/*");
+                startActivityForResult(galleryIntent, GALLERY_REQUEST);
         }
     }
 
@@ -305,12 +325,7 @@ public class CrearProyectoFragment extends Fragment {
 
                 });
             }
-
-        } else {
-
         }
-
-
     }
 
     private Proyecto initDataProyecto() {
@@ -329,7 +344,8 @@ public class CrearProyectoFragment extends Fragment {
         proyecto.setDescripcionSocio4(validarEditText(mEdtDescripcionSocio4) ? mEdtDescripcionSocio4.getText().toString() : "");
         proyecto.setSocio5(validarEditText(mEdtSocio5) ? mEdtSocio5.getText().toString() : "");
         proyecto.setDescripcionSocio5(validarEditText(mEdtDescripcionSocio5) ? mEdtDescripcionSocio5.getText().toString() : "");
-
+        proyecto.setPais(mSpnPais.getSelectedItem().toString());
+        proyecto.setCiudad(mSpnCiudad.getSelectedItem().toString());
 
         return proyecto;
     }
@@ -346,6 +362,8 @@ public class CrearProyectoFragment extends Fragment {
         if (!(validarEditText(mEdtNombreProyecto)
                 && validarEditText(mEdtDescripcionProyecto)
                 && validarEditText(mEdtSocio1) && validarEditText(mEdtDescripcionSocio1)
+                && !mSpnPais.getSelectedItem().toString().equals("País")
+                && !mSpnCiudad.getSelectedItem().toString().equals("Ciudad")
                 && mFotoVideoSubido)) {
             showSnackBar("Campos incompletos y/o falta subir foto o video");
             return false;
