@@ -86,7 +86,7 @@ public class ProyectosFragment extends Fragment {
                          public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
                          {
                              String selectedItem = parent.getItemAtPosition(position).toString();
-                             if(!selectedItem.equalsIgnoreCase("país"))
+                             if(!selectedItem.equalsIgnoreCase("ciudad"))
                              {
                                  filterRecycler(root,spinner5.getSelectedItem().toString(),spinner6.getSelectedItem().toString(),null);
 
@@ -168,7 +168,7 @@ public class ProyectosFragment extends Fragment {
         mProgress.show();
         //Toast.makeText(getContext(),"Identificador "+post_key,Toast.LENGTH_SHORT).show();
 
-        if(ciudad != null){
+        if(ciudad == null){
             Query queryRef = mDatabaseMisLecturas.orderByChild("pais").equalTo(pais);
             //Query queryRef = mDatabaseMisLecturas.orderByChild("IdMiLectura").equalTo(userId);
 
