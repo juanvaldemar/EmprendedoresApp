@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.auth.util.ValidarEmail;
@@ -36,7 +37,7 @@ public class ForgetPasswordRelato extends AppCompatActivity {
     private FirebaseAuth mAuth;
     public TextView title;
     private FrameLayout mForgetPasswordCuenta;
-    private EditText mForget_user_email;
+    private TextInputEditText mForget_user_email;
     private String display_email;
     private Dialog MyDialog;
     private ProgressDialog mProgress;
@@ -71,7 +72,7 @@ public class ForgetPasswordRelato extends AppCompatActivity {
         this.Nightmare = Typeface.createFromAsset(getAssets(),nightmareFuente);
         title.setTypeface(BloodLust);
 */
-        mForget_user_email = (EditText) findViewById(R.id.forget_user_email);
+        mForget_user_email = (TextInputEditText) findViewById(R.id.forget_user_email);
 
         mForgetPasswordCuenta = (FrameLayout) findViewById(R.id.forgetPasswordCuenta);
 

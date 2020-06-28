@@ -34,6 +34,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -57,7 +58,7 @@ public class AccessRelato extends AppCompatActivity {
     private EditText mAccesso_login_email;
 
     //@BindView(R.id.accesso_login_password)
-    private EditText mAccesso_login_password;
+    private TextInputEditText mAccesso_login_password;
 
     //@BindView(R.id.accesso_login_btn)
     private Button mAccesso_login_btn;
@@ -297,6 +298,22 @@ public class AccessRelato extends AppCompatActivity {
         //initFonts();
         checkaccess();
 
+        /*
+        button.setOnTouchListener(new OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch ( event.getAction() ) {
+                    case MotionEvent.ACTION_DOWN:
+                        editText.setInputType(InputType.TYPE_CLASS_TEXT);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        break;
+                }
+                return true;
+            }
+        });
+*/
     }
 
     private void checkaccess() {
@@ -317,6 +334,7 @@ public class AccessRelato extends AppCompatActivity {
     }
     private void startLogin() {
         Log.v("accesoPermitido", "Ingresando");
+
 
 
         mAccesso_login_email = findViewById(R.id.accesso_login_email);

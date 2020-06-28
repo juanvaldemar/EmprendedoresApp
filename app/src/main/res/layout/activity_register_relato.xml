@@ -92,21 +92,34 @@
                 android:gravity="left"
                 />
 
-            <EditText
-                android:id="@+id/register_user_password"
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
+                app:passwordToggleEnabled = "true"
+                app:passwordToggleTint="@color/black"
+                app:passwordToggleDrawable="@drawable/ic_eyes"
                 android:layout_height="wrap_content"
-                android:padding="14dp"
-                android:textSize="14dp"
-                android:background="@drawable/design_one"
-                android:hint="INGRESE SU CONTRASEÑA"
-                android:inputType="textPassword"
-                android:layout_marginTop="10dp"
-                android:text=""
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:gravity="left"
-                />
+                app:hintEnabled="false"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/register_user_password"
+                    android:inputType="textPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:padding="14dp"
+                    android:textSize="14dp"
+                    android:hint="INGRESE SU CONTRASEÑA"
+                    android:textColor="@color/black"
+                    android:background="@drawable/design_one"
+
+                    android:textColorHint="@color/black"
+                    android:gravity="left"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
 
 
         </LinearLayout>

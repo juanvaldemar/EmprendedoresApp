@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,7 +38,7 @@ public class RegisterRelato extends AppCompatActivity {
     private TextView mTitleRegister;
     private EditText mRegister_user_name;
     private EditText mRegister_user_email;
-    private EditText mRegister_user_password;
+    private TextInputEditText mRegister_user_password;
     private FrameLayout mBtnCreateUserRegister;
     private ProgressDialog mProgress;
     private static Typeface Pacifico,Nightmare,Double,BloodLust;
@@ -87,7 +88,7 @@ public class RegisterRelato extends AppCompatActivity {
 
         mRegister_user_name = (EditText) findViewById(R.id.register_user_name);
         mRegister_user_email = (EditText) findViewById(R.id.register_user_email);
-        mRegister_user_password = (EditText) findViewById(R.id.register_user_password);
+        mRegister_user_password = (TextInputEditText) findViewById(R.id.register_user_password);
 
         mBtnCreateUserRegister = (FrameLayout) findViewById(R.id.RegistrarCuenta);
 
