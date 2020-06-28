@@ -24,6 +24,7 @@ import android.widget.Spinner;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -119,95 +120,130 @@ public class RegistrarFragment extends Fragment {
 
     private void registrarProyecto(final View v) {
 
-        mStorage = FirebaseStorage.getInstance().getReference();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Emprendedor");
-        mProgresDialog= new ProgressDialog(getActivity());
-        mProgresDialog.setMessage("Registrando Emprendedor");
-        mProgresDialog.setCancelable(false);
-        mProgresDialog.show();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        if(validarCampos()){
+            mStorage = FirebaseStorage.getInstance().getReference();
+            mDatabase = FirebaseDatabase.getInstance().getReference().child("Emprendedor");
+            mProgresDialog= new ProgressDialog(getActivity());
+            mProgresDialog.setMessage("Registrando Emprendedor");
+            mProgresDialog.setCancelable(false);
+            mProgresDialog.show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
 
-                if(mImageUri !=null){
+                    if(mImageUri !=null){
 
-                    final StorageReference filepath = mStorage
-                            .child("Emprendedor_images")
-                            .child(mImageUri.getLastPathSegment());
-                    filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
+                        final StorageReference filepath = mStorage
+                                .child("Emprendedor_images")
+                                .child(mImageUri.getLastPathSegment());
+                        filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
 
-                            //filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    Uri downloadUrl = uri;
-                                    mDatabase = FirebaseDatabase.getInstance().getReference().child("Emprendedor");
-                                    DatabaseReference newPost = mDatabase.push();
+                                //filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        Uri downloadUrl = uri;
+                                        mDatabase = FirebaseDatabase.getInstance().getReference().child("Emprendedor");
+                                        DatabaseReference newPost = mDatabase.push();
 
-                                    String user_id = mAuth.getCurrentUser().getUid();
+                                        String user_id = mAuth.getCurrentUser().getUid();
 
-                                    newPost.child("id_emprendedor").setValue(user_id);
+                                        newPost.child("id_emprendedor").setValue(user_id);
 
-                                    newPost.child("edt_nombres_emprendedor").setValue(edt_nombres_emprendedor.getText().toString().trim());
-                                    newPost.child("edt_apellidos_emprendedor").setValue(edt_apellidos_emprendedor.getText().toString().trim());
-                                    newPost.child("spinner_dia").setValue(spinner_dia.getSelectedItem().toString());
-                                    newPost.child("spinner_mes").setValue(spinner_mes.getSelectedItem().toString());
-                                    newPost.child("spinner_anio").setValue(spinner_anio.getSelectedItem().toString());
-                                    newPost.child("spinner_genero").setValue(spinner_genero.getSelectedItem().toString());
-                                    newPost.child("edt_num_emprendedor").setValue(edt_num_emprendedor.getText().toString().trim());
-                                    newPost.child("edt_dni_emprendedor").setValue(edt_dni_emprendedor.getText().toString().trim());
-                                    newPost.child("spinner_pais").setValue(spinner_pais.getSelectedItem().toString());
-                                    newPost.child("spinner_ciudad").setValue(spinner_ciudad.getSelectedItem().toString());
-                                    newPost.child("edt_direccion_emprendedor").setValue(edt_direccion_emprendedor.getText().toString().trim());
+                                        newPost.child("edt_nombres_emprendedor").setValue(edt_nombres_emprendedor.getText().toString().trim());
+                                        newPost.child("edt_apellidos_emprendedor").setValue(edt_apellidos_emprendedor.getText().toString().trim());
+                                        newPost.child("spinner_dia").setValue(spinner_dia.getSelectedItem().toString());
+                                        newPost.child("spinner_mes").setValue(spinner_mes.getSelectedItem().toString());
+                                        newPost.child("spinner_anio").setValue(spinner_anio.getSelectedItem().toString());
+                                        newPost.child("spinner_genero").setValue(spinner_genero.getSelectedItem().toString());
+                                        newPost.child("edt_num_emprendedor").setValue(edt_num_emprendedor.getText().toString().trim());
+                                        newPost.child("edt_dni_emprendedor").setValue(edt_dni_emprendedor.getText().toString().trim());
+                                        newPost.child("spinner_pais").setValue(spinner_pais.getSelectedItem().toString());
+                                        newPost.child("spinner_ciudad").setValue(spinner_ciudad.getSelectedItem().toString());
+                                        newPost.child("edt_direccion_emprendedor").setValue(edt_direccion_emprendedor.getText().toString().trim());
 
-                                    newPost.child("imagen").setValue(downloadUrl.toString());
+                                        newPost.child("imagen").setValue(downloadUrl.toString());
 
-                                    Timestamp fechaRegistro = getFecha();
-                                    newPost.child("fechaRegistro").setValue(fechaRegistro);
-                                    mProgresDialog.dismiss();
+                                        Timestamp fechaRegistro = getFecha();
+                                        newPost.child("fechaRegistro").setValue(fechaRegistro);
+                                        mProgresDialog.dismiss();
 
-                                }
-                            });
-
-
-                        }
-
-                    });
-                }else{
-                    DatabaseReference newPost = mDatabase.push();
-
-                    String user_id = mAuth.getCurrentUser().getUid();
-
-                    newPost.child("id_emprendedor").setValue(user_id);
-
-                    newPost.child("edt_nombres_emprendedor").setValue(edt_nombres_emprendedor.getText().toString().trim());
-                    newPost.child("edt_apellidos_emprendedor").setValue(edt_apellidos_emprendedor.getText().toString().trim());
-                    newPost.child("spinner_dia").setValue(spinner_dia.getSelectedItem().toString());
-                    newPost.child("spinner_mes").setValue(spinner_mes.getSelectedItem().toString());
-                    newPost.child("spinner_anio").setValue(spinner_anio.getSelectedItem().toString());
-                    newPost.child("spinner_genero").setValue(spinner_genero.getSelectedItem().toString());
-                    newPost.child("edt_num_emprendedor").setValue(edt_num_emprendedor.getText().toString().trim());
-                    newPost.child("edt_dni_emprendedor").setValue(edt_dni_emprendedor.getText().toString().trim());
-                    newPost.child("spinner_pais").setValue(spinner_pais.getSelectedItem().toString());
-                    newPost.child("spinner_ciudad").setValue(spinner_ciudad.getSelectedItem().toString());
-                    newPost.child("edt_direccion_emprendedor").setValue(edt_direccion_emprendedor.getText().toString().trim());
-
-                    newPost.child("imagen").setValue("Vacio");
-
-                    Timestamp fechaRegistro = getFecha();
-                    newPost.child("fechaRegistro").setValue(fechaRegistro);
-                    mProgresDialog.dismiss();
+                                    }
+                                });
 
 
+                            }
+
+                        });
+                    }else{
+                        DatabaseReference newPost = mDatabase.push();
+
+                        String user_id = mAuth.getCurrentUser().getUid();
+
+                        newPost.child("id_emprendedor").setValue(user_id);
+
+                        newPost.child("edt_nombres_emprendedor").setValue(edt_nombres_emprendedor.getText().toString().trim());
+                        newPost.child("edt_apellidos_emprendedor").setValue(edt_apellidos_emprendedor.getText().toString().trim());
+                        newPost.child("spinner_dia").setValue(spinner_dia.getSelectedItem().toString());
+                        newPost.child("spinner_mes").setValue(spinner_mes.getSelectedItem().toString());
+                        newPost.child("spinner_anio").setValue(spinner_anio.getSelectedItem().toString());
+                        newPost.child("spinner_genero").setValue(spinner_genero.getSelectedItem().toString());
+                        newPost.child("edt_num_emprendedor").setValue(edt_num_emprendedor.getText().toString().trim());
+                        newPost.child("edt_dni_emprendedor").setValue(edt_dni_emprendedor.getText().toString().trim());
+                        newPost.child("spinner_pais").setValue(spinner_pais.getSelectedItem().toString());
+                        newPost.child("spinner_ciudad").setValue(spinner_ciudad.getSelectedItem().toString());
+                        newPost.child("edt_direccion_emprendedor").setValue(edt_direccion_emprendedor.getText().toString().trim());
+
+                        newPost.child("imagen").setValue("Vacio");
+
+                        Timestamp fechaRegistro = getFecha();
+                        newPost.child("fechaRegistro").setValue(fechaRegistro);
+                        mProgresDialog.dismiss();
+
+
+                    }
 
                 }
+            },1000);
+        }
 
-            }
-        },1000);
 
     }
+
+
+    private boolean validarCampos() {
+
+        String s=spinner_dia.getSelectedItem().toString();
+
+        if (!(validarEditText(edt_nombres_emprendedor)
+                && validarEditText(edt_apellidos_emprendedor)
+                && validarEditText(edt_dni_emprendedor) && validarEditText(edt_num_emprendedor)
+                && !spinner_dia.getSelectedItem().toString().equals("Día")
+                && !spinner_mes.getSelectedItem().toString().equals("Mes")
+                && !spinner_anio.getSelectedItem().toString().equals("Año")
+                && !spinner_genero.getSelectedItem().toString().equals("Género")
+                && !spinner_pais.getSelectedItem().toString().equals("País")
+                && !spinner_ciudad.getSelectedItem().toString().equals("Ciudad")
+                )) {
+            showSnackBar("Campos incompletos");
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean validarEditText(EditText edt) {
+        return (!edt.getText().toString().isEmpty()) ? true : false;
+    }
+
+    public void showSnackBar(String msg) {
+        Snackbar
+                .make(getActivity().findViewById(R.id.constraint_registrar_emprendedor), msg, Snackbar.LENGTH_SHORT)
+                .show();
+    }
+
 
     public Timestamp getFecha(){
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
