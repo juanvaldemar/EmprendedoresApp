@@ -372,12 +372,17 @@ public class CrearProyectoFragment extends Fragment {
             return false;
         }
 
+        if(nroSociosActivos > 1){
+            if (!(validarEditText(mEdtSocio2) && validarEditText(mEdtDescripcionSocio2))){
 
-        if (!((validarEditText(mEdtSocio2) && validarEditText(mEdtDescripcionSocio2))
-                || (validarEditText(mEdtSocio3) && validarEditText(mEdtDescripcionSocio3))
-                || (validarEditText(mEdtSocio4) && validarEditText(mEdtDescripcionSocio4))
-                || (validarEditText(mEdtSocio5) && validarEditText(mEdtDescripcionSocio5)))) {
-            showSnackBar("Si se agrega un socio se debe agregar su descripción");
+            }
+        }
+
+        if (nroSociosActivos > 1 && ((validarEditText(mEdtSocio2) ^ validarEditText(mEdtDescripcionSocio2))
+                || (validarEditText(mEdtSocio3) ^ validarEditText(mEdtDescripcionSocio3))
+                || (validarEditText(mEdtSocio4) ^ validarEditText(mEdtDescripcionSocio4))
+                || (validarEditText(mEdtSocio5) ^ validarEditText(mEdtDescripcionSocio5)))) {
+            showSnackBar("Debe agregar socio y descripción");
             return false;
         }
 
