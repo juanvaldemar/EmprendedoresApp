@@ -3,6 +3,7 @@ package com.valdemar.emprendedores.view.ui.proyectos.lista;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,11 +19,15 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.valdemar.emprendedores.MenuLateralActivity;
 import com.valdemar.emprendedores.R;
 
 public class ProyectosFragment extends Fragment {
@@ -49,6 +54,43 @@ public class ProyectosFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_proyectos, container, false);
         initView(root);
         initCategoria(root);
+
+
+  /*
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        ActionCodeSettings actionCodeSettings =
+                ActionCodeSettings.newBuilder()
+                        // URL you want to redirect back to. The domain (www.example.com) for this
+                        // URL must be whitelisted in the Firebase Console.
+                        .setUrl("https://www.example.com/finishSignUp?cartId=1234")
+                        // This must be true
+                        .setHandleCodeInApp(true)
+                        .setIOSBundleId("com.example.ios")
+                        .setAndroidPackageName(
+                                "com.example.android",
+                                true, /* installIfNotAvailable */
+                                "12"    /* minimumVersion */)
+                        .build();
+        if(user != null) {
+
+            auth.sendSignInLinkToEmail(user.getEmail(),actionCodeSettings)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getActivity(),"Validación enviada a su email",Toast.LENGTH_SHORT).show();
+                            }else{
+                                task.isSuccessful();
+                            }
+                        }
+                    });
+        }
+*/
+
         return root;
 
     }

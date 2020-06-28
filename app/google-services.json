@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "316063715906-2l28jo1e5dcpjoqacebgp4jn07kvvtma.apps.googleusercontent.com",
+          "client_id": "316063715906-qpk2qm5hq8766kqar3ufcfha815n5ene.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.valdemar.emprendedores",
-            "certificate_hash": "c2b0d0971f9d094a9eb3ff42d55a47c3fded32cf"
+            "certificate_hash": "5ed18c0defdd95587b9a59525ee43785b2565394"
           }
         },
         {
