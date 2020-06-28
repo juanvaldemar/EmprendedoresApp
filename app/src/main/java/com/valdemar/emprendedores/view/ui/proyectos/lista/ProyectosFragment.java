@@ -73,7 +73,7 @@ public class ProyectosFragment extends Fragment {
                         .setAndroidPackageName(
                                 "com.example.android",
                                 true, /* installIfNotAvailable */
-                                "12"    /* minimumVersion */)
+                                   /* minimumVersion )
                         .build();
         if(user != null) {
 
