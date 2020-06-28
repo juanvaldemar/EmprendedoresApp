@@ -190,6 +190,7 @@ public class RegisterRelato extends AppCompatActivity {
     public void createRegister(){
         Intent i = new Intent(RegisterRelato.this, MenuLateralActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        i.putExtra("registrarse",true);
         finish();
         startActivity(i);
 

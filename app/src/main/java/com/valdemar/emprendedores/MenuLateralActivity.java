@@ -18,6 +18,8 @@ import com.valdemar.emprendedores.view.CategoriasFragment;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
+import androidx.navigation.NavGraph;
+import androidx.navigation.NavInflater;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -39,7 +41,6 @@ public class MenuLateralActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                llamarfragment();
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -52,22 +53,24 @@ public class MenuLateralActivity extends AppCompatActivity {
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavInflater navInflater = navController.getNavInflater();
+        NavGraph graph = navInflater.inflate(R.navigation.mobile_navigation);
+        Bundle extras = getIntent().getExtras();
+        boolean registrarse = false;
+        if (extras != null) {
+            registrarse = extras.getBoolean("registrarse");
+        }
+        if(registrarse){
+            graph.setStartDestination(R.id.nav_categorias);
+        }else{
+            graph.setStartDestination(R.id.nav_gallery);
+        }
+        navController.setGraph(graph);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-
-
-
-
-
     }
 
-    private void llamarfragment() {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.nav_host_fragment, CategoriasFragment.newInstance("",""));
-        ft.addToBackStack(null);
-        ft.commit();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
