@@ -218,7 +218,22 @@ public class Search extends Fragment {
                                     String selectedItem = parent.getItemAtPosition(position).toString();
                                     if(!selectedItem.equalsIgnoreCase("ciudad"))
                                     {
-                                        mAdapter.getFilter().filter(spinner6.getSelectedItem().toString());
+                                        allSpook(mPost_categoria,listener);
+
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                mAdapter.getFilter().filter(spinner5.getSelectedItem().toString());
+                                                new Handler().postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        mAdapter.getFilter().filter(spinner6.getSelectedItem().toString());
+                                                    }
+                                                },100);
+                                            }
+                                        },100);
+
+
 
                                     }
 
