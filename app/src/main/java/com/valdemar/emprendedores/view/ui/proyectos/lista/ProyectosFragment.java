@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -48,8 +49,8 @@ public class ProyectosFragment extends Fragment {
 
 
     private SearchView mSearch;
-    private RecyclerView rvSearch;
-    private DatabaseReference mRef;
+    private RecyclerView rvSearch,mRecyclerEpisodiosPerdidos;
+    private DatabaseReference mRef,mDatabase;
     private SearchPlaceAdapter mAdapter;
     ArrayList<ItemFeed> arrayLists = new ArrayList<>();
 
@@ -58,13 +59,22 @@ public class ProyectosFragment extends Fragment {
 
     private String tmp = "";
 
+    private Spinner spinner5,spinner6;
+    private ProgressDialog mProgress;
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-
-
+        mProgress = new ProgressDialog(getActivity());
+        mProgress.setMessage("Cargando ...");
+        mProgress.setCancelable(false);
+        mProgress.show();
+        spinner5 = view.findViewById(R.id.spinner_pais);
+        spinner6 = view.findViewById(R.id.spinner_ciudad);
 
         IModal listener = new IModal() {
             @Override
@@ -80,8 +90,15 @@ public class ProyectosFragment extends Fragment {
 
         initView(view,listener);
 
+
+
+
+
+
         return view;
     }
+
+
 
     private void initView(View view, final IModal listener) {
         Bundle datosRecuperados = getArguments();
@@ -117,7 +134,6 @@ public class ProyectosFragment extends Fragment {
 
         //searchView of place
         mSearch = (SearchView) view.findViewById(R.id.mSearch);
-
 
         final EditText txtSearch = ((EditText)mSearch.findViewById(R.id.search_src_text));
         txtSearch.setHintTextColor(Color.WHITE);
@@ -158,13 +174,69 @@ public class ProyectosFragment extends Fragment {
             }
         });
 
+
+
+        mRecyclerEpisodiosPerdidos = (RecyclerView) view.findViewById(R.id.asd);
+        mRecyclerEpisodiosPerdidos.setHasFixedSize(true);
+
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("categorias");
+
+        LinearLayoutManager layoutManagermRecyclerEpisodiosPerdidos
+                = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+
+        layoutManagermRecyclerEpisodiosPerdidos.setReverseLayout(true);
+        layoutManagermRecyclerEpisodiosPerdidos.setStackFromEnd(true);
+
+        mRecyclerEpisodiosPerdidos.setLayoutManager(layoutManagermRecyclerEpisodiosPerdidos);
+
+        FirebaseRecyclerAdapter<Category, CategoryViewHolder> firebaseRecyclerAdaptermRecyclerEpisodiosPerdidos =
+                new FirebaseRecyclerAdapter<Category, CategoryViewHolder>(
+                        Category.class,
+                        R.layout.album_card,
+                        CategoryViewHolder.class,
+                        mDatabase
+                ) {
+                    @Override
+                    protected void populateViewHolder(CategoryViewHolder viewHolder, final Category model, int position) {
+                        final String post_key = getRef(position).getKey();
+                        viewHolder.setTitle(model.getTitulo());
+                        viewHolder.setSendBy(model.getTitulo());
+
+                        viewHolder.setImage(getActivity().getApplicationContext(),
+                                model.getImagen());
+
+                        Log.v("Seguimiento","dentro");
+
+                        viewHolder.mViewStructure_h.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // viewDetails(post_key);
+                                allSpook(mPost_categoria,listener);
+                                spinner5.setSelection(0);
+                                spinner6.setSelection(0);
+                                spinner6.setVisibility(View.GONE);
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mAdapter.getFilter().filter(model.getCategoria());
+                                    }
+                                },100);
+
+                            }
+                        });
+
+                    }
+                };
+
+        mRecyclerEpisodiosPerdidos.setAdapter(firebaseRecyclerAdaptermRecyclerEpisodiosPerdidos);
+
+
+
     }
 
     private void initCategoria(View view) {
-        final Spinner spinner5,spinner6;
 
-        spinner5 = view.findViewById(R.id.spinner_pais);
-        spinner6 = view.findViewById(R.id.spinner_ciudad);
 
         ArrayAdapter<CharSequence> adapter5 = ArrayAdapter.createFromResource(getActivity(),
                 R.array.pais, android.R.layout.simple_spinner_item);
@@ -271,6 +343,20 @@ public class ProyectosFragment extends Fragment {
 
             }
         });
+
+        Button btnLimpiar = view.findViewById(R.id.btnLimpiar);
+        btnLimpiar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                allSpook(mPost_categoria,listener);
+                spinner5.setSelection(0);
+                spinner6.setSelection(0);
+                spinner6.setVisibility(View.GONE);
+
+            }
+        });
+
+
     }
 
     private void allSpook(String mPost_categoria, final IModal listener) {
@@ -293,7 +379,7 @@ public class ProyectosFragment extends Fragment {
                 mAdapter = new SearchPlaceAdapter(getContext(), arrayLists,listener);
                 rvSearch.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
-
+                mProgress.dismiss();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

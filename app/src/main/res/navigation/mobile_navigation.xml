@@ -51,6 +51,14 @@
 
 
     <fragment
+        android:id="@+id/nav_share"
+        android:name="com.valdemar.emprendedores.view.ui.ShareFragment"
+        android:label="Compartir App"
+        tools:layout="@layout/fragment_share" />
+
+
+
+    <fragment
         android:id="@+id/nav_logout"
         android:name="com.valdemar.emprendedores.view.ui.logout.LogoutFragment"
         android:label="Cerrar Sesión"

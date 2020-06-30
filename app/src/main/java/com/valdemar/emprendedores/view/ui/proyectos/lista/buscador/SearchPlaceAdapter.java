@@ -127,6 +127,9 @@ public class SearchPlaceAdapter extends RecyclerView.Adapter<SearchPlaceAdapter.
                     if (item.getCiudad().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
+                    if (item.getCategoria().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
                 }
             }
 

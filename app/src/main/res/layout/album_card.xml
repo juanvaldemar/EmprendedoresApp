@@ -2,8 +2,8 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/relative_item_recycler_structure_h"
-    android:layout_width="140dp"
-    android:layout_height="140dp"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
     android:layout_marginBottom="10dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
@@ -13,7 +13,7 @@
     <ImageView
         android:id="@+id/thumbnail"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="80dp"
         android:padding="10dp"
         android:foregroundGravity="center"
         android:scaleType="centerCrop" />
