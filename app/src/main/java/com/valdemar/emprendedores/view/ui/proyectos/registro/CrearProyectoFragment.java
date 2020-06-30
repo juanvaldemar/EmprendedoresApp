@@ -3,6 +3,7 @@ package com.valdemar.emprendedores.view.ui.proyectos.registro;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -23,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
@@ -95,6 +97,8 @@ public class CrearProyectoFragment extends Fragment {
 
     private Uri mImageUri = null;
     private View mRoot;
+    private VideoView mVideoView;
+    private Uri mVideoUri = null;
 
 
     public CrearProyectoFragment() {
@@ -170,6 +174,7 @@ public class CrearProyectoFragment extends Fragment {
 
         ImageButton btnSubirFotoVideo = (ImageButton) view.findViewById(R.id.btn_subir_foto_video);
         mImgFoto = (ImageView) view.findViewById(R.id.img_foto_proyecto);
+        mVideoView = (VideoView)mRoot.findViewById(R.id.videoview_proyecto);
         btnSubirFotoVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -210,6 +215,7 @@ public class CrearProyectoFragment extends Fragment {
                 agregarSocio();
             }
         });
+
 
         Button btnPublicarProyecto = (Button) view.findViewById(R.id.btn_registrar_proyecto);
         btnPublicarProyecto.setOnClickListener(new View.OnClickListener() {
@@ -279,6 +285,8 @@ public class CrearProyectoFragment extends Fragment {
         if(resultCode == RESULT_OK){
             switch (requestCode){
                 case FOTO_GALLERY_REQUEST:
+                    mVideoView.setVisibility(View.GONE);
+                    mImgFoto.setVisibility(View.VISIBLE);
                     mImageUri = data.getData();
                     //mPostImageSelect.setImageURI(mImageUri);
                     Glide.with(getActivity().getApplicationContext())
@@ -287,12 +295,25 @@ public class CrearProyectoFragment extends Fragment {
                     mFotoVideoSubido = true;
                     break;
                 case VIDEO_GALLERY_REQUEST:
-                    Uri videoUri = data.getData();
-                    VideoView videoView = (VideoView)mRoot.findViewById(R.id.videoview_proyecto);
+                    mVideoUri = data.getData();
+                    MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                    retriever.setDataSource(getActivity(), mVideoUri);
+                    String duracionVideoString = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                    long duracionVideoMiliSegundos = Long.parseLong(duracionVideoString);
+                    double duracionVideoSegundos = duracionVideoMiliSegundos/1000.0;
+                    retriever.release();
+                    Toast.makeText(getActivity(),"Duracion en s: " + duracionVideoSegundos, Toast.LENGTH_LONG).show();
+                    if(duracionVideoSegundos > 60.0) {
+                        showSnackBar("El video debe durar como máximo 60 segundos");
+                        return;
+                    }
+                    mImgFoto.setVisibility(View.GONE);
+                    mVideoView.setVisibility(View.VISIBLE);
+                    mImageUri = mVideoUri;
                     MediaController mediaController= new MediaController(getActivity());
-                    videoView.setVideoURI(videoUri);
-                    videoView.setMediaController(mediaController);
-                    videoView.start();
+                    mVideoView.setVideoURI(mVideoUri);
+                    mVideoView.setMediaController(mediaController);
+                    mVideoView.start();
                     mFotoVideoSubido = true;
             }
         }

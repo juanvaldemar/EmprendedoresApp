@@ -196,6 +196,21 @@
                     android:nextFocusForward="@id/edt_descripcion_proyecto"
                     android:gravity="left" />
 
+                <EditText
+                    android:id="@+id/edt_ocupacion_emprendedor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:hint="¿Cuál es tu ocupación?"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    android:lines="1"
+                    android:maxLength="38"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/design_one"
+                    android:textColor="@color/black"
+                    android:nextFocusForward="@id/edt_descripcion_proyecto"
+                    android:gravity="left" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
