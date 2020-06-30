@@ -75,7 +75,7 @@ public class SearchPlaceAdapter extends RecyclerView.Adapter<SearchPlaceAdapter.
 
 
         holder.txtPlace.setText(arrayListFiltered.get(position).getNombre());
-        holder.cardPlace.setText(arrayListFiltered.get(position).getPais() +"-" +arrayListFiltered.get(position).getCiudad());
+        holder.cardPlace.setText(arrayListFiltered.get(position).getPais() +" - " +arrayListFiltered.get(position).getCiudad());
 
         Glide.with(mCntx).load(arrayListFiltered.get(position).getImagen()).into(holder.image);
 
@@ -100,7 +100,7 @@ public class SearchPlaceAdapter extends RecyclerView.Adapter<SearchPlaceAdapter.
             super(itemView);
             txtPlace = (TextView) itemView.findViewById(R.id.item_recycler_structure_title);
             image = (ImageView) itemView.findViewById(R.id.item_recycler_structure_imagen);
-            cardPlace = (TextView) itemView.findViewById(R.id.item_recycler_structure_author);
+            cardPlace = (TextView) itemView.findViewById(R.id.item_recycler_structure_category);
         }
     }
 
