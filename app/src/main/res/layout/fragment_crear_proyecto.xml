@@ -97,52 +97,56 @@
 
 
                 <LinearLayout
+                    android:id="@+id/ll_foto_proyecto"
+                    android:visibility="visible"
+                    android:orientation="vertical"
+                    android:layout_margin="8dp"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
 
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_margin="8dp"
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Sube una foto o video"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:layout_marginBottom="15dp" />
+
+                    <ImageButton
+                        android:id="@+id/btn_subir_foto_video"
+                        android:background="@drawable/design_one"
                         android:layout_gravity="center"
-                        android:padding="8dp"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content">
+                        android:padding="14dp"
+                        android:src="@drawable/agregar_foto"
+                        android:layout_width="128dp"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Sube una foto o video"
-                            android:gravity="center"
-                            android:textColor="@color/black"
-                            android:layout_marginBottom="15dp" />
-
-                        <ImageButton
-                            android:id="@+id/btn_subir_foto_video"
-                            android:background="@drawable/design_one"
-                            android:layout_gravity="center"
-                            android:padding="14dp"
-                            android:src="@drawable/agregar_foto"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
-
+                <RelativeLayout
+                    android:background="@drawable/design_one"
+                    android:layout_width="match_parent"
+                    android:padding="5dp"
+                    android:layout_height="192dp">
 
                     <ImageView
-                        android:visibility="gone"
+                        android:visibility="visible"
+                        android:scaleType="centerCrop"
                         android:id="@+id/img_foto_proyecto"
                         android:src="@drawable/foto_proyecto_default"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
-                    <VideoView
-                        android:id="@+id/videoview_proyecto"
-                        android:layout_weight="2"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"/>
+                        android:layout_width="match_parent"
+                        android:layout_height="185dp"/>
 
-                </LinearLayout>
+                    <VideoView
+                        android:visibility="gone"
+                        android:id="@+id/videoview_proyecto"
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="185dp"/>
+
+                </RelativeLayout>
+
 
                 <LinearLayout
                     android:id="@+id/ll_socio1"
