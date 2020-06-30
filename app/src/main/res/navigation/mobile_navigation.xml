@@ -57,4 +57,10 @@
         tools:layout="@layout/fragment_logout" />
 
 
+    <fragment
+        android:id="@+id/nav_search"
+        android:name="com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.Search"
+        android:label="Buscar"
+        tools:layout="@layout/fragment_search" />
+
 </navigation>

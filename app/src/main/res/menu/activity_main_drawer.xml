@@ -32,6 +32,12 @@
                 android:icon="@drawable/ic_out"
                 android:title="Cerrar Sesión" />
 
+
+            <item
+                android:id="@+id/nav_search"
+                android:icon="@drawable/ic_out"
+                android:title="Buscar" />
+
         </menu>
     </item>
 
