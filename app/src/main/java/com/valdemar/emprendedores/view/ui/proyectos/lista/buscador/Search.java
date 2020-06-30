@@ -1,12 +1,17 @@
 package com.valdemar.emprendedores.view.ui.proyectos.lista.buscador;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -20,7 +25,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.valdemar.emprendedores.MenuLateralActivity;
 import com.valdemar.emprendedores.R;
+import com.valdemar.emprendedores.SplashActivity;
+import com.valdemar.emprendedores.auth.AccessRelato;
 import com.valdemar.emprendedores.view.ui.proyectos.lista.Category;
 import com.valdemar.emprendedores.view.ui.proyectos.lista.ItemFeed;
 
@@ -45,6 +53,8 @@ public class Search extends Fragment {
 
     private String mPost_categoria;
     private String mModulo;
+
+    private String tmp = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,7 +109,7 @@ public class Search extends Fragment {
         rvSearch.setLayoutManager(layoutManagerMisLecturas);
 
         mRef = FirebaseDatabase.getInstance().getReference().child("Proyectos");
-        mRef.keepSynced(true);
+        //mRef.keepSynced(true);
         allSpook(mPost_categoria,listener);
 
 
@@ -112,7 +122,7 @@ public class Search extends Fragment {
         txtSearch.setTextColor(Color.WHITE);
         txtSearch.setLinkTextColor(Color.WHITE);
         txtSearch.setPadding(10,0,0,0);
-
+        initCategoria(view);
 
         mSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
@@ -146,6 +156,98 @@ public class Search extends Fragment {
             }
         });
 
+    }
+
+    private void initCategoria(View view) {
+        final Spinner spinner5,spinner6;
+
+        spinner5 = view.findViewById(R.id.spinner_pais);
+        spinner6 = view.findViewById(R.id.spinner_ciudad);
+
+        ArrayAdapter<CharSequence> adapter5 = ArrayAdapter.createFromResource(getActivity(),
+                R.array.pais, android.R.layout.simple_spinner_item);
+        adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner5.setAdapter(adapter5);
+
+        ArrayAdapter<CharSequence> adapter6 = ArrayAdapter.createFromResource(getActivity(),
+                R.array.ciudad, android.R.layout.simple_spinner_item);
+        adapter6.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner6.setAdapter(adapter6);
+
+        final IModal listener = new IModal() {
+            @Override
+            public void modalIniciar(String nombre, String url, String uidUser) {
+            }
+
+            @Override
+            public void modalIniciarDetail(String id) {
+                viewDetailsChatStyle(id);
+            }
+
+        };
+
+        spinner5.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+
+
+
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                if(!selectedItem.equalsIgnoreCase("país"))
+                {
+                    if(!tmp.isEmpty()){
+                        if(!tmp.equalsIgnoreCase(selectedItem)){
+                            spinner6.setSelection(0);
+                        }
+                    }
+
+                    tmp = selectedItem;
+                    allSpook(mPost_categoria,listener);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mAdapter.getFilter().filter(spinner5.getSelectedItem().toString());
+                            spinner6.setVisibility(View.VISIBLE);
+                            spinner6.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+                            {
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                {
+                                    String selectedItem = parent.getItemAtPosition(position).toString();
+                                    if(!selectedItem.equalsIgnoreCase("ciudad"))
+                                    {
+                                        mAdapter.getFilter().filter(spinner6.getSelectedItem().toString());
+
+                                    }
+
+                                    //  Toast.makeText(getContext(),"Identificador "+selectedItem,Toast.LENGTH_LONG).show();
+
+                                } // to close the onItemSelected
+                                public void onNothingSelected(AdapterView<?> parent)
+                                {
+
+                                }
+                            });
+                        }
+                    },100);
+
+                    // filterRecycler(root,spinner5.getSelectedItem().toString(),null,null);
+
+                }else{
+                    spinner6.setVisibility(View.GONE);
+                    allSpook(mPost_categoria,listener);
+                }
+
+                //  Toast.makeText(getContext(),"Identificador "+selectedItem,Toast.LENGTH_LONG).show();
+
+            } // to close the onItemSelected
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+
+            }
+        });
     }
 
     private void allSpook(String mPost_categoria, final IModal listener) {

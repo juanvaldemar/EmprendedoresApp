@@ -121,7 +121,10 @@ public class SearchPlaceAdapter extends RecyclerView.Adapter<SearchPlaceAdapter.
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
                 for (ItemFeed item : arrayList) {
-                    if (item.getNombre().toLowerCase().contains(filterPattern)) {
+                    if (item.getPais().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                    if (item.getCiudad().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }
