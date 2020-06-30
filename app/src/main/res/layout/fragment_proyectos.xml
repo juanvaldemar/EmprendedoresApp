@@ -37,29 +37,36 @@
 
             </LinearLayout>
 
-
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerEpisodiosPerdidos"
+                android:id="@+id/rvSearch"
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="150dp"
-                android:nestedScrollingEnabled="false"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:descendantFocusability="blocksDescendants"
                 >
+
             </androidx.recyclerview.widget.RecyclerView>
 
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fragmento_memes"
-            android:layout_width="match_parent"
-            android:layout_height="600dp"
-            android:background="@color/white"
-            android:scrollbars="vertical">
-        </androidx.recyclerview.widget.RecyclerView>
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/mSearch"
+                android:layout_width="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content"
+                android:padding="6dp"
+                android:visibility="gone"
+                app:closeIcon="@drawable/com_facebook_close"
+                app:searchIcon="@drawable/ic_eyes"
+                app:searchHintIcon="@drawable/ic_eyes"
+                app:queryHint="Buscar historia"
+                android:textAlignment="center"
+                android:layout_alignParentBottom="true"
+                android:background="#3a3937"
+                android:text="" />
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
