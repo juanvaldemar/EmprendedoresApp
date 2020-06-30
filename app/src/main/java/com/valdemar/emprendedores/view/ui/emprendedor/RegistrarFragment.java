@@ -57,7 +57,7 @@ public class RegistrarFragment extends Fragment {
     private ImageView mImgFoto;
 
     private EditText edt_nombres_emprendedor,edt_apellidos_emprendedor,
-            edt_num_emprendedor,edt_dni_emprendedor,edt_direccion_emprendedor;
+            edt_num_emprendedor,edt_dni_emprendedor,edt_direccion_emprendedor, edt_ocupacion_emprendedor;
     private  Spinner spinner_dia,spinner_mes,spinner_anio,spinner_genero,
             spinner_pais,spinner_ciudad;
     private Button btn_registrar_emprendedor;
@@ -99,6 +99,7 @@ public class RegistrarFragment extends Fragment {
         spinner_pais = root.findViewById(R.id.spinner_pais);
         spinner_ciudad = root.findViewById(R.id.spinner_ciudad);
         edt_direccion_emprendedor = root.findViewById(R.id.edt_direccion_emprendedor);
+        edt_ocupacion_emprendedor = root.findViewById(R.id.edt_ocupacion_emprendedor);
         btn_registrar_emprendedor = root.findViewById(R.id.btn_registrar_emprendedor);
 
 
@@ -164,6 +165,7 @@ public class RegistrarFragment extends Fragment {
                                         newPost.child("spinner_pais").setValue(spinner_pais.getSelectedItem().toString());
                                         newPost.child("spinner_ciudad").setValue(spinner_ciudad.getSelectedItem().toString());
                                         newPost.child("edt_direccion_emprendedor").setValue(edt_direccion_emprendedor.getText().toString().trim());
+                                        newPost.child("edt_ocupacion_emprendedor").setValue(edt_ocupacion_emprendedor.getText().toString().trim());
 
                                         newPost.child("imagen").setValue(downloadUrl.toString());
 
@@ -196,6 +198,8 @@ public class RegistrarFragment extends Fragment {
                         newPost.child("spinner_pais").setValue(spinner_pais.getSelectedItem().toString());
                         newPost.child("spinner_ciudad").setValue(spinner_ciudad.getSelectedItem().toString());
                         newPost.child("edt_direccion_emprendedor").setValue(edt_direccion_emprendedor.getText().toString().trim());
+                        newPost.child("edt_ocupacion_emprendedor").setValue(edt_ocupacion_emprendedor.getText().toString().trim());
+
 
                         newPost.child("imagen").setValue("Vacio");
 
@@ -222,6 +226,7 @@ public class RegistrarFragment extends Fragment {
         if (!(validarEditText(edt_nombres_emprendedor)
                 && validarEditText(edt_apellidos_emprendedor)
                 && validarEditText(edt_num_emprendedor)
+                && validarEditText(edt_ocupacion_emprendedor)
                 && !spinner_dia.getSelectedItem().toString().equals("Día")
                 && !spinner_mes.getSelectedItem().toString().equals("Mes")
                 && !spinner_anio.getSelectedItem().toString().equals("Año")
