@@ -21,7 +21,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.Spinner;
+import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -53,7 +55,8 @@ public class CrearProyectoFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final int GALLERY_REQUEST = 0;
+    private static final int FOTO_GALLERY_REQUEST = 0;
+    private static final int VIDEO_GALLERY_REQUEST = 1;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -262,26 +265,36 @@ public class CrearProyectoFragment extends Fragment {
         switch (opcion) {
             case "F":
                 galleryIntent.setType("image/*");
-                startActivityForResult(galleryIntent, GALLERY_REQUEST);
+                startActivityForResult(galleryIntent, FOTO_GALLERY_REQUEST);
                 break;
             case "V":
                 galleryIntent.setType("video/*");
-                startActivityForResult(galleryIntent, GALLERY_REQUEST);
+                startActivityForResult(galleryIntent, VIDEO_GALLERY_REQUEST);
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
-            mImageUri = data.getData();
-
-            //mPostImageSelect.setImageURI(mImageUri);
-            Glide.with(getActivity().getApplicationContext())
-                    .load(mImageUri)
-                    .into(mImgFoto);
-
-            mFotoVideoSubido = true;
+        if(resultCode == RESULT_OK){
+            switch (requestCode){
+                case FOTO_GALLERY_REQUEST:
+                    mImageUri = data.getData();
+                    //mPostImageSelect.setImageURI(mImageUri);
+                    Glide.with(getActivity().getApplicationContext())
+                            .load(mImageUri)
+                            .into(mImgFoto);
+                    mFotoVideoSubido = true;
+                    break;
+                case VIDEO_GALLERY_REQUEST:
+                    Uri videoUri = data.getData();
+                    VideoView videoView = (VideoView)mRoot.findViewById(R.id.videoview_proyecto);
+                    MediaController mediaController= new MediaController(getActivity());
+                    videoView.setVideoURI(videoUri);
+                    videoView.setMediaController(mediaController);
+                    videoView.start();
+                    mFotoVideoSubido = true;
+            }
         }
     }
 
