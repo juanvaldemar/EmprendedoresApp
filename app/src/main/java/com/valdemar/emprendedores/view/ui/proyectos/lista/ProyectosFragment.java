@@ -218,7 +218,7 @@ public class ProyectosFragment extends Fragment {
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
                                 {
                                     String selectedItem = parent.getItemAtPosition(position).toString();
-                                    if(!selectedItem.equalsIgnoreCase("ciudad"))
+                                    if(!selectedItem.equalsIgnoreCase("Ciudad"))
                                     {
                                         allSpook(mPost_categoria,listener);
 
@@ -235,12 +235,18 @@ public class ProyectosFragment extends Fragment {
                                             }
                                         },100);
 
+                                    }else{
+                                        allSpook(mPost_categoria,listener);
 
-
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                mAdapter.getFilter().filter(spinner5.getSelectedItem().toString());
+                                            }
+                                        },100);
                                     }
 
                                     //  Toast.makeText(getContext(),"Identificador "+selectedItem,Toast.LENGTH_LONG).show();
-
                                 } // to close the onItemSelected
                                 public void onNothingSelected(AdapterView<?> parent)
                                 {
