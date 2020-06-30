@@ -1,11 +1,21 @@
 package com.valdemar.emprendedores.view.ui.proyectos.lista;
 
 public class ItemFeed {
+    private String id;
     private String nombre;
     private String imagen;
     private String categoria;
     private String pais;
     private String ciudad;
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getNombre() {
         return nombre;

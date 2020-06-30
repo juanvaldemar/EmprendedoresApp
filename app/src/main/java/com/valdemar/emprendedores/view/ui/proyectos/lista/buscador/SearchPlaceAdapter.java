@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.view.ui.proyectos.lista.Category;
+import com.valdemar.emprendedores.view.ui.proyectos.lista.ItemFeed;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +22,13 @@ import java.util.List;
 public class SearchPlaceAdapter extends RecyclerView.Adapter<SearchPlaceAdapter.SearchPlaceAdapterViewHolder> implements Filterable {
 
     Context mCntx;
-    public ArrayList<Category> arrayList;
-    public ArrayList<Category> arrayListFiltered;
+    public ArrayList<ItemFeed> arrayList;
+    public ArrayList<ItemFeed> arrayListFiltered;
     private IModal listener;
 
 
 
-    public SearchPlaceAdapter(Context mCntx, ArrayList<Category> arrayList, IModal listener)
+    public SearchPlaceAdapter(Context mCntx, ArrayList<ItemFeed> arrayList, IModal listener)
     {
         this.mCntx = mCntx;
         this.arrayList = arrayList;
@@ -38,7 +39,7 @@ public class SearchPlaceAdapter extends RecyclerView.Adapter<SearchPlaceAdapter.
     }
 
 
-    public SearchPlaceAdapter(Context mCntx, ArrayList<Category> arrayList)
+    public SearchPlaceAdapter(Context mCntx, ArrayList<ItemFeed> arrayList)
     {
         this.mCntx = mCntx;
         this.arrayList = arrayList;
@@ -73,9 +74,8 @@ public class SearchPlaceAdapter extends RecyclerView.Adapter<SearchPlaceAdapter.
     {
 
 
-        holder.txtPlace.setText(arrayListFiltered.get(position).getCategoria());
-        holder.cardPlace.setText(arrayListFiltered.get(position).getAuthor());
-        System.out.println(arrayListFiltered.get(position).getTitulo());
+        holder.txtPlace.setText(arrayListFiltered.get(position).getNombre());
+        holder.cardPlace.setText(arrayListFiltered.get(position).getPais() +"-" +arrayListFiltered.get(position).getCiudad());
 
         Glide.with(mCntx).load(arrayListFiltered.get(position).getImagen()).into(holder.image);
 
@@ -112,7 +112,7 @@ public class SearchPlaceAdapter extends RecyclerView.Adapter<SearchPlaceAdapter.
     private Filter exampleFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<Category> filteredList = new ArrayList<>();
+            List<ItemFeed> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0 || constraint == "") {
 
@@ -120,8 +120,8 @@ public class SearchPlaceAdapter extends RecyclerView.Adapter<SearchPlaceAdapter.
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for (Category item : arrayList) {
-                    if (item.getTitulo().toLowerCase().contains(filterPattern)) {
+                for (ItemFeed item : arrayList) {
+                    if (item.getNombre().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }

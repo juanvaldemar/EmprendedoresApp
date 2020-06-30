@@ -22,6 +22,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.view.ui.proyectos.lista.Category;
+import com.valdemar.emprendedores.view.ui.proyectos.lista.ItemFeed;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,7 +41,7 @@ public class Search extends Fragment {
     private RecyclerView rvSearch;
     private DatabaseReference mRef;
     private SearchPlaceAdapter mAdapter;
-    ArrayList<Category> arrayLists = new ArrayList<>();
+    ArrayList<ItemFeed> arrayLists = new ArrayList<>();
 
     private String mPost_categoria;
     private String mModulo;
@@ -157,13 +158,13 @@ public class Search extends Fragment {
                 arrayLists.clear();
                 for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
                     String ids = eventSnapshot.getKey();
-                    Category category = eventSnapshot.getValue(Category.class);
+                    ItemFeed category = eventSnapshot.getValue(ItemFeed.class);
                     category.setId(ids);
                     arrayLists.add(category);
                 }
 
 
-                Collections.reverse(arrayLists);
+               // Collections.reverse(arrayLists);
                 mAdapter = new SearchPlaceAdapter(getContext(), arrayLists,listener);
                 rvSearch.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
