@@ -57,9 +57,10 @@ public class RegistrarFragment extends Fragment {
     private ImageView mImgFoto;
 
     private EditText edt_nombres_emprendedor,edt_apellidos_emprendedor,
-            edt_num_emprendedor,edt_dni_emprendedor,edt_direccion_emprendedor, edt_ocupacion_emprendedor;
+            edt_num_emprendedor,edt_dni_emprendedor,edt_direccion_emprendedor,
+            edt_facebook, edt_instagram, edt_twitter;
     private  Spinner spinner_dia,spinner_mes,spinner_anio,spinner_genero,
-            spinner_pais,spinner_ciudad;
+            spinner_pais,spinner_ciudad,spinner_ocupacion;
     private Button btn_registrar_emprendedor;
 
     public RegistrarFragment() {
@@ -77,8 +78,8 @@ public class RegistrarFragment extends Fragment {
         // Inflate the layout for this fragment
         mRoot = inflater.inflate(R.layout.fragment_registrar, container, false);
         mAuth = FirebaseAuth.getInstance();
-        initListSpinner(mRoot);
         initView(mRoot);
+        initListSpinner(mRoot);
 
 
         return mRoot;
@@ -99,7 +100,10 @@ public class RegistrarFragment extends Fragment {
         spinner_pais = root.findViewById(R.id.spinner_pais);
         spinner_ciudad = root.findViewById(R.id.spinner_ciudad);
         edt_direccion_emprendedor = root.findViewById(R.id.edt_direccion_emprendedor);
-        edt_ocupacion_emprendedor = root.findViewById(R.id.edt_ocupacion_emprendedor);
+        spinner_ocupacion = root.findViewById(R.id.spinner_ocupacion);
+        edt_facebook = root.findViewById(R.id.edt_facebook);
+        edt_instagram = root.findViewById(R.id.edt_instagram);
+        edt_twitter = root.findViewById(R.id.edt_twitter);
         btn_registrar_emprendedor = root.findViewById(R.id.btn_registrar_emprendedor);
 
 
@@ -165,7 +169,10 @@ public class RegistrarFragment extends Fragment {
                                         newPost.child("spinner_pais").setValue(spinner_pais.getSelectedItem().toString());
                                         newPost.child("spinner_ciudad").setValue(spinner_ciudad.getSelectedItem().toString());
                                         newPost.child("edt_direccion_emprendedor").setValue(edt_direccion_emprendedor.getText().toString().trim());
-                                        newPost.child("edt_ocupacion_emprendedor").setValue(edt_ocupacion_emprendedor.getText().toString().trim());
+                                        newPost.child("spinner_ocupacion").setValue(spinner_ocupacion.getSelectedItem().toString());
+                                        newPost.child("edt_facebook").setValue(edt_facebook.getText().toString().trim());
+                                        newPost.child("edt_instagram").setValue(edt_instagram.getText().toString().trim());
+                                        newPost.child("edt_twitter").setValue(edt_twitter.getText().toString().trim());
 
                                         newPost.child("imagen").setValue(downloadUrl.toString());
 
@@ -198,7 +205,10 @@ public class RegistrarFragment extends Fragment {
                         newPost.child("spinner_pais").setValue(spinner_pais.getSelectedItem().toString());
                         newPost.child("spinner_ciudad").setValue(spinner_ciudad.getSelectedItem().toString());
                         newPost.child("edt_direccion_emprendedor").setValue(edt_direccion_emprendedor.getText().toString().trim());
-                        newPost.child("edt_ocupacion_emprendedor").setValue(edt_ocupacion_emprendedor.getText().toString().trim());
+                        newPost.child("spinner_ocupacion").setValue(spinner_ocupacion.getSelectedItem().toString());
+                        newPost.child("edt_facebook").setValue(edt_facebook.getText().toString().trim());
+                        newPost.child("edt_instagram").setValue(edt_instagram.getText().toString().trim());
+                        newPost.child("edt_twitter").setValue(edt_twitter.getText().toString().trim());
 
 
                         newPost.child("imagen").setValue("Vacio");
@@ -226,7 +236,7 @@ public class RegistrarFragment extends Fragment {
         if (!(validarEditText(edt_nombres_emprendedor)
                 && validarEditText(edt_apellidos_emprendedor)
                 && validarEditText(edt_num_emprendedor)
-                && validarEditText(edt_ocupacion_emprendedor)
+                && !spinner_ocupacion.getSelectedItem().toString().equals("¿Cuál es tu ocupación?")
                 && !spinner_dia.getSelectedItem().toString().equals("Día")
                 && !spinner_mes.getSelectedItem().toString().equals("Mes")
                 && !spinner_anio.getSelectedItem().toString().equals("Año")
@@ -333,6 +343,12 @@ public class RegistrarFragment extends Fragment {
         adapter6.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner6.setAdapter(adapter6);
+
+        ArrayAdapter<CharSequence> adapterOcupacion = ArrayAdapter.createFromResource(getActivity(),
+                R.array.ocupacion, android.R.layout.simple_spinner_item);
+        adapter6.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner_ocupacion.setAdapter(adapterOcupacion);
 
     }
 

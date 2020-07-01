@@ -70,4 +70,14 @@
         <item>Trujillo</item>
     </string-array>
 
+
+    <string-array name="ocupacion">
+        <item>¿Cuál es tu ocupación?</item>
+        <item>Ingeniero</item>
+        <item>Arquitecto</item>
+        <item>Diseñador</item>
+        <item>Pintor</item>
+        <item>Comerciante</item>
+    </string-array>
+
 </resources>
