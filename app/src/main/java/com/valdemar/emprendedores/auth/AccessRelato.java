@@ -1,12 +1,15 @@
 package com.valdemar.emprendedores.auth;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -16,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.AccessToken;
@@ -386,14 +390,32 @@ public class AccessRelato extends AppCompatActivity {
 
                             Log.v("task_valdemar",""+task);
                             mProgress.hide();
+                            mProgress.dismiss();
+                            /*
                             Toast.makeText(AccessRelato.this,"Usuario y/o contraseña incorrecta.",Toast.LENGTH_LONG).show();
                             showSnackBar("Usuario y/o contraseña incorrecta.");
-                            mProgress.dismiss();
+                               */
+                            mostrarMensajeDialog();
                         }
                     }
                 });
 
 
+    }
+
+    private void mostrarMensajeDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.dialog_loguin, null));
+
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        builder.show();
     }
 
     public void accesoPermitido() {
