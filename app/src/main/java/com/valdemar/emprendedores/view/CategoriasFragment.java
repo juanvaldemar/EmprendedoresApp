@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.model.CategoriaProyecto;
@@ -92,10 +93,14 @@ public class CategoriasFragment extends Fragment implements CategoriasAdapter.On
         btnSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle args = new Bundle();
-                String json = new Gson().toJson(mCategoriaSeleccionada);
-                args.putString(ARG_CATEGORIA_SELECCIONADA, json);
-                Navigation.findNavController(v).navigate(R.id.next_action,args);
+                if(mCategoriaSeleccionada != null){
+                    Bundle args = new Bundle();
+                    String json = new Gson().toJson(mCategoriaSeleccionada);
+                    args.putString(ARG_CATEGORIA_SELECCIONADA, json);
+                    Navigation.findNavController(v).navigate(R.id.next_action,args);
+                } else {
+                    showSnackBar("Debe seleccionar una categoría" );
+                }
             }
         });
     }
@@ -125,5 +130,11 @@ public class CategoriasFragment extends Fragment implements CategoriasAdapter.On
     public void onCategoriaClick(CategoriaProyecto categoriaSeleccionada) {
         mCategoriaSeleccionada = categoriaSeleccionada;
         categoriasAdapter.notifyDataSetChanged();
+    }
+
+    public void showSnackBar(String msg) {
+        Snackbar
+                .make(getActivity().findViewById(R.id.constraint_categorias), msg, Snackbar.LENGTH_SHORT)
+                .show();
     }
 }

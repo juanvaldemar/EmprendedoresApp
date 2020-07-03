@@ -302,9 +302,9 @@ public class CrearProyectoFragment extends Fragment {
                     long duracionVideoMiliSegundos = Long.parseLong(duracionVideoString);
                     double duracionVideoSegundos = duracionVideoMiliSegundos/1000.0;
                     retriever.release();
-                    Toast.makeText(getActivity(),"Duracion en s: " + duracionVideoSegundos, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getActivity(),"Duracion en s: " + duracionVideoSegundos, Toast.LENGTH_LONG).show();
                     if(duracionVideoSegundos > 60.0) {
-                        showSnackBar("El video debe durar como máximo 60 segundos");
+                        showSnackBar("El video excede el tiempo limite - 60 segundos");
                         return;
                     }
                     mImgFoto.setVisibility(View.GONE);
