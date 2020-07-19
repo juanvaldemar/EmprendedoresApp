@@ -179,7 +179,7 @@ public class RegistrarFragment extends Fragment {
                                         Timestamp fechaRegistro = getFecha();
                                         newPost.child("fechaRegistro").setValue(fechaRegistro);
                                         mProgresDialog.dismiss();
-                                        Navigation.findNavController(mRoot).navigate(R.id.next_action_to_lista);
+                                        Navigation.findNavController(mRoot).navigate(R.id.next_action_desc);
                                     }
                                 });
 

@@ -29,13 +29,27 @@
         android:id="@+id/nav_gallery"
         android:name="com.valdemar.emprendedores.view.ui.proyectos.lista.ProyectosFragment"
         android:label="Lista de proyectos"
-        tools:layout="@layout/fragment_proyectos" />
+        tools:layout="@layout/fragment_proyectos" >
+
+        <action
+            android:id="@+id/next_action_desc"
+            app:destination="@id/DescBlankFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/DescBlankFragment"
+        android:name="com.valdemar.emprendedores.view.ui.proyectos.lista.DescBlankFragment"
+        tools:layout="@layout/fragment_desc_blank" />
 
     <fragment
         android:id="@+id/nav_slideshow"
         android:name="com.valdemar.emprendedores.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+
+
+
     <fragment
         android:id="@+id/crearProyectoFragment"
         android:name="com.valdemar.emprendedores.view.ui.proyectos.registro.CrearProyectoFragment"

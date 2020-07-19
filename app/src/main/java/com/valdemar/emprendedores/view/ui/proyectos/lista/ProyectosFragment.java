@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,13 +63,13 @@ public class ProyectosFragment extends Fragment {
     private Spinner spinner5,spinner6;
     private ProgressDialog mProgress;
 
-
+    private String post_key;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        final View view = inflater.inflate(R.layout.fragment_search, container, false);
         mProgress = new ProgressDialog(getActivity());
         mProgress.setMessage("Cargando ...");
         mProgress.setCancelable(false);
@@ -83,7 +84,8 @@ public class ProyectosFragment extends Fragment {
 
             @Override
             public void modalIniciarDetail(String id) {
-                viewDetailsChatStyle(id);
+                viewDetails(id,view);
+
             }
 
         };
@@ -100,7 +102,7 @@ public class ProyectosFragment extends Fragment {
 
 
 
-    private void initView(View view, final IModal listener) {
+    private void initView(final View view, final IModal listener) {
         Bundle datosRecuperados = getArguments();
         if (datosRecuperados == null) {
             // No hay datos, manejar excepción
@@ -199,7 +201,7 @@ public class ProyectosFragment extends Fragment {
                 ) {
                     @Override
                     protected void populateViewHolder(CategoryViewHolder viewHolder, final Category model, int position) {
-                        final String post_key = getRef(position).getKey();
+                        post_key = getRef(position).getKey();
                         viewHolder.setTitle(model.getTitulo());
                         viewHolder.setSendBy(model.getTitulo());
 
@@ -211,7 +213,6 @@ public class ProyectosFragment extends Fragment {
                         viewHolder.mViewStructure_h.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                // viewDetails(post_key);
                                 allSpook(mPost_categoria,listener);
                                 spinner5.setSelection(0);
                                 spinner6.setSelection(0);
@@ -231,6 +232,21 @@ public class ProyectosFragment extends Fragment {
 
         mRecyclerEpisodiosPerdidos.setAdapter(firebaseRecyclerAdaptermRecyclerEpisodiosPerdidos);
 
+
+
+    }
+
+    private void viewDetails(String post_key, View view){
+        DescBlankFragment descBlankFragment = new DescBlankFragment();
+        Bundle datosSend = new Bundle();
+        datosSend.putString("blog_id", post_key);
+        descBlankFragment.setArguments(datosSend);
+
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.contenido_dinamico, descBlankFragment)
+                .addToBackStack(null).commit();
+        Log.v("idss","id"+post_key);
+
+        Navigation.findNavController(view).navigate(R.id.next_action_desc);
 
 
     }
