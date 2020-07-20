@@ -35,6 +35,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.valdemar.emprendedores.MenuLateralActivity;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.IModal;
@@ -237,16 +238,11 @@ public class ProyectosFragment extends Fragment {
     }
 
     private void viewDetails(String post_key, View view){
-        DescBlankFragment descBlankFragment = new DescBlankFragment();
-        Bundle datosSend = new Bundle();
-        datosSend.putString("blog_id", post_key);
-        descBlankFragment.setArguments(datosSend);
 
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.contenido_dinamico, descBlankFragment)
-                .addToBackStack(null).commit();
-        Log.v("idss","id"+post_key);
+        Bundle args = new Bundle();
+        args.putString("blog_id", post_key);
 
-        Navigation.findNavController(view).navigate(R.id.next_action_desc);
+        Navigation.findNavController(view).navigate(R.id.next_action_desc,args);
 
 
     }

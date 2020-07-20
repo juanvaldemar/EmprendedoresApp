@@ -15,6 +15,7 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -107,10 +108,15 @@ public class DescBlankFragment extends Fragment {
                 Glide.with(getActivity().getApplicationContext())
                         .load(post_image)
                         .into(mImage_paralax);
+                Toast.makeText(getActivity(),post_title.toString(),Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                System.out.println("asdasd"+databaseError);
+                System.out.println("asdasd"+databaseError);
+
+                Toast.makeText(getActivity(),databaseError.toString(),Toast.LENGTH_LONG).show();
 
             }
         });
