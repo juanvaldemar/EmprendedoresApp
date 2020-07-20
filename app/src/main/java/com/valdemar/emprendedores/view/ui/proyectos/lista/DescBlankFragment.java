@@ -122,7 +122,6 @@ public class DescBlankFragment extends Fragment {
                 Glide.with(getActivity().getApplicationContext())
                         .load(post_image)
                         .into(mImage_paralax);
-                Toast.makeText(getActivity(),post_title.toString(),Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -202,7 +201,7 @@ public class DescBlankFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
 
-                        mDatabaseMisComentarios.addValueEventListener(new ValueEventListener() {
+                        mDatabaseMisComentarios.addListenerForSingleValueEvent(new ValueEventListener() {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                 if(user != null){

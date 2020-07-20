@@ -97,7 +97,6 @@ public class ProyectosFragment extends Fragment {
 
 
 
-
         return view;
     }
 
