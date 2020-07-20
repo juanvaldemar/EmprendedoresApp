@@ -81,6 +81,7 @@ public class ProyectosFragment extends Fragment {
         IModal listener = new IModal() {
             @Override
             public void modalIniciar(String nombre, String url, String uidUser) {
+
             }
 
             @Override
@@ -246,7 +247,7 @@ public class ProyectosFragment extends Fragment {
 
     }
 
-    private void initCategoria(View view) {
+    private void initCategoria(final View view) {
 
 
         ArrayAdapter<CharSequence> adapter5 = ArrayAdapter.createFromResource(getActivity(),
@@ -268,7 +269,7 @@ public class ProyectosFragment extends Fragment {
 
             @Override
             public void modalIniciarDetail(String id) {
-                viewDetailsChatStyle(id);
+                viewDetails(id,view);
             }
 
         };
