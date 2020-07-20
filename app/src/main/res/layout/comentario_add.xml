@@ -39,8 +39,6 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            app:passwordToggleEnabled = "true"
-            app:passwordToggleTint="@color/white"
             android:layout_height="wrap_content"
             app:hintEnabled="false"
             >
@@ -56,7 +54,7 @@
                 android:lines="2"
                 android:layout_marginBottom="20dp"
                 android:textSize="14dp"
-                android:hint="INGRESE SU CONTRASEÑA"
+                android:hint="INGRESE SU COMENTARIO"
                 android:textColor="@color/white"
                 android:background="@drawable/design_one"
                 android:textColorHint="@color/white"
