@@ -42,6 +42,7 @@ import com.valdemar.emprendedores.view.ui.proyectos.RelatoViewHolderStructureCom
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 
 public class DescBlankFragment extends Fragment {
@@ -206,9 +207,17 @@ public class DescBlankFragment extends Fragment {
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                 if(user != null){
                                     Log.v("TAG_LIKE","Favorito");
-                                    mDatabaseMisComentarios.child(mPost_key).child(mAuth.getCurrentUser().getUid()).child("foto").setValue(user.getPhotoUrl().toString());
-                                    mDatabaseMisComentarios.child(mPost_key).child(mAuth.getCurrentUser().getUid()).child("comentario").setValue(txtComentario.getText().toString());
-                                    mDatabaseMisComentarios.child(mPost_key).child(mAuth.getCurrentUser().getUid()).child("nombre").setValue(user.getDisplayName().toString());
+
+                                    Random random = new Random();
+                                    int randomNumber = random.nextInt(9999999);
+
+                                    mDatabaseMisComentarios.child(mPost_key).child(String.valueOf(randomNumber)).child("foto").setValue(user.getPhotoUrl().toString());
+                                    mDatabaseMisComentarios.child(mPost_key).child(String.valueOf(randomNumber)).child("comentario").setValue(txtComentario.getText().toString());
+                                    mDatabaseMisComentarios.child(mPost_key).child(String.valueOf(randomNumber)).child("nombre").setValue(user.getDisplayName().toString());
+
+
+
+
                                 }
 
 
