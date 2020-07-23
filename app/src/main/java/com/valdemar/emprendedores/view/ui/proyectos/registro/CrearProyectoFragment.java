@@ -372,7 +372,7 @@ public class CrearProyectoFragment extends Fragment {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String userId = user.getUid();
-        proyecto.setId_emprendedores(userId);
+        proyecto.setId_emprendedor(userId);
         proyecto.setCategoria(mCategoria.getNombre());
         proyecto.setNombre(mEdtNombreProyecto.getText().toString());
         proyecto.setDescripcion(mEdtDescripcionProyecto.getText().toString());
