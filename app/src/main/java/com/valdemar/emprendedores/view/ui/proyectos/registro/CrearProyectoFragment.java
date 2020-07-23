@@ -380,7 +380,7 @@ public class CrearProyectoFragment extends Fragment {
         proyecto.setDescripcionSocio1(mEdtDescripcionSocio1.getText().toString());
         proyecto.setSocio2(validarEditText(mEdtSocio2) ? mEdtSocio2.getText().toString() : "");
         proyecto.setDescripcionSocio2(validarEditText(mEdtDescripcionSocio2) ? mEdtDescripcionSocio2.getText().toString() : "");
-        proyecto.setSocio4(validarEditText(mEdtSocio3) ? mEdtSocio3.getText().toString() : "");
+        proyecto.setSocio3(validarEditText(mEdtSocio3) ? mEdtSocio3.getText().toString() : "");
         proyecto.setDescripcionSocio3(validarEditText(mEdtDescripcionSocio3) ? mEdtDescripcionSocio3.getText().toString() : "");
         proyecto.setSocio4(validarEditText(mEdtSocio4) ? mEdtSocio4.getText().toString() : "");
         proyecto.setDescripcionSocio4(validarEditText(mEdtDescripcionSocio4) ? mEdtDescripcionSocio4.getText().toString() : "");
