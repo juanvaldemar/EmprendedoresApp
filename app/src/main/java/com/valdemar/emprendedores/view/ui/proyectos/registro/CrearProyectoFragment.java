@@ -31,6 +31,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -368,6 +370,9 @@ public class CrearProyectoFragment extends Fragment {
     private Proyecto initDataProyecto() {
         Proyecto proyecto = new Proyecto();
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = user.getUid();
+        proyecto.setId_emprendedores(userId);
         proyecto.setCategoria(mCategoria.getNombre());
         proyecto.setNombre(mEdtNombreProyecto.getText().toString());
         proyecto.setDescripcion(mEdtDescripcionProyecto.getText().toString());
