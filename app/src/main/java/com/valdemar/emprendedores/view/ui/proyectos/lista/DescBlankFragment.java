@@ -258,8 +258,8 @@ public class DescBlankFragment extends Fragment {
                 RelatoViewHolderStructureComentarios.class,queryRef) {
             @Override
             protected void populateViewHolder(RelatoViewHolderStructureComentarios viewHolder, Comentarios model, int i) {
-                   final String post_key = getRef(i).getKey();
-                    viewHolder.setAutor(post_key);
+                 //  final String post_key = getRef(i).getKey();
+                    viewHolder.setAutor(model.getNombre());
                     viewHolder.setMensaje(model.getComentario());
                     viewHolder.goneHora();
                     viewHolder.setImage(getActivity().getApplicationContext(), model.getFoto());
