@@ -240,8 +240,6 @@
                     android:textSize="18dp"
                     android:textColor="#FFFFFF"  />
 
-
-
                 <androidx.core.widget.NestedScrollView
                     android:id="@+id/scroll2"
                     android:background="@color/black"
@@ -251,8 +249,10 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerComentarios"
                         android:layout_width="match_parent"
-                        android:layout_height="700dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:focusable="true"
+                        android:visibility="gone"
                         android:orientation="vertical"
                         android:nestedScrollingEnabled="false"
                         >

@@ -7,10 +7,12 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,7 +37,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.valdemar.emprendedores.MenuLateralActivity;
 import com.valdemar.emprendedores.R;
+import com.valdemar.emprendedores.SplashActivity;
+import com.valdemar.emprendedores.auth.AccessRelato;
 import com.valdemar.emprendedores.view.ui.proyectos.Comentarios;
 import com.valdemar.emprendedores.view.ui.proyectos.RelatoViewHolderStructureComentarios;
 
@@ -93,6 +98,11 @@ public class DescBlankFragment extends Fragment {
 
 
         return root;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     private void initView(final View root) {
@@ -204,10 +214,11 @@ public class DescBlankFragment extends Fragment {
                 System.out.println("asdasd"+databaseError);
 
                 Toast.makeText(getActivity(),databaseError.toString(),Toast.LENGTH_LONG).show();
-                initComentarios(root, mPost_key);
 
             }
         });
+
+
 
     }
 
@@ -225,6 +236,16 @@ public class DescBlankFragment extends Fragment {
         layoutManagerMisLecturas.setStackFromEnd(true);
 
         mRecyclerComentarios = (RecyclerView) root.findViewById(R.id.recyclerComentarios);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRecyclerComentarios.setVisibility(View.VISIBLE);
+
+            }
+        },1000);
+
+
         mRecyclerComentarios.setHasFixedSize(true);
         mRecyclerComentarios.setLayoutManager(layoutManagerMisLecturas);
 
@@ -237,15 +258,11 @@ public class DescBlankFragment extends Fragment {
                 RelatoViewHolderStructureComentarios.class,queryRef) {
             @Override
             protected void populateViewHolder(RelatoViewHolderStructureComentarios viewHolder, Comentarios model, int i) {
-                //final String post_key = getRef(position).getKey();
-                if(model !=null){
-                    viewHolder.setAutor(model.getNombre());
+                   final String post_key = getRef(i).getKey();
+                    viewHolder.setAutor(post_key);
                     viewHolder.setMensaje(model.getComentario());
                     viewHolder.goneHora();
                     viewHolder.setImage(getActivity().getApplicationContext(), model.getFoto());
-                }
-
-
 
             }
 
@@ -260,7 +277,6 @@ public class DescBlankFragment extends Fragment {
             public void onClick(View view) {
 
                 final Dialog MyDialog;
-
                 MyDialog = new Dialog(getActivity());
                 MyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 MyDialog.setContentView(R.layout.comentario_add);
@@ -271,7 +287,6 @@ public class DescBlankFragment extends Fragment {
                 final TextInputEditText txtComentario = MyDialog.findViewById(R.id.comentarioTextInput);
 
                 btnModalAcessoRelato.setEnabled(true);
-
                 btnModalAcessoRelato.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
