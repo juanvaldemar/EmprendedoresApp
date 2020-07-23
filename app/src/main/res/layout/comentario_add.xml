@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="16dp"
-            android:text="Por favor ser respetuoso con los comentarios."
+            android:text="Por favor se respetuoso con los comentarios."
             android:textColor="@color/white"
             android:layout_marginBottom="20dp"/>
 
