@@ -265,9 +265,7 @@ public class DescBlankFragment extends Fragment {
                 MyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 MyDialog.setContentView(R.layout.comentario_add);
                 MyDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
                 MyDialog.setCancelable(false);
-
                 Button btnModalAcessoRelato = MyDialog.findViewById(R.id.modal_need_inicia_sesion);
                 Button btnModalCancel = MyDialog.findViewById(R.id.modal_need_cancel);
                 final TextInputEditText txtComentario = MyDialog.findViewById(R.id.comentarioTextInput);
@@ -277,22 +275,16 @@ public class DescBlankFragment extends Fragment {
                 btnModalAcessoRelato.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mDatabaseMisComentarios.addValueEventListener(new ValueEventListener() {
+                        mDatabaseMisComentarios.addListenerForSingleValueEvent(new ValueEventListener() {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                 if(user != null){
-                                    Log.v("TAG_LIKE","Favorito");
-
                                     Random random = new Random();
                                     int randomNumber = random.nextInt(9999999);
-
                                     mDatabaseMisComentarios.child(mPost_key).child(String.valueOf(randomNumber)).child("foto").setValue(user.getPhotoUrl().toString());
                                     mDatabaseMisComentarios.child(mPost_key).child(String.valueOf(randomNumber)).child("comentario").setValue(txtComentario.getText().toString());
                                     mDatabaseMisComentarios.child(mPost_key).child(String.valueOf(randomNumber)).child("nombre").setValue(user.getDisplayName().toString());
-
                                 }
-
-
                             }
 
                             public void onCancelled(DatabaseError databaseError) {
