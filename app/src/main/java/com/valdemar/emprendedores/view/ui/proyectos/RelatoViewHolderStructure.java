@@ -38,7 +38,7 @@ public class RelatoViewHolderStructure extends RecyclerView.ViewHolder{
 
     public void setCatergory(String category){
         mItem_recycler_structure_category = mViewStructure.findViewById(R.id.item_recycler_structure_category);
-        mItem_recycler_structure_category.setText("Género: "+category);
+        mItem_recycler_structure_category.setText("Categoria: "+category);
     }
     public void setAuthor(String author){
         mItem_recycler_structure_author = mViewStructure.findViewById(R.id.item_recycler_structure_author);
