@@ -130,6 +130,9 @@ public class SearchPlaceAdapter extends RecyclerView.Adapter<SearchPlaceAdapter.
                     if (item.getCategoria().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
+                    if (item.getNombre().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
                 }
             }
 
