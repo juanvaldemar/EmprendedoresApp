@@ -11,6 +11,9 @@ public class CategoriaProyecto implements Serializable{
     @SerializedName("imagen")
     int imagen;
 
+    public CategoriaProyecto() {
+    }
+
     public CategoriaProyecto(int idCategoria,String nombre, int imagen) {
         this.idCategoria = idCategoria;
         this.nombre = nombre;

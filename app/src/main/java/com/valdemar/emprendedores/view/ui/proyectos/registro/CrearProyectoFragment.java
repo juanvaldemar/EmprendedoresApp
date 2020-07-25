@@ -7,6 +7,7 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -24,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.Spinner;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
@@ -33,8 +33,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -45,6 +48,8 @@ import com.valdemar.emprendedores.model.Proyecto;
 import com.valdemar.emprendedores.view.CategoriasFragment;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -88,20 +93,25 @@ public class CrearProyectoFragment extends Fragment {
     private int nroSociosActivos = 1;
     private int maxSociosActivos = 5;
 
-    private CategoriaProyecto mCategoria;
+    private CategoriaProyecto mCategoria = new CategoriaProyecto();
 
 
     private ProgressDialog mProgresDialog;
     private StorageReference mStorage;
     private DatabaseReference mDatabase;
     private Task<Uri> mRuta;
-    private boolean mFotoVideoSubido;
+    private boolean mFotoSubida;
+    private boolean mVideoSubido;
 
     private Uri mImageUri = null;
     private View mRoot;
     private VideoView mVideoView;
     private Uri mVideoUri = null;
 
+    private Button btnFullScreen;
+    private boolean mActualizarProyecto;
+    private String mIdProyecto = "";
+    private Uri mImageUriAnterior;
 
     public CrearProyectoFragment() {
         // Required empty public constructor
@@ -140,6 +150,7 @@ public class CrearProyectoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mActualizarProyecto = false;
         // Inflate the layout for this fragment
         mRoot = inflater.inflate(R.layout.fragment_crear_proyecto, container, false);
         initUI(mRoot);
@@ -158,7 +169,7 @@ public class CrearProyectoFragment extends Fragment {
         mEdtDescripcionSocio3 = (EditText) view.findViewById(R.id.edt_descripcion_socio3);
         mEdtSocio4 = (EditText) view.findViewById(R.id.edt_socio4);
         mEdtDescripcionSocio4 = (EditText) view.findViewById(R.id.edt_descripcion_socio4);
-        mEdtSocio4 = (EditText) view.findViewById(R.id.edt_socio4);
+        mEdtSocio5 = (EditText) view.findViewById(R.id.edt_socio5);
         mEdtDescripcionSocio5 = (EditText) view.findViewById(R.id.edt_descripcion_socio5);
 
         mSpnPais = (Spinner) view.findViewById(R.id.spinner_pais);
@@ -177,6 +188,7 @@ public class CrearProyectoFragment extends Fragment {
         ImageButton btnSubirFotoVideo = (ImageButton) view.findViewById(R.id.btn_subir_foto_video);
         mImgFoto = (ImageView) view.findViewById(R.id.img_foto_proyecto);
         mVideoView = (VideoView)mRoot.findViewById(R.id.videoview_proyecto);
+        btnFullScreen = mRoot.findViewById(R.id.btn_fullscreen);
         btnSubirFotoVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -227,6 +239,102 @@ public class CrearProyectoFragment extends Fragment {
             }
         });
 
+        mIdProyecto = getArguments().getString("ARG_KEY_PROYECTO");
+        if (!TextUtils.isEmpty(mIdProyecto)) {
+            mActualizarProyecto = true;
+            cargarProyectoCreado();
+        }
+
+    }
+
+    private void cargarProyectoCreado() {
+
+        //Query query = FirebaseDatabase.getInstance().getReference().child("Proyectos");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Proyectos");
+        mDatabase.child(mIdProyecto).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mCategoria.setNombre((String) dataSnapshot.child("categoria").getValue());
+                mEdtNombreProyecto.setText((String) dataSnapshot.child("nombre").getValue());
+                mEdtDescripcionProyecto.setText((String) dataSnapshot.child("descripcion").getValue());
+
+                String imagenProyectoUri = (String) dataSnapshot.child("imagen").getValue();
+                mImageUri = Uri.parse(imagenProyectoUri);
+                mImageUriAnterior = mImageUri;
+                String videoSubido = (String) dataSnapshot.child("videoSubido").getValue();
+                if(videoSubido.equalsIgnoreCase("true")) {
+                    mImgFoto.setVisibility(View.GONE);
+                    mVideoView.setVisibility(View.VISIBLE);
+                    MediaController mediaController= new MediaController(getActivity());
+                    mVideoView.setVideoURI(mImageUri);
+                    mVideoView.setMediaController(mediaController);
+                    mVideoView.start();
+                    btnFullScreen.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setDataAndType(Uri.parse(mImageUri.toString()), "video/mp4");
+                            startActivity(intent);
+                        }
+                    });
+                    mVideoSubido = true;
+                    mFotoSubida = false;
+                } else {
+                    mVideoView.setVisibility(View.GONE);
+                    mImgFoto.setVisibility(View.VISIBLE);
+                    Glide.with(getActivity().getApplicationContext())
+                            .load(mImageUri)
+                            .into(mImgFoto);
+                    mFotoSubida = true;
+                    mVideoSubido = false;
+                }
+
+
+                mEdtSocio1.setText((String) dataSnapshot.child("socio1").getValue());
+                mEdtDescripcionSocio1.setText((String) dataSnapshot.child("descripcionSocio1").getValue());
+                String socio2 = (String) dataSnapshot.child("socio2").getValue();
+                if(socio2 != null && !socio2.isEmpty()){
+                    mLLSocio2.setVisibility(View.VISIBLE);
+                    mEdtSocio2.setText(socio2);
+                    mEdtDescripcionSocio2.setText((String) dataSnapshot.child("descripcionSocio2").getValue());
+                }
+                String socio3 = (String) dataSnapshot.child("socio3").getValue();
+                if(socio3 != null && !socio3.isEmpty()){
+                    mLLSocio3.setVisibility(View.VISIBLE);
+                    mEdtSocio3.setText(socio3);
+                    mEdtDescripcionSocio3.setText((String) dataSnapshot.child("descripcionSocio3").getValue());
+                }
+                String socio4 = (String) dataSnapshot.child("socio4").getValue();
+                if(socio4 != null && !socio4.isEmpty()){
+                    mLLSocio4.setVisibility(View.VISIBLE);
+                    mEdtSocio4.setText(socio4);
+                    mEdtDescripcionSocio4.setText((String) dataSnapshot.child("descripcionSocio4").getValue());
+                }
+                String socio5 = (String) dataSnapshot.child("socio5").getValue();
+                if(socio5 != null && !socio5.isEmpty()){
+                    mLLSocio5.setVisibility(View.VISIBLE);
+                    mEdtSocio5.setText(socio5);
+                    mEdtDescripcionSocio5.setText((String) dataSnapshot.child("descripcionSocio5").getValue());
+                }
+
+                String pais = (String) dataSnapshot.child("pais").getValue();
+                if(pais != null ){
+                    ArrayAdapter<CharSequence>  spnPaisAdapter = (ArrayAdapter<CharSequence>) mSpnPais.getAdapter();
+                    mSpnPais.setSelection(spnPaisAdapter.getPosition(pais));
+                }
+                String ciudad = (String) dataSnapshot.child("ciudad").getValue();
+                if(pais != null ){
+                    ArrayAdapter<CharSequence>  spnCiudadAdapter = (ArrayAdapter<CharSequence>) mSpnCiudad.getAdapter();
+                    mSpnCiudad.setSelection(spnCiudadAdapter.getPosition(ciudad));
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -294,7 +402,8 @@ public class CrearProyectoFragment extends Fragment {
                     Glide.with(getActivity().getApplicationContext())
                             .load(mImageUri)
                             .into(mImgFoto);
-                    mFotoVideoSubido = true;
+                    mFotoSubida = true;
+                    mVideoSubido = false;
                     break;
                 case VIDEO_GALLERY_REQUEST:
                     mVideoUri = data.getData();
@@ -316,7 +425,16 @@ public class CrearProyectoFragment extends Fragment {
                     mVideoView.setVideoURI(mVideoUri);
                     mVideoView.setMediaController(mediaController);
                     mVideoView.start();
-                    mFotoVideoSubido = true;
+                    btnFullScreen.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setDataAndType(Uri.parse(mVideoUri.toString()), "video/mp4");
+                            startActivity(intent);
+                        }
+                    });
+                    mVideoSubido = true;
+                    mFotoSubida = true;
             }
         }
     }
@@ -332,37 +450,54 @@ public class CrearProyectoFragment extends Fragment {
                 mProgresDialog.setMessage("Publicando Proyectos");
                 mProgresDialog.setCancelable(false);
                 mProgresDialog.show();
-                final StorageReference filepath = mStorage
-                        .child("Proyectos_images")
-                        .child(mImageUri.getLastPathSegment());
-                filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
-
-                        //filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                Uri downloadUrl = uri;
-
-                                mDatabase = FirebaseDatabase.getInstance().getReference().child("Proyectos");
-
-                                DatabaseReference newPost = mDatabase.push();
-
-                                proyecto.setImagen(downloadUrl.toString());
-
-                                newPost.setValue(proyecto);
-
-                                //Timestamp fechaRegistro = getFecha();
-                                //newPost.child("fechaRegistro").setValue(fechaRegistro);
-                                mProgresDialog.dismiss();
-                                Navigation.findNavController(mRoot).navigate(R.id.next_action_to_lista_proyectos);
-                            }
-                        });
-
+                mDatabase = FirebaseDatabase.getInstance().getReference().child("Proyectos");
+                if(mImageUriAnterior != null && mImageUri.getLastPathSegment().equals(mImageUriAnterior.getLastPathSegment())){
+                    if (mActualizarProyecto){
+                        Map<String, Object> proyectoHashMap = new HashMap<>();
+                        proyecto.setImagen(mImageUriAnterior.toString());
+                        proyecto.setVideoSubido(mVideoSubido?"true":"false");
+                        proyectoHashMap.put(mIdProyecto, proyecto);
+                        mDatabase.updateChildren(proyectoHashMap);
+                        mProgresDialog.dismiss();
+                        Navigation.findNavController(mRoot).navigate(R.id.next_action_to_lista_proyectos);
                     }
+                } else {
+                    final StorageReference filepath = mStorage
+                            .child("Proyectos_images")
+                            .child(mImageUri.getLastPathSegment());
+                    filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
 
-                });
+                            //filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Uri downloadUrl = uri;
+                                    proyecto.setImagen(downloadUrl.toString());
+                                    proyecto.setVideoSubido(mVideoSubido?"true":"false");
+                                    if (!mActualizarProyecto) {
+                                        DatabaseReference newPost = mDatabase.push();
+                                        newPost.setValue(proyecto);
+                                    } else {
+                                        Map<String, Object> proyectoHashMap = new HashMap<>();
+                                        proyectoHashMap.put(mIdProyecto, proyecto);
+                                        mDatabase.updateChildren(proyectoHashMap);
+                                        //mDatabase.child(mIdProyecto).updateChildren(proyecto);
+                                    }
+
+                                    //Timestamp fechaRegistro = getFecha();
+                                    //newPost.child("fechaRegistro").setValue(fechaRegistro);
+                                    mProgresDialog.dismiss();
+                                    Navigation.findNavController(mRoot).navigate(R.id.next_action_to_lista_proyectos);
+                                }
+                            });
+
+                        }
+
+                    });
+                }
+
             }
         }
     }
@@ -406,16 +541,11 @@ public class CrearProyectoFragment extends Fragment {
                 && validarEditText(mEdtSocio1) && validarEditText(mEdtDescripcionSocio1)
                 && !mSpnPais.getSelectedItem().toString().equals("País")
                 && !mSpnCiudad.getSelectedItem().toString().equals("Ciudad")
-                && mFotoVideoSubido)) {
+                && (mFotoSubida || mVideoSubido))) {
             showSnackBar("Campos incompletos y/o falta subir foto o video");
             return false;
         }
 
-        if(nroSociosActivos > 1){
-            if (!(validarEditText(mEdtSocio2) && validarEditText(mEdtDescripcionSocio2))){
-
-            }
-        }
 
         if (nroSociosActivos > 1 && ((validarEditText(mEdtSocio2) ^ validarEditText(mEdtDescripcionSocio2))
                 || (validarEditText(mEdtSocio3) ^ validarEditText(mEdtDescripcionSocio3))

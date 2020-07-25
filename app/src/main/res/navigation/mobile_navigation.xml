@@ -44,7 +44,14 @@
     <fragment
         android:id="@+id/DescBlankFragment"
         android:name="com.valdemar.emprendedores.view.ui.proyectos.lista.DescBlankFragment"
-        tools:layout="@layout/fragment_desc_blank" />
+        tools:layout="@layout/fragment_desc_blank" >
+        <argument
+            android:name="ARG_KEY_PROYECTO"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_DescBlankFragment_to_crearProyectoFragment"
+            app:destination="@id/crearProyectoFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_slideshow"

@@ -41,7 +41,6 @@
                     android:id="@+id/videoview_proyecto"
                     android:layout_centerInParent="true"
                     android:layout_width="match_parent"
-cv
                     android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax"
                     android:layout_height="200dp"
@@ -107,6 +106,12 @@ cv
                     android:id="@+id/webViewDetail">
 
                 </WebView>
+                
+                <Button
+                    android:id="@+id/btn_actualizar_proyecto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="actualizar"/>
 
 
                 <TextView
