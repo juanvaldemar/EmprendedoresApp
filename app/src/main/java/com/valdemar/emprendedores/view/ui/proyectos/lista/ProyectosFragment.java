@@ -148,13 +148,7 @@ public class ProyectosFragment extends Fragment {
         mSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                System.out.println(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
+            public boolean onQueryTextSubmit(String newText) {
                 System.out.println(newText);
                 if(mAdapter!=null){
                     if(!newText.isEmpty()){
@@ -164,6 +158,12 @@ public class ProyectosFragment extends Fragment {
 
                     }
                 }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
                 return false;
 
             }

@@ -35,6 +35,16 @@
                     app:layout_collapseMode="parallax"
                     app:layout_collapseParallaxMultiplier="0.8"/>
 
+                <VideoView
+                    android:visibility="gone"
+                    android:id="@+id/videoview_proyecto"
+                    android:layout_centerInParent="true"
+                    android:layout_width="match_parent"
+                    android:scaleType="centerCrop"
+                    app:layout_collapseMode="parallax"
+                    android:layout_height="200dp"
+                    />
+
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

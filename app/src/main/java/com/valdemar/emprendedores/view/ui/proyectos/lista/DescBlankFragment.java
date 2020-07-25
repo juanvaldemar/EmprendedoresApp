@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -22,8 +23,10 @@ import android.view.Window;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -82,6 +85,9 @@ public class DescBlankFragment extends Fragment {
     private DatabaseReference mDatabaseMisComentarios;
     private ProgressDialog mProgress;
 
+    private VideoView mVideoView;
+
+
     public DescBlankFragment() {
         // Required empty public constructor
     }
@@ -132,6 +138,7 @@ public class DescBlankFragment extends Fragment {
         postSocio5 = (TextView) root.findViewById(R.id.postSocio5);
         postDesc5 = (TextView) root.findViewById(R.id.postDesc5);
 
+        mVideoView = (VideoView)root.findViewById(R.id.videoview_proyecto);
 
         mImage_paralax = (ImageView) root.findViewById(R.id.image_paralax);
 
@@ -139,6 +146,11 @@ public class DescBlankFragment extends Fragment {
         mDatabase.child(mPost_key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                String videoSubido_ = (String) dataSnapshot.child("videoSubido").getValue();
+
+                boolean videoSubido = Boolean.parseBoolean(videoSubido_);
+
                 String post_title = (String) dataSnapshot.child("nombre").getValue();
                 String post_desc = (String) dataSnapshot.child("descripcion").getValue();
                 String post_image = (String) dataSnapshot.child("imagen").getValue();
@@ -200,9 +212,17 @@ public class DescBlankFragment extends Fragment {
                 postSocio5.setText("- "+post_socio5);
                 postDesc5.setText(post_desc5);
 
-                Glide.with(getActivity().getApplicationContext())
-                        .load(post_image)
-                        .into(mImage_paralax);
+                if(videoSubido){
+                    MediaController mediaController= new MediaController(getActivity());
+                    mImage_paralax.setVisibility(View.GONE);
+                    mVideoView.setVisibility(View.VISIBLE);
+                    mVideoView.setVideoURI(Uri.parse(post_image));
+                    mVideoView.setMediaController(mediaController);
+                } else{
+                    Glide.with(getActivity().getApplicationContext())
+                            .load(post_image)
+                            .into(mImage_paralax);
+                }
 
                 initComentarios(root, mPost_key);
 

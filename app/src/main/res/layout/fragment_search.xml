@@ -81,7 +81,7 @@
         app:closeIcon="@drawable/com_facebook_close"
         app:searchIcon="@drawable/ic_baseline_search_24"
         app:searchHintIcon="@drawable/ic_baseline_search_24"
-        app:queryHint="Buscar historia"
+        app:queryHint="Buscar proyecto"
         android:textAlignment="center"
         android:layout_alignParentBottom="true"
         android:background="#3a3937"
