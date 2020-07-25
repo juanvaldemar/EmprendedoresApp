@@ -218,6 +218,7 @@ public class DescBlankFragment extends Fragment {
                     mVideoView.setVisibility(View.VISIBLE);
                     mVideoView.setVideoURI(Uri.parse(post_image));
                     mVideoView.setMediaController(mediaController);
+                    mVideoView.start();
                 } else{
                     Glide.with(getActivity().getApplicationContext())
                             .load(post_image)
