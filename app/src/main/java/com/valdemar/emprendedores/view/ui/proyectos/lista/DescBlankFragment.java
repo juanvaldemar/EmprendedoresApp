@@ -263,7 +263,7 @@ public class DescBlankFragment extends Fragment {
             public void onClick(View view) {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT,post_title+" para más detalle te invitamos a descargar la aplicación Emprendedores App https://play.google.com/store");
+                sendIntent.putExtra(Intent.EXTRA_TEXT,"Hola, estoy creando el Emprendimiento : \""+post_title+"\" , para más detalle te invitamos a descargar la aplicación Emprendedores App https://play.google.com/store");
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
             }
