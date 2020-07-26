@@ -1,18 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:id="@+id/contenido_dinamico"
     android:layout_height="match_parent"
+    android:background="@color/black"
+
     tools:context=".view.ui.proyectos.MisProyectosCreadosFragment">
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragmento_mis_lecturas"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black"
-        android:scrollbars="vertical">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
 
-</FrameLayout>
+            <Button
+                android:id="@+id/mBtnPendiente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Activo"
+                android:textColor="@color/white"
+                android:background="@color/black"
+
+                />
+
+            <Button
+                android:id="@+id/mBtnFinalizado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Finalizado"
+                android:textColor="@color/white"
+                android:background="@color/black"
+
+                />
+
+            <Button
+                android:id="@+id/mBtnCancelado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="De Baja"
+                android:textColor="@color/white"
+                android:background="@color/black"
+
+                />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fragmento_mis_lecturas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical">
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </LinearLayout>
+
+</RelativeLayout>

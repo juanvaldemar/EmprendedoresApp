@@ -20,6 +20,7 @@ public class Proyecto {
     String imagen;
     String id_emprendedor;
     String videoSubido;
+    String estadoTrazabilidad;
     // la imagen o video se guardara en el storage de firebase con el id del proyecto
     // falta agregar usuario
     public Proyecto() {
@@ -175,5 +176,13 @@ public class Proyecto {
 
     public void setId_emprendedor(String id_emprendedor) {
         this.id_emprendedor = id_emprendedor;
+    }
+
+    public String getEstadoTrazabilidad() {
+        return estadoTrazabilidad;
+    }
+
+    public void setEstadoTrazabilidad(String estadoTrazabilidad) {
+        this.estadoTrazabilidad = estadoTrazabilidad;
     }
 }

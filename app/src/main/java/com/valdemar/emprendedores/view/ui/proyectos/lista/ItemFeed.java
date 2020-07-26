@@ -7,6 +7,7 @@ public class ItemFeed {
     private String categoria;
     private String pais;
     private String ciudad;
+    private String estadoTrazabilidad;
 
 
     public String getId() {
@@ -55,5 +56,13 @@ public class ItemFeed {
 
     public void setCiudad(String ciudad) {
         this.ciudad = ciudad;
+    }
+
+    public String getEstadoTrazabilidad() {
+        return estadoTrazabilidad;
+    }
+
+    public void setEstadoTrazabilidad(String estadoTrazabilidad) {
+        this.estadoTrazabilidad = estadoTrazabilidad;
     }
 }

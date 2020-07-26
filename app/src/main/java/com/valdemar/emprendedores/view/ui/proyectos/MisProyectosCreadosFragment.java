@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +29,9 @@ public class MisProyectosCreadosFragment extends Fragment {
     private DatabaseReference mDatabaseMisLecturas;
     private ProgressDialog mProgress;
     private Dialog MyDialog;
+    private Button mBtnPendiente,
+            mBtnCancelado,
+            mBtnFinalizado;
 
     public MisProyectosCreadosFragment() {
         // Required empty public constructor
@@ -47,7 +51,7 @@ public class MisProyectosCreadosFragment extends Fragment {
 
 
 
-    private void initView(View root) {
+    private void initView(final View root) {
         mProgress = new ProgressDialog(getContext());
         mDatabaseMisLecturas = FirebaseDatabase.getInstance().getReference().child("Proyectos");
         mDatabaseMisLecturas.keepSynced(true);
@@ -70,9 +74,42 @@ public class MisProyectosCreadosFragment extends Fragment {
 
 
         //Query queryRef = mDatabaseMisLecturas.orderByChild("IdMiLectura").equalTo(userId);
-        Query queryRef = mDatabaseMisLecturas.orderByChild("id_emprendedor").equalTo(userId);
+
+        final Query queryRef = mDatabaseMisLecturas.orderByChild("id_emprendedor").equalTo(userId);
+
+        mBtnPendiente = root.findViewById(R.id.mBtnPendiente);
+        mBtnCancelado= root.findViewById(R.id.mBtnCancelado);
+        mBtnFinalizado = root.findViewById(R.id.mBtnFinalizado);
+
+        mBtnPendiente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                initllamada("ACTIVO",root,queryRef);
+
+            }
+        });
+        mBtnCancelado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                initllamada("FINALIZADO",root,queryRef);
+
+            }
+        });
+        mBtnFinalizado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                initllamada("DEBAJA",root,queryRef);
+
+            }
+        });
 
 
+        initllamada("",root,queryRef);
+
+
+    }
+
+    private void initllamada(final String estado, View root, Query queryRef) {
         FirebaseRecyclerAdapter<ItemFeed, RelatoViewHolderStructure>
                 firebaseRecyclerAdapterMyLecturas = new FirebaseRecyclerAdapter<ItemFeed, RelatoViewHolderStructure>(
                 ItemFeed.class,
@@ -81,17 +118,30 @@ public class MisProyectosCreadosFragment extends Fragment {
             @Override
             protected void populateViewHolder(RelatoViewHolderStructure viewHolder, ItemFeed model, final int position) {
                 final String post_key = getRef(position).getKey();
-                viewHolder.setTitle(model.getNombre());
-                viewHolder.setCatergory(model.getCategoria());
-                viewHolder.setAuthor(model.getNombre());
 
-                viewHolder.setImage(getActivity().getApplicationContext(), model.getImagen());
+                if(!estado.isEmpty()){
+                    if(model.getEstadoTrazabilidad().equalsIgnoreCase(estado)){
+                        viewHolder.setTitle(model.getNombre());
+                        viewHolder.setCatergory(model.getCategoria());
+                        viewHolder.setAuthor(model.getNombre());
+                        viewHolder.setImage(getActivity().getApplicationContext(), model.getImagen());
+                    }else{
+                        viewHolder.setGone();
+                    }
+                }else{
+                    viewHolder.setTitle(model.getNombre());
+                    viewHolder.setCatergory(model.getCategoria());
+                    viewHolder.setAuthor(model.getNombre());
+                    viewHolder.setImage(getActivity().getApplicationContext(), model.getImagen());
+
+                }
+
+
 
             }
         };
 
         mRecyclerMisLecturas.setAdapter(firebaseRecyclerAdapterMyLecturas);
-
     }
 
 }
