@@ -178,6 +178,8 @@ public class DescBlankFragment extends Fragment {
                 webViewDetail.loadDataWithBaseURL("", dataString, "text/html", "UTF-8", "");
                 /*****************************************/
 
+                shares(root,post_title);
+
                 mPostTitleDetails.setText(post_title);
                 postCategoria.setText("Categoria: "+post_categoria);
 
@@ -249,6 +251,21 @@ public class DescBlankFragment extends Fragment {
                 args.putString("ARG_KEY_PROYECTO", mPost_key);
                 Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_DescBlankFragment_to_crearProyectoFragment, args);
                 //Navigation.findNavController().navigate(R.id.,args);
+            }
+        });
+    }
+
+    private void shares(View root, final String post_title) {
+        FloatingActionButton fav_favorite;
+        fav_favorite = root.findViewById(R.id.fav_favorite);
+        fav_favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT,post_title+" para más detalle te invitamos a descargar la aplicación Emprendedores App https://play.google.com/store");
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
             }
         });
     }
@@ -357,6 +374,9 @@ public class DescBlankFragment extends Fragment {
 
 
     }
+
+
+
 
 
 

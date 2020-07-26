@@ -53,6 +53,14 @@
                     android:alpha="0.3">
                 </FrameLayout>
 
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fav_favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|bottom"
+                    android:src="@drawable/ic_share"
+                    android:contentDescription="Publicar Lectura"
+                    android:layout_margin="16dp" />
 
 
                 <androidx.appcompat.widget.Toolbar
