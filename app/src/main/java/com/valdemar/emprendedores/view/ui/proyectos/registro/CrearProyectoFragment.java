@@ -456,7 +456,7 @@ public class CrearProyectoFragment extends Fragment {
                         Map<String, Object> proyectoHashMap = new HashMap<>();
                         proyecto.setImagen(mImageUriAnterior.toString());
                         proyecto.setVideoSubido(mVideoSubido?"true":"false");
-                        proyecto.setEstadoTrazabilidad("Pendiente");
+                        proyecto.setEstadoTrazabilidad("ACTIVO");
                         proyectoHashMap.put(mIdProyecto, proyecto);
                         mDatabase.updateChildren(proyectoHashMap);
                         mProgresDialog.dismiss();
