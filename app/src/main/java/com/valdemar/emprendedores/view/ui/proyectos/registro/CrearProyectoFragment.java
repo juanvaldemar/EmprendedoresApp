@@ -270,11 +270,27 @@ public class CrearProyectoFragment extends Fragment {
                 mEdtNombreProyecto.setText((String) dataSnapshot.child("nombre").getValue());
                 mEdtDescripcionProyecto.setText((String) dataSnapshot.child("descripcion").getValue());
                 String status = (String) dataSnapshot.child("estadoTrazabilidad").getValue();
+
+
                 ArrayAdapter<CharSequence> adapter5 = ArrayAdapter.createFromResource(getActivity(),
                         R.array.estados, android.R.layout.simple_spinner_item);
                 adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-                spinnerEstados.setAdapter(adapter5);
+                spinnerEstados.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                        String selectedItem = adapterView.getItemAtPosition(position).toString();
+                        Toast.makeText(getActivity(),selectedItem+"",Toast.LENGTH_LONG)
+                                .show();
+                        estadoSeleccionado = selectedItem;
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+
                 if(status != null){
                     if(status.equalsIgnoreCase("ACTIVO")){
                         spinnerEstados.setSelection(0);
@@ -286,6 +302,7 @@ public class CrearProyectoFragment extends Fragment {
                         spinnerEstados.setSelection(2);
                     }
                 }
+                spinnerEstados.setAdapter(adapter5);
 
 
                 String imagenProyectoUri = (String) dataSnapshot.child("imagen").getValue();
@@ -475,25 +492,7 @@ public class CrearProyectoFragment extends Fragment {
 
 
 
-        ArrayAdapter<CharSequence> adapter5 = ArrayAdapter.createFromResource(getActivity(),
-                R.array.estados, android.R.layout.simple_spinner_item);
-        adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        spinnerEstados.setAdapter(adapter5);
-        spinnerEstados.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                String selectedItem = adapterView.getItemAtPosition(position).toString();
-                Toast.makeText(getActivity(),selectedItem+"",Toast.LENGTH_LONG)
-                        .show();
-                estadoSeleccionado = selectedItem;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
 
         if (validarCampos()) {
@@ -512,7 +511,7 @@ public class CrearProyectoFragment extends Fragment {
                         Map<String, Object> proyectoHashMap = new HashMap<>();
                         proyecto.setImagen(mImageUriAnterior.toString());
                         proyecto.setVideoSubido(mVideoSubido?"true":"false");
-                        proyecto.setEstadoTrazabilidad(estadoSeleccionado);
+                        proyecto.setEstadoTrazabilidad(estadoSeleccionado+"");
 
                         proyectoHashMap.put(mIdProyecto, proyecto);
                         mDatabase.updateChildren(proyectoHashMap);
@@ -534,7 +533,7 @@ public class CrearProyectoFragment extends Fragment {
                                     Uri downloadUrl = uri;
                                     proyecto.setImagen(downloadUrl.toString());
                                     proyecto.setVideoSubido(mVideoSubido?"true":"false");
-                                    proyecto.setEstadoTrazabilidad(estadoSeleccionado);
+                                    proyecto.setEstadoTrazabilidad(estadoSeleccionado+"");
 
                                     if (!mActualizarProyecto) {
                                         DatabaseReference newPost = mDatabase.push();
