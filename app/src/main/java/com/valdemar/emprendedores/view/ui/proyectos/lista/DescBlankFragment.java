@@ -169,6 +169,8 @@ public class DescBlankFragment extends Fragment {
                 String post_socio5 = (String) dataSnapshot.child("socio5").getValue();
                 String post_desc5 = (String) dataSnapshot.child("descripcionSocio5").getValue();
 
+                String id_emprendedor = (String) dataSnapshot.child("id_emprendedor").getValue();
+
                 final String textoCentradoDesc = post_desc;
                 String text_string_center = "<html><body style='text-align:justify;'>"+textoCentradoDesc+"<body><html>";
                 /*****************************************/
@@ -231,6 +233,24 @@ public class DescBlankFragment extends Fragment {
 
                 initComentarios(root, mPost_key);
 
+                Button btnActualizarProyecto = root.findViewById(R.id.btn_actualizar_proyecto);
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                if(user.getUid().equalsIgnoreCase(id_emprendedor)){
+                    btnActualizarProyecto.setVisibility(View.VISIBLE);
+
+
+                    btnActualizarProyecto.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Bundle args = new Bundle();
+                            args.putString("ARG_KEY_PROYECTO", mPost_key);
+                            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_DescBlankFragment_to_crearProyectoFragment, args);
+                            //Navigation.findNavController().navigate(R.id.,args);
+                        }
+                    });
+                }
+
             }
 
             @Override
@@ -243,16 +263,7 @@ public class DescBlankFragment extends Fragment {
             }
         });
 
-        Button btnActualizarProyecto = root.findViewById(R.id.btn_actualizar_proyecto);
-        btnActualizarProyecto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle args = new Bundle();
-                args.putString("ARG_KEY_PROYECTO", mPost_key);
-                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_DescBlankFragment_to_crearProyectoFragment, args);
-                //Navigation.findNavController().navigate(R.id.,args);
-            }
-        });
+
     }
 
     private void shares(View root, final String post_title) {
