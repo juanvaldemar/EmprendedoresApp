@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,18 +26,26 @@ import android.widget.Spinner;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.valdemar.emprendedores.R;
+import com.valdemar.emprendedores.model.CategoriaProyecto;
+import com.valdemar.emprendedores.model.Emprendedor;
 import com.valdemar.emprendedores.view.CategoriasFragment;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -56,12 +66,14 @@ public class RegistrarFragment extends Fragment {
 
     private ImageView mImgFoto;
 
-    private EditText edt_nombres_emprendedor,edt_apellidos_emprendedor,
-            edt_num_emprendedor,edt_dni_emprendedor,edt_direccion_emprendedor,
+    private EditText edt_nombres_emprendedor, edt_apellidos_emprendedor,
+            edt_num_emprendedor, edt_dni_emprendedor, edt_direccion_emprendedor,
             edt_facebook, edt_instagram, edt_twitter;
-    private  Spinner spinner_dia,spinner_mes,spinner_anio,spinner_genero,
-            spinner_pais,spinner_ciudad,spinner_ocupacion;
+    private Spinner spinner_dia, spinner_mes, spinner_anio, spinner_genero,
+            spinner_pais, spinner_ciudad, spinner_ocupacion;
     private Button btn_registrar_emprendedor;
+    private Emprendedor mEmprendedor;
+    private boolean mActualizarEmprendedor;
 
     public RegistrarFragment() {
         // Required empty public constructor
@@ -75,12 +87,10 @@ public class RegistrarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        mActualizarEmprendedor = false;
         mRoot = inflater.inflate(R.layout.fragment_registrar, container, false);
         mAuth = FirebaseAuth.getInstance();
         initView(mRoot);
-        initListSpinner(mRoot);
-
 
         return mRoot;
     }
@@ -107,7 +117,6 @@ public class RegistrarFragment extends Fragment {
         btn_registrar_emprendedor = root.findViewById(R.id.btn_registrar_emprendedor);
 
 
-
         mImgFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,18 +127,69 @@ public class RegistrarFragment extends Fragment {
         btn_registrar_emprendedor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registrarProyecto(view);
+                registrarEmprendedor(view);
             }
         });
+
+        initListSpinner(root);
+
+        if (getArguments() != null) {
+            String jsonString = getArguments().getString(PerfilEmprendedorFragment.ARG_EMPRENDEDOR_DETALLE);
+            if (!TextUtils.isEmpty(jsonString)) {
+                mActualizarEmprendedor = true;
+                mEmprendedor = (new Gson()).fromJson(jsonString, Emprendedor.class);
+                cargarEmprendedor();
+            }
+        }
+    }
+
+    private void cargarEmprendedor() {
+        if (!mEmprendedor.getImagen().equals("Vacio"))
+            Glide.with(getActivity().getApplicationContext())
+                    .load(mEmprendedor.getImagen())
+                    .into(mImgFoto);
+
+        edt_nombres_emprendedor.setText(mEmprendedor.getEdt_nombres_emprendedor());
+        edt_apellidos_emprendedor.setText(mEmprendedor.getEdt_apellidos_emprendedor());
+
+        ArrayAdapter<CharSequence> spnGeneroAdapter = (ArrayAdapter<CharSequence>) spinner_genero.getAdapter();
+        spinner_genero.setSelection(spnGeneroAdapter.getPosition(mEmprendedor.getSpinner_genero()));
+
+        ArrayAdapter<CharSequence> spAnioAdapter = (ArrayAdapter<CharSequence>) spinner_anio.getAdapter();
+        spinner_anio.setSelection(spAnioAdapter.getPosition(mEmprendedor.getSpinner_anio()));
+
+        ArrayAdapter<CharSequence> spMesAdapter = (ArrayAdapter<CharSequence>) spinner_mes.getAdapter();
+        spinner_mes.setSelection(spMesAdapter.getPosition(mEmprendedor.getSpinner_mes()));
+
+        ArrayAdapter<CharSequence> spDiaAdapter = (ArrayAdapter<CharSequence>) spinner_dia.getAdapter();
+        spinner_dia.setSelection(spDiaAdapter.getPosition(mEmprendedor.getSpinner_dia()));
+
+        edt_dni_emprendedor.setText(mEmprendedor.getEdt_dni_emprendedor());
+        edt_num_emprendedor.setText(mEmprendedor.getEdt_num_emprendedor());
+        edt_direccion_emprendedor.setText(mEmprendedor.getEdt_direccion_emprendedor());
+
+        ArrayAdapter<CharSequence> spnOcupacionAdapter = (ArrayAdapter<CharSequence>) spinner_ocupacion.getAdapter();
+        spinner_ocupacion.setSelection(spnOcupacionAdapter.getPosition(mEmprendedor.getSpinner_ocupacion()));
+
+        ArrayAdapter<CharSequence> spnPaisAdapter = (ArrayAdapter<CharSequence>) spinner_pais.getAdapter();
+        spinner_pais.setSelection(spnPaisAdapter.getPosition(mEmprendedor.getSpinner_pais()));
+
+        ArrayAdapter<CharSequence> spnCiudadAdapter = (ArrayAdapter<CharSequence>) spinner_ciudad.getAdapter();
+        spinner_ciudad.setSelection(spnCiudadAdapter.getPosition(mEmprendedor.getSpinner_ciudad()));
+
+        edt_facebook.setText(mEmprendedor.getEdt_facebook());
+        edt_twitter.setText(mEmprendedor.getEdt_twitter());
+        edt_instagram.setText(mEmprendedor.getEdt_instagram());
+
     }
 
 
-    private void registrarProyecto(final View v) {
+    private void registrarEmprendedor(final View v) {
 
-        if(validarCampos()){
+        if (validarCampos()) {
             mStorage = FirebaseStorage.getInstance().getReference();
             mDatabase = FirebaseDatabase.getInstance().getReference().child("Emprendedor");
-            mProgresDialog= new ProgressDialog(getActivity());
+            mProgresDialog = new ProgressDialog(getActivity());
             mProgresDialog.setMessage("Registrando Emprendedor");
             mProgresDialog.setCancelable(false);
             mProgresDialog.show();
@@ -137,7 +197,7 @@ public class RegistrarFragment extends Fragment {
                 @Override
                 public void run() {
 
-                    if(mImageUri !=null){
+                    if (mImageUri != null) {
 
                         final StorageReference filepath = mStorage
                                 .child("Emprendedor_images")
@@ -151,12 +211,15 @@ public class RegistrarFragment extends Fragment {
                                     @Override
                                     public void onSuccess(Uri uri) {
                                         Uri downloadUrl = uri;
-                                        mDatabase = FirebaseDatabase.getInstance().getReference().child("Emprendedor");
-                                        DatabaseReference newPost = mDatabase.push();
-
+                                        DatabaseReference newPost;
                                         String user_id = mAuth.getCurrentUser().getUid();
 
-                                        newPost.child("id_emprendedor").setValue(user_id);
+                                        if (!mActualizarEmprendedor) {
+                                            newPost = mDatabase.push();
+                                            newPost.child("id_emprendedor").setValue(user_id);
+                                        } else {
+                                            newPost = mDatabase.child(mEmprendedor.getKey());
+                                        }
 
                                         newPost.child("edt_nombres_emprendedor").setValue(edt_nombres_emprendedor.getText().toString().trim());
                                         newPost.child("edt_apellidos_emprendedor").setValue(edt_apellidos_emprendedor.getText().toString().trim());
@@ -173,13 +236,12 @@ public class RegistrarFragment extends Fragment {
                                         newPost.child("edt_facebook").setValue(edt_facebook.getText().toString().trim());
                                         newPost.child("edt_instagram").setValue(edt_instagram.getText().toString().trim());
                                         newPost.child("edt_twitter").setValue(edt_twitter.getText().toString().trim());
-
                                         newPost.child("imagen").setValue(downloadUrl.toString());
-
                                         Timestamp fechaRegistro = getFecha();
                                         newPost.child("fechaRegistro").setValue(fechaRegistro);
+
                                         mProgresDialog.dismiss();
-                                        Navigation.findNavController(mRoot).navigate(R.id.next_action_desc);
+                                        Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.next_action_to_lista);
                                     }
                                 });
 
@@ -187,12 +249,15 @@ public class RegistrarFragment extends Fragment {
                             }
 
                         });
-                    }else{
-                        DatabaseReference newPost = mDatabase.push();
-
+                    } else {
+                        DatabaseReference newPost;
                         String user_id = mAuth.getCurrentUser().getUid();
-
-                        newPost.child("id_emprendedor").setValue(user_id);
+                        if (!mActualizarEmprendedor) {
+                            newPost = mDatabase.push();
+                            newPost.child("id_emprendedor").setValue(user_id);
+                        } else {
+                            newPost = mDatabase.child(mEmprendedor.getKey());
+                        }
 
                         newPost.child("edt_nombres_emprendedor").setValue(edt_nombres_emprendedor.getText().toString().trim());
                         newPost.child("edt_apellidos_emprendedor").setValue(edt_apellidos_emprendedor.getText().toString().trim());
@@ -210,19 +275,18 @@ public class RegistrarFragment extends Fragment {
                         newPost.child("edt_instagram").setValue(edt_instagram.getText().toString().trim());
                         newPost.child("edt_twitter").setValue(edt_twitter.getText().toString().trim());
 
-
                         newPost.child("imagen").setValue("Vacio");
 
                         Timestamp fechaRegistro = getFecha();
                         newPost.child("fechaRegistro").setValue(fechaRegistro);
                         mProgresDialog.dismiss();
-                        Navigation.findNavController(mRoot).navigate(R.id.next_action_to_lista);
+                        Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.next_action_to_lista);
 
 
                     }
 
                 }
-            },1000);
+            }, 1000);
         }
 
 
@@ -231,7 +295,7 @@ public class RegistrarFragment extends Fragment {
 
     private boolean validarCampos() {
 
-        String s=spinner_dia.getSelectedItem().toString();
+        String s = spinner_dia.getSelectedItem().toString();
 
         if (!(validarEditText(edt_nombres_emprendedor)
                 && validarEditText(edt_apellidos_emprendedor)
@@ -243,7 +307,7 @@ public class RegistrarFragment extends Fragment {
                 && !spinner_genero.getSelectedItem().toString().equals("Género")
                 && !spinner_pais.getSelectedItem().toString().equals("País")
                 && !spinner_ciudad.getSelectedItem().toString().equals("Ciudad")
-                )) {
+        )) {
             showSnackBar("Campos incompletos");
             return false;
         }
@@ -262,14 +326,14 @@ public class RegistrarFragment extends Fragment {
     }
 
 
-    public Timestamp getFecha(){
+    public Timestamp getFecha() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         return timestamp;
     }
 
     private void mostrarOpcionesSubir() {
-        final CharSequence[] opciones = {"Subir foto","Cancelar"};
+        final CharSequence[] opciones = {"Subir foto", "Cancelar"};
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Elige una opción");
         builder.setItems(opciones, new DialogInterface.OnClickListener() {
@@ -287,11 +351,11 @@ public class RegistrarFragment extends Fragment {
 
 
     private void abrirGaleria(String opcion) {
-        switch (opcion){
+        switch (opcion) {
             case "F":
                 Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
                 galleryIntent.setType("image/*");
-                startActivityForResult(galleryIntent,GALLERY_REQUEST);
+                startActivityForResult(galleryIntent, GALLERY_REQUEST);
                 break;
             case "V":
 
@@ -299,7 +363,7 @@ public class RegistrarFragment extends Fragment {
     }
 
     private void initListSpinner(View root) {
-        Spinner spinner1,spinner2,spinner3,spinner4,spinner5,spinner6;
+        Spinner spinner1, spinner2, spinner3, spinner4, spinner5, spinner6;
         spinner1 = (Spinner) root.findViewById(R.id.spinner_dia);
         spinner2 = (Spinner) root.findViewById(R.id.spinner_mes);
         spinner3 = (Spinner) root.findViewById(R.id.spinner_anio);
@@ -356,7 +420,7 @@ public class RegistrarFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == GALLERY_REQUEST && resultCode == RESULT_OK){
+        if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
             mImageUri = data.getData();
 
             //mPostImageSelect.setImageURI(mImageUri);
