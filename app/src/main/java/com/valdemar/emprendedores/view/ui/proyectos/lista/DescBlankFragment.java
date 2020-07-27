@@ -22,9 +22,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.WebView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -89,6 +92,7 @@ public class DescBlankFragment extends Fragment {
 
     private VideoView mVideoView;
 
+    private TextView spinnerEstados;
 
     public DescBlankFragment() {
         // Required empty public constructor
@@ -170,6 +174,11 @@ public class DescBlankFragment extends Fragment {
                 String post_desc5 = (String) dataSnapshot.child("descripcionSocio5").getValue();
 
                 String id_emprendedor = (String) dataSnapshot.child("id_emprendedor").getValue();
+                String estadoTrazabilidad = (String) dataSnapshot.child("estadoTrazabilidad").getValue();
+
+                spinnerEstados = root.findViewById(R.id.spinnerEstados);
+                spinnerEstados.setText(estadoTrazabilidad.toString());
+
 
                 final String textoCentradoDesc = post_desc;
                 String text_string_center = "<html><body style='text-align:justify;'>"+textoCentradoDesc+"<body><html>";
@@ -239,7 +248,6 @@ public class DescBlankFragment extends Fragment {
                 if(user.getUid().equalsIgnoreCase(id_emprendedor)){
                     btnActualizarProyecto.setVisibility(View.VISIBLE);
 
-
                     btnActualizarProyecto.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -249,6 +257,7 @@ public class DescBlankFragment extends Fragment {
                             //Navigation.findNavController().navigate(R.id.,args);
                         }
                     });
+
                 }
 
             }

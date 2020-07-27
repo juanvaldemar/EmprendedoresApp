@@ -64,6 +64,12 @@
         <item>EEUU</item>
     </string-array>
 
+    <string-array name="estados">
+        <item>ACTIVO</item>
+        <item>FINALIZADO</item>
+        <item>DEBAJA</item>
+    </string-array>
+
     <string-array name="ciudad">
         <item>Ciudad</item>
         <item>Lima</item>

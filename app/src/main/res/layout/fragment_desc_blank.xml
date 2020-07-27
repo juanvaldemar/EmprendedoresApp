@@ -114,7 +114,16 @@
                     android:id="@+id/webViewDetail">
 
                 </WebView>
-                
+
+
+
+                <TextView
+                    android:id="@+id/spinnerEstados"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                   />
+
                 <Button
                     android:id="@+id/btn_actualizar_proyecto"
                     android:layout_width="match_parent"

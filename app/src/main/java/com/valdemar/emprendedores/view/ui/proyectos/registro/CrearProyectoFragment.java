@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
@@ -113,6 +115,9 @@ public class CrearProyectoFragment extends Fragment {
     private String mIdProyecto = "";
     private Uri mImageUriAnterior;
 
+    private String estadoSeleccionado;
+    Spinner spinnerEstados;
+
     public CrearProyectoFragment() {
         // Required empty public constructor
     }
@@ -158,6 +163,9 @@ public class CrearProyectoFragment extends Fragment {
     }
 
     private void initUI(View view) {
+
+        spinnerEstados = view.findViewById(R.id.spinnerEstados);
+        spinnerEstados.setVisibility(View.VISIBLE);
 
         mEdtNombreProyecto = (EditText) view.findViewById(R.id.edt_nombre_proyecto);
         mEdtDescripcionProyecto = (EditText) view.findViewById(R.id.edt_descripcion_proyecto);
@@ -235,7 +243,11 @@ public class CrearProyectoFragment extends Fragment {
         btnPublicarProyecto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 registrarProyecto(v);
+
+
             }
         });
 
@@ -257,6 +269,21 @@ public class CrearProyectoFragment extends Fragment {
                 mCategoria.setNombre((String) dataSnapshot.child("categoria").getValue());
                 mEdtNombreProyecto.setText((String) dataSnapshot.child("nombre").getValue());
                 mEdtDescripcionProyecto.setText((String) dataSnapshot.child("descripcion").getValue());
+                String status = (String) dataSnapshot.child("estadoTrazabilidad").getValue();
+                ArrayAdapter<CharSequence> adapter5 = ArrayAdapter.createFromResource(getActivity(),
+                        R.array.estados, android.R.layout.simple_spinner_item);
+                adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                spinnerEstados.setAdapter(adapter5);
+                if(status.equalsIgnoreCase("ACTIVO")){
+                    spinnerEstados.setSelection(0);
+                }
+                if(status.equalsIgnoreCase("FINALIZADO")){
+                    spinnerEstados.setSelection(1);
+                }
+                if(status.equalsIgnoreCase("DEBAJA")){
+                    spinnerEstados.setSelection(2);
+                }
 
                 String imagenProyectoUri = (String) dataSnapshot.child("imagen").getValue();
                 mImageUri = Uri.parse(imagenProyectoUri);
@@ -439,7 +466,33 @@ public class CrearProyectoFragment extends Fragment {
         }
     }
 
+
+
     private void registrarProyecto(View v) {
+
+
+
+        ArrayAdapter<CharSequence> adapter5 = ArrayAdapter.createFromResource(getActivity(),
+                R.array.estados, android.R.layout.simple_spinner_item);
+        adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerEstados.setAdapter(adapter5);
+        spinnerEstados.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                String selectedItem = adapterView.getItemAtPosition(position).toString();
+                Toast.makeText(getActivity(),selectedItem+"",Toast.LENGTH_LONG)
+                        .show();
+                estadoSeleccionado = selectedItem;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
         if (validarCampos()) {
             final Proyecto proyecto = initDataProyecto();
             mStorage = FirebaseStorage.getInstance().getReference();
@@ -456,7 +509,11 @@ public class CrearProyectoFragment extends Fragment {
                         Map<String, Object> proyectoHashMap = new HashMap<>();
                         proyecto.setImagen(mImageUriAnterior.toString());
                         proyecto.setVideoSubido(mVideoSubido?"true":"false");
-                        proyecto.setEstadoTrazabilidad("ACTIVO");
+                        if(estadoSeleccionado != null){
+                            if(!estadoSeleccionado.isEmpty()){
+                                proyecto.setEstadoTrazabilidad(estadoSeleccionado);
+                            }
+                        }
                         proyectoHashMap.put(mIdProyecto, proyecto);
                         mDatabase.updateChildren(proyectoHashMap);
                         mProgresDialog.dismiss();
@@ -477,6 +534,11 @@ public class CrearProyectoFragment extends Fragment {
                                     Uri downloadUrl = uri;
                                     proyecto.setImagen(downloadUrl.toString());
                                     proyecto.setVideoSubido(mVideoSubido?"true":"false");
+                                    if(estadoSeleccionado != null){
+                                        if(!estadoSeleccionado.isEmpty()){
+                                            proyecto.setEstadoTrazabilidad(estadoSeleccionado);
+                                        }
+                                    }
                                     if (!mActualizarProyecto) {
                                         DatabaseReference newPost = mDatabase.push();
                                         newPost.setValue(proyecto);
