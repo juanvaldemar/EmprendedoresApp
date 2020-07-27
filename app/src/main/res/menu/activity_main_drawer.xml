@@ -9,6 +9,10 @@
             android:icon="@drawable/ic_categoria_otros"
             android:title="Registro emprendedor" />
         <item
+            android:id="@+id/nav_perfil_emprendedor"
+            android:icon="@drawable/person_ic"
+            android:title="Perfil" />
+        <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_camera"
             android:title="Registro de proyecto" />
@@ -45,6 +49,7 @@
                 android:visible="false"
                 android:icon="@drawable/ic_out"
                 android:title="Buscar" />
+
 
         </menu>
     </item>

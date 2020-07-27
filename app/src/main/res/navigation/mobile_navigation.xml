@@ -5,6 +5,16 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_gallery">
     <fragment
+        android:id="@+id/nav_perfil_emprendedor"
+        android:name="com.valdemar.emprendedores.view.ui.emprendedor.PerfilEmprendedorFragment"
+        android:label="@string/perfilemprendedor"
+        tools:layout="@layout/fragment_perfil_emprendedor" >
+        <action
+            android:id="@+id/next_action_to_lista"
+            app:destination="@id/nav_categorias" />
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_categorias"
         android:name="com.valdemar.emprendedores.view.ui.emprendedor.RegistrarFragment"
         android:label="@string/registraremprendedor"
@@ -98,4 +108,8 @@
         tools:layout="@layout/fragment_mis_proyectos_creados" />
 
 
+    <fragment
+        android:id="@+id/registrar_fragment"
+        android:name="com.valdemar.emprendedores.view.ui.emprendedor.RegistrarFragment"
+        android:label="@layout/fragment_registrar"/>
 </navigation>

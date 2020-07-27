@@ -19,6 +19,7 @@
     <string name="crearproyecto.hint.socio">Qué socio necesitas?...</string>
     <string name="crearproyecto.hint.socio_descripcion">Descríbenos a ese socio ...</string>
     <string name="registraremprendedor">RegistrarEmprendedor</string>
+    <string name="perfilemprendedor">PerfilEmprendedor</string>
     <string name="errorlogin">El usuario y/o contraseña que ingresaste son incorrectos. Porfavor, <b>Reinténtalo</b> o <b>Créate una cuenta</b></string>
 
     <string-array name="dia">
