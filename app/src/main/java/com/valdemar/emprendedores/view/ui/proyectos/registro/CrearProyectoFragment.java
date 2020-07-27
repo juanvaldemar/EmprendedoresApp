@@ -275,15 +275,18 @@ public class CrearProyectoFragment extends Fragment {
                 adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                 spinnerEstados.setAdapter(adapter5);
-                if(status.equalsIgnoreCase("ACTIVO")){
-                    spinnerEstados.setSelection(0);
+                if(status != null){
+                    if(status.equalsIgnoreCase("ACTIVO")){
+                        spinnerEstados.setSelection(0);
+                    }
+                    if(status.equalsIgnoreCase("FINALIZADO")){
+                        spinnerEstados.setSelection(1);
+                    }
+                    if(status.equalsIgnoreCase("DEBAJA")){
+                        spinnerEstados.setSelection(2);
+                    }
                 }
-                if(status.equalsIgnoreCase("FINALIZADO")){
-                    spinnerEstados.setSelection(1);
-                }
-                if(status.equalsIgnoreCase("DEBAJA")){
-                    spinnerEstados.setSelection(2);
-                }
+
 
                 String imagenProyectoUri = (String) dataSnapshot.child("imagen").getValue();
                 mImageUri = Uri.parse(imagenProyectoUri);
@@ -509,11 +512,8 @@ public class CrearProyectoFragment extends Fragment {
                         Map<String, Object> proyectoHashMap = new HashMap<>();
                         proyecto.setImagen(mImageUriAnterior.toString());
                         proyecto.setVideoSubido(mVideoSubido?"true":"false");
-                        if(estadoSeleccionado != null){
-                            if(!estadoSeleccionado.isEmpty()){
-                                proyecto.setEstadoTrazabilidad(estadoSeleccionado);
-                            }
-                        }
+                        proyecto.setEstadoTrazabilidad(estadoSeleccionado);
+
                         proyectoHashMap.put(mIdProyecto, proyecto);
                         mDatabase.updateChildren(proyectoHashMap);
                         mProgresDialog.dismiss();
@@ -534,11 +534,8 @@ public class CrearProyectoFragment extends Fragment {
                                     Uri downloadUrl = uri;
                                     proyecto.setImagen(downloadUrl.toString());
                                     proyecto.setVideoSubido(mVideoSubido?"true":"false");
-                                    if(estadoSeleccionado != null){
-                                        if(!estadoSeleccionado.isEmpty()){
-                                            proyecto.setEstadoTrazabilidad(estadoSeleccionado);
-                                        }
-                                    }
+                                    proyecto.setEstadoTrazabilidad(estadoSeleccionado);
+
                                     if (!mActualizarProyecto) {
                                         DatabaseReference newPost = mDatabase.push();
                                         newPost.setValue(proyecto);

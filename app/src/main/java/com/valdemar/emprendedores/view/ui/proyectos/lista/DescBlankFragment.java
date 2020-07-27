@@ -177,7 +177,10 @@ public class DescBlankFragment extends Fragment {
                 String estadoTrazabilidad = (String) dataSnapshot.child("estadoTrazabilidad").getValue();
 
                 spinnerEstados = root.findViewById(R.id.spinnerEstados);
-                spinnerEstados.setText(estadoTrazabilidad.toString());
+
+                if(estadoTrazabilidad != null){
+                    spinnerEstados.setText(estadoTrazabilidad.toString());
+                }
 
 
                 final String textoCentradoDesc = post_desc;
