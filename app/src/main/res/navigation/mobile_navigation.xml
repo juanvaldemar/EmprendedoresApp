@@ -9,6 +9,9 @@
         android:name="com.valdemar.emprendedores.view.ui.emprendedor.PerfilEmprendedorFragment"
         android:label="@string/perfilemprendedor"
         tools:layout="@layout/fragment_perfil_emprendedor" >
+        <argument
+            android:name="arg_emprendedor_detalle"
+            app:argType="com.valdemar.emprendedores.model.Emprendedor" />
         <action
             android:id="@+id/next_action_to_lista"
             app:destination="@id/nav_categorias" />

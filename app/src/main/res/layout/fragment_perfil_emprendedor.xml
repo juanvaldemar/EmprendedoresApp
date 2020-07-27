@@ -176,7 +176,14 @@
             </LinearLayout>
 
         </ScrollView>
-
+        <Button
+            android:id="@+id/btn_editar_perfil"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="8dp"
+            android:text="Editar Perfil" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

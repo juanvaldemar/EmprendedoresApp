@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.model.Emprendedor;
 
@@ -34,6 +35,7 @@ import java.util.HashMap;
 public class PerfilEmprendedorFragment extends Fragment {
 
 
+    public static final String ARG_EMPRENDEDOR_DETALLE = "arg_emprendedor_detalle";
     private ImageView mImgPerfil;
     private TextView mTxtNombres;
     private TextView mTxtApellidos;
@@ -47,6 +49,7 @@ public class PerfilEmprendedorFragment extends Fragment {
     private String mLinkFB = "";
     private String mLinkIG = "";
     private String mLinkTW = "";
+    private DataSnapshot mItemSnapshot;
 
     public PerfilEmprendedorFragment() {
         // Required empty public constructor
@@ -113,6 +116,16 @@ public class PerfilEmprendedorFragment extends Fragment {
                 Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_mis_proyectos_creados);
             }
         });
+        Button btnEditarperfil = view.findViewById(R.id.btn_editar_perfil);
+        btnEditarperfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle args = new Bundle();
+                String json = new Gson().toJson(mEmprendedor);
+                args.putString(ARG_EMPRENDEDOR_DETALLE, json);
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.next_action_to_lista,args);
+            }
+        });
         cargarPerfil();
     }
 
@@ -125,10 +138,12 @@ public class PerfilEmprendedorFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot itemSpanshot : dataSnapshot.getChildren()) {
-                    HashMap<String, Emprendedor> hashMapEmprendedor= (HashMap<String, Emprendedor>) itemSpanshot.getValue();
+
                     String id_emprendedor = (String) itemSpanshot.child("id_emprendedor").getValue();
                     mEmprendedor.setId_emprendedor(id_emprendedor);
                     if (mEmprendedor != null && mEmprendedor.getId_emprendedor().equals(user.getUid())) {
+
+                        mEmprendedor.setKey(itemSpanshot.getKey());
 
                         String imagenUrl = obtenerCampoNoNulo((String) itemSpanshot.child("imagen").getValue());
                         mEmprendedor.setImagen(imagenUrl);
@@ -174,6 +189,9 @@ public class PerfilEmprendedorFragment extends Fragment {
 
                         String ocupacion =(String) itemSpanshot.child("spinner_ocupacion").getValue();
                         mEmprendedor.setSpinner_ocupacion(obtenerCampoNoNulo(ocupacion));
+
+                        String genero = obtenerCampoNoNulo((String) itemSpanshot.child("spinner_genero").getValue());
+                        mEmprendedor.setSpinner_genero(genero.isEmpty()?"Masculino":genero);
 
                         mEmprendedorRegistrado = true;
 

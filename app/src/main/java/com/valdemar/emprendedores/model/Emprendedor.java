@@ -1,25 +1,57 @@
 package com.valdemar.emprendedores.model;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Emprendedor {
+public class Emprendedor implements Serializable {
+    @SerializedName("key")
+    private String key;
+    @SerializedName("id_emprendedor")
     private String id_emprendedor;
+    @SerializedName("edt_nombres_emprendedor")
     private String edt_nombres_emprendedor;
+    @SerializedName("edt_apellidos_emprendedor")
     private String edt_apellidos_emprendedor;
+    @SerializedName("edt_dni_emprendedor")
     private String edt_dni_emprendedor;
+    @SerializedName("edt_direccion_emprendedor")
     private String edt_direccion_emprendedor;
+    @SerializedName("imagen")
     private String imagen;
+    @SerializedName("spinner_anio")
     private String spinner_anio;
+    @SerializedName("spinner_mes")
     private String spinner_mes;
+    @SerializedName("spinner_dia")
     private String spinner_dia;
+    @SerializedName("spinner_pais")
     private String spinner_pais;
+    @SerializedName("spinner_ciudad")
     private String spinner_ciudad;
+    @SerializedName("spinner_ocupacion")
     private String spinner_ocupacion;
+    @SerializedName("spinner_genero")
+    private String spinner_genero;
+    @SerializedName("edt_num_emprendedor")
     private String edt_num_emprendedor;
+    @SerializedName("edt_facebook")
     private String edt_facebook;
+    @SerializedName("edt_instagram")
     private String edt_instagram;
+    @SerializedName("edt_twitter")
     private String edt_twitter;
+    @SerializedName("fechaRegistro")
     private Timestamp fechaRegistro;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     public String getId_emprendedor() {
         return id_emprendedor;
@@ -155,5 +187,13 @@ public class Emprendedor {
 
     public void setSpinner_ocupacion(String spinner_ocupacion) {
         this.spinner_ocupacion = spinner_ocupacion;
+    }
+
+    public String getSpinner_genero() {
+        return spinner_genero;
+    }
+
+    public void setSpinner_genero(String spinner_genero) {
+        this.spinner_genero = spinner_genero;
     }
 }
