@@ -367,9 +367,20 @@ public class DescBlankFragment extends Fragment {
                                 if(user != null){
                                     Random random = new Random();
                                     int randomNumber = random.nextInt(9999999);
-                                    mDatabaseMisComentarios.child(mPost_key).child(String.valueOf(randomNumber)).child("foto").setValue(user.getPhotoUrl().toString());
+
+                                    DatabaseReference newPost = mDatabaseMisComentarios.child(mPost_key).push();
+
+                                    newPost.child("foto").setValue(user.getPhotoUrl().toString());
+                                    newPost.child("comentario").setValue(txtComentario.getText().toString());
+                                    newPost.child("nombre").setValue(user.getDisplayName().toString());
+
+
+                                    mRecyclerComentarios.setVisibility(View.GONE);
+                                   /* mDatabaseMisComentarios.child(mPost_key).child(String.valueOf(randomNumber)).child("foto").setValue(user.getPhotoUrl().toString());
                                     mDatabaseMisComentarios.child(mPost_key).child(String.valueOf(randomNumber)).child("comentario").setValue(txtComentario.getText().toString());
                                     mDatabaseMisComentarios.child(mPost_key).child(String.valueOf(randomNumber)).child("nombre").setValue(user.getDisplayName().toString());
+                                    mRecyclerComentarios.setVisibility(View.GONE);
+                                    mRecyclerComentarios.setVisibility(View.VISIBLE);*/
                                 }
                             }
 
@@ -378,7 +389,13 @@ public class DescBlankFragment extends Fragment {
                             }
                         });
                         MyDialog.dismiss();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mRecyclerComentarios.setVisibility(View.VISIBLE);
 
+                            }
+                        },1000);
                     }
                 });
 
