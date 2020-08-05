@@ -122,7 +122,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                   />
+                    />
 
                 <Button
                     android:id="@+id/btn_actualizar_proyecto"
@@ -263,6 +263,153 @@
                     android:layout_marginLeft="50dp"
                     android:textColor="@color/white"  />
 
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="16dp"
+                            android:paddingBottom="16dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txt_publicado_por"
+                                android:visibility="visible"
+                                android:scaleType="centerCrop"
+                                android:layout_gravity="center"
+                                android:text="Proyecto publicado por: Carla Montes"
+                                android:textSize="15sp"
+                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <ImageView
+                                android:id="@+id/img_foto_proyecto"
+                                android:visibility="visible"
+                                android:scaleType="centerCrop"
+                                android:layout_gravity="center"
+                                android:src="@drawable/foto_proyecto_default"
+                                android:layout_width="150dp"
+                                android:layout_height="150dp"/>
+                            <TextView
+                                android:id="@+id/txt_nombre_proyecto"
+                                android:visibility="visible"
+                                android:scaleType="centerCrop"
+                                android:layout_gravity="center"
+                                android:text="Mesas decorativas"
+                                android:textSize="15sp"
+                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                            <ImageView
+                                android:layout_width="65dp"
+                                android:layout_height="100dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_flecha_abajo_gruesa" />
+                            <TextView
+                                android:visibility="visible"
+                                android:scaleType="centerCrop"
+                                android:layout_gravity="center"
+                                android:text="Cantidad de socios suscritos o postulantes al proyecto:"
+                                android:gravity="center"
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:id="@+id/txt_cantidad_socios_suscritos"
+                                android:visibility="visible"
+                                android:scaleType="centerCrop"
+                                android:layout_gravity="center"
+                                android:text="500"
+                                android:textSize="30sp"
+                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                            <LinearLayout
+                                android:id="@+id/ll_proyecto_realizado"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:visibility="visible"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="65dp"
+                                    android:layout_height="100dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_flecha_abajo_gruesa" />
+                                <TextView
+                                    android:visibility="visible"
+                                    android:scaleType="centerCrop"
+                                    android:layout_gravity="center"
+                                    android:text="Cantidad de socios suscritos aceptados al proyecto:"
+                                    android:gravity="center"
+                                    android:layout_width="150dp"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:id="@+id/txt_cantidad_socios_aceptados"
+                                    android:visibility="visible"
+                                    android:scaleType="centerCrop"
+                                    android:layout_gravity="center"
+                                    android:text="0"
+                                    android:textSize="30sp"
+                                    android:gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                                <ImageView
+                                    android:visibility="visible"
+                                    android:scaleType="centerCrop"
+                                    android:layout_gravity="center"
+                                    android:src="@android:drawable/btn_star_big_on"
+                                    android:layout_width="150dp"
+                                    android:layout_height="150dp"/>
+                                <TextView
+                                    android:visibility="visible"
+                                    android:scaleType="centerCrop"
+                                    android:layout_gravity="center"
+                                    android:text="Proyecto realizado"
+                                    android:textSize="20sp"
+                                    android:gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_proyecto_cancelado"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="65dp"
+                                    android:layout_height="100dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_flecha_abajo_gruesa" />
+                                <ImageView
+                                    android:visibility="visible"
+                                    android:scaleType="centerCrop"
+                                    android:layout_gravity="center"
+                                    android:src="@android:drawable/ic_delete"
+                                    android:layout_width="150dp"
+                                    android:layout_height="150dp"/>
+                                <TextView
+                                    android:visibility="visible"
+                                    android:scaleType="centerCrop"
+                                    android:layout_gravity="center"
+                                    android:text="Proyecto cancelado"
+                                    android:textSize="20sp"
+                                    android:gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </ScrollView>
+
+                </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/txtComentarios"
@@ -284,16 +431,16 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerComentarios"
                         android:layout_width="match_parent"
-                        android:layout_height="1000dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:focusable="true"
                         android:visibility="gone"
                         android:orientation="vertical"
                         android:nestedScrollingEnabled="false"
                         >
-                </androidx.recyclerview.widget.RecyclerView>
+                    </androidx.recyclerview.widget.RecyclerView>
 
-        </androidx.core.widget.NestedScrollView>
+                </androidx.core.widget.NestedScrollView>
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
