@@ -63,7 +63,7 @@ public class DescBlankFragment extends Fragment {
     private String mPost_key = null;
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabaseLike, mDatabaseLikeCount;
-    private TextView mPostTitleDetails,postCategoria,
+    private TextView mPostTitleDetails,postCategoria,postAutor,
             postSocio1,postDesc1
             ,postSocio2,postDesc2
             ,postSocio3,postDesc3
@@ -129,6 +129,7 @@ public class DescBlankFragment extends Fragment {
 
         mPostTitleDetails = (TextView) root.findViewById(R.id.postTitleDetails);
         postCategoria = (TextView) root.findViewById(R.id.postCategoria);
+        postAutor = (TextView) root.findViewById(R.id.postAutor);
         postSocio1 = (TextView) root.findViewById(R.id.postSocio1);
         postDesc1 = (TextView) root.findViewById(R.id.postDesc1);
 
@@ -156,6 +157,8 @@ public class DescBlankFragment extends Fragment {
                 String videoSubido_ = (String) dataSnapshot.child("videoSubido").getValue();
 
                 boolean videoSubido = Boolean.parseBoolean(videoSubido_);
+
+                String post_autor = (String) dataSnapshot.child("autor").getValue();
 
                 String post_title = (String) dataSnapshot.child("nombre").getValue();
                 String post_desc = (String) dataSnapshot.child("descripcion").getValue();
@@ -196,7 +199,7 @@ public class DescBlankFragment extends Fragment {
 
                 mPostTitleDetails.setText(post_title);
                 postCategoria.setText("Categoria: "+post_categoria);
-
+                postAutor.setText("Publicado por: "+post_autor);
 
                 postSocio1.setText("- "+post_socio1);
                 postDesc1.setText(post_desc1);

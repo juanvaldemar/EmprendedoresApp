@@ -531,10 +531,12 @@ public class CrearProyectoFragment extends Fragment {
                                     proyecto.setImagen(downloadUrl.toString());
                                     proyecto.setVideoSubido(mVideoSubido?"true":"false");
 
+                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                                     if (!mActualizarProyecto) {
                                         DatabaseReference newPost = mDatabase.push();
                                         proyecto.setEstadoTrazabilidad("ACTIVO");
+                                        proyecto.setAutor(user.getDisplayName());
                                         newPost.setValue(proyecto);
 
                                     } else {
