@@ -375,6 +375,8 @@ public class CrearProyectoFragment extends Fragment {
                     mSpnCiudad.setSelection(spnCiudadAdapter.getPosition(ciudad));
                 }
 
+
+
             }
 
             @Override
@@ -490,11 +492,6 @@ public class CrearProyectoFragment extends Fragment {
 
     private void registrarProyecto(View v) {
 
-
-
-
-
-
         if (validarCampos()) {
             final Proyecto proyecto = initDataProyecto();
             mStorage = FirebaseStorage.getInstance().getReference();
@@ -512,12 +509,12 @@ public class CrearProyectoFragment extends Fragment {
                         proyecto.setImagen(mImageUriAnterior.toString());
                         proyecto.setVideoSubido(mVideoSubido?"true":"false");
                         proyecto.setEstadoTrazabilidad(estadoSeleccionado+"");
-
                         proyectoHashMap.put(mIdProyecto, proyecto);
                         mDatabase.updateChildren(proyectoHashMap);
                         mProgresDialog.dismiss();
                         Navigation.findNavController(mRoot).navigate(R.id.next_action_to_lista_proyectos);
                     }
+
                 } else {
                     final StorageReference filepath = mStorage
                             .child("Proyectos_images")
@@ -533,13 +530,16 @@ public class CrearProyectoFragment extends Fragment {
                                     Uri downloadUrl = uri;
                                     proyecto.setImagen(downloadUrl.toString());
                                     proyecto.setVideoSubido(mVideoSubido?"true":"false");
-                                    proyecto.setEstadoTrazabilidad(estadoSeleccionado+"");
+
 
                                     if (!mActualizarProyecto) {
                                         DatabaseReference newPost = mDatabase.push();
+                                        proyecto.setEstadoTrazabilidad("ACTIVO");
                                         newPost.setValue(proyecto);
+
                                     } else {
                                         Map<String, Object> proyectoHashMap = new HashMap<>();
+                                        proyecto.setEstadoTrazabilidad(estadoSeleccionado+"");
                                         proyectoHashMap.put(mIdProyecto, proyecto);
                                         mDatabase.updateChildren(proyectoHashMap);
                                         //mDatabase.child(mIdProyecto).updateChildren(proyecto);
