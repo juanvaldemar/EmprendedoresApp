@@ -91,14 +91,14 @@ public class MisProyectosCreadosFragment extends Fragment {
         mBtnCancelado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                initllamada("FINALIZADO",root,queryRef);
+                initllamada("DEBAJA",root,queryRef);
 
             }
         });
         mBtnFinalizado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                initllamada("DEBAJA",root,queryRef);
+                initllamada("FINALIZADO",root,queryRef);
 
             }
         });
