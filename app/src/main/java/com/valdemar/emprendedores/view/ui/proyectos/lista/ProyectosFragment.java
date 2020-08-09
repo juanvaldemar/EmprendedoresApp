@@ -150,6 +150,7 @@ public class ProyectosFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String newText) {
                 System.out.println(newText);
+                allSpook(mPost_categoria,listener);
                 if(mAdapter!=null){
                     if(!newText.isEmpty()){
                         mAdapter.getFilter().filter(newText);
@@ -163,7 +164,9 @@ public class ProyectosFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
+                if(newText.length() == 0){
+                    allSpook(mPost_categoria,listener);
+                }
                 return false;
 
             }
@@ -383,7 +386,12 @@ public class ProyectosFragment extends Fragment {
                     String ids = eventSnapshot.getKey();
                     ItemFeed category = eventSnapshot.getValue(ItemFeed.class);
                     category.setId(ids);
-                    arrayLists.add(category);
+                    if(category.getEstadoTrazabilidad() != null){
+                        if(!category.getEstadoTrazabilidad().equalsIgnoreCase("DEBAJA")){
+                            arrayLists.add(category);
+                        }
+                    }
+
                 }
 
 
