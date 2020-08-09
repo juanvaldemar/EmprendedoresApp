@@ -2,6 +2,9 @@ package com.valdemar.emprendedores;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
@@ -9,15 +12,24 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.internal.NavigationMenu;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.valdemar.emprendedores.view.CategoriasFragment;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.NavGraph;
 import androidx.navigation.NavInflater;
 import androidx.navigation.Navigation;
@@ -30,6 +42,8 @@ import androidx.appcompat.widget.Toolbar;
 public class MenuLateralActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private DatabaseReference mDatabase;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +58,8 @@ public class MenuLateralActivity extends AppCompatActivity {
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -68,18 +83,33 @@ public class MenuLateralActivity extends AppCompatActivity {
         navController.setGraph(graph);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
+        verificarRegistroEmprendedor();
     }
 
+    
+    public void verificarRegistroEmprendedor(){
+        final DatabaseReference mEmprendedorReference;
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.menu_lateral, menu);
+        mEmprendedorReference = FirebaseDatabase.getInstance().getReference().child("Emprendedor");
+        mEmprendedorReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot itemSpanshot: dataSnapshot.getChildren()) {
+                    String idEmprendedor = (String)itemSpanshot.child("id_emprendedor").getValue();
+                    if(idEmprendedor!=null && idEmprendedor.equals(user.getUid())){
+                        MenuItem registrarEmprendedorMenuItem = navigationView.getMenu().findItem(R.id.nav_categorias);
+                        registrarEmprendedorMenuItem.setVisible(false);
+                        break;
+                    }
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
 
-
-        return true;
     }
 
     @Override
