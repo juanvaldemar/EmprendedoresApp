@@ -43,7 +43,7 @@ public class Emprendedor implements Serializable {
     @SerializedName("edt_twitter")
     private String edt_twitter;
     @SerializedName("fechaRegistro")
-    private Timestamp fechaRegistro;
+    private String fechaRegistro;
 
     public String getKey() {
         return key;
@@ -173,11 +173,11 @@ public class Emprendedor implements Serializable {
         this.edt_twitter = edt_twitter;
     }
 
-    public Timestamp getFechaRegistro() {
+    public String getFechaRegistro() {
         return fechaRegistro;
     }
 
-    public void setFechaRegistro(Timestamp fechaRegistro) {
+    public void setFechaRegistro(String fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
 

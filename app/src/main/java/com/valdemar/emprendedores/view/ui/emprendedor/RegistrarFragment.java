@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -44,8 +45,13 @@ import com.valdemar.emprendedores.model.Emprendedor;
 import com.valdemar.emprendedores.view.CategoriasFragment;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -181,8 +187,28 @@ public class RegistrarFragment extends Fragment {
         edt_twitter.setText(mEmprendedor.getEdt_twitter());
         edt_instagram.setText(mEmprendedor.getEdt_instagram());
 
+        String fechaRegistroStr = mEmprendedor.getFechaRegistro();
+        int diasRegistrados = calcularDiasRegistrado(fechaRegistroStr);
+        if (diasRegistrados < 31){
+            edt_nombres_emprendedor.setEnabled(false);
+            edt_apellidos_emprendedor.setEnabled(false);
+        }
+
     }
 
+    private int calcularDiasRegistrado(String fechaRegistroStr){
+        int diasRegistrado = 0;
+        SimpleDateFormat sdfFechaRegistro = new SimpleDateFormat("dd/MM/yyyy");
+        try{
+            Date fechaRegistro = sdfFechaRegistro.parse(fechaRegistroStr);
+            Date hoy = new Date();
+            diasRegistrado = (int)( (hoy.getTime() - fechaRegistro.getTime()) / (1000 * 60 * 60 * 24));
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return diasRegistrado;
+    }
 
     private void registrarEmprendedor(final View v) {
 
@@ -237,8 +263,9 @@ public class RegistrarFragment extends Fragment {
                                         newPost.child("edt_instagram").setValue(edt_instagram.getText().toString().trim());
                                         newPost.child("edt_twitter").setValue(edt_twitter.getText().toString().trim());
                                         newPost.child("imagen").setValue(downloadUrl.toString());
-                                        Timestamp fechaRegistro = getFecha();
-                                        newPost.child("fechaRegistro").setValue(fechaRegistro);
+                                        SimpleDateFormat sdfFechaRegistro = new SimpleDateFormat("dd/MM/yyyy");
+                                        Date todayDate = new Date();
+                                        newPost.child("fechaRegistro").setValue(sdfFechaRegistro.format(todayDate));
 
                                         mProgresDialog.dismiss();
                                         Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.next_action_to_lista);
@@ -277,8 +304,9 @@ public class RegistrarFragment extends Fragment {
 
                         newPost.child("imagen").setValue("Vacio");
 
-                        Timestamp fechaRegistro = getFecha();
-                        newPost.child("fechaRegistro").setValue(fechaRegistro);
+                        SimpleDateFormat sdfFechaRegistro = new SimpleDateFormat("dd/MM/yyyy");
+                        Date todayDate = new Date();
+                        newPost.child("fechaRegistro").setValue(sdfFechaRegistro.format(todayDate));
                         mProgresDialog.dismiss();
                         Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.next_action_to_lista);
 
