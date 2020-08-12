@@ -1,4 +1,4 @@
-package com.valdemar.emprendedores.view.ui.proyectos.registro;
+package com.valdemar.emprendedores.view.ui.proyectos.registro_proyecto;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -276,6 +276,20 @@ public class CrearProyectoFragment extends Fragment {
                         R.array.estados, android.R.layout.simple_spinner_item);
                 adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+
+
+                if(status != null){
+                    if(status.equalsIgnoreCase("ACTIVO")){
+                        spinnerEstados.setSelection(0);
+                    }
+                    if(status.equalsIgnoreCase("FINALIZADO")){
+                        spinnerEstados.setSelection(1);
+                    }
+                    if(status.equalsIgnoreCase("DEBAJA")){
+                        spinnerEstados.setSelection(2);
+                    }
+                }
+
                 spinnerEstados.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
@@ -290,20 +304,7 @@ public class CrearProyectoFragment extends Fragment {
 
                     }
                 });
-
-                if(status != null){
-                    if(status.equalsIgnoreCase("ACTIVO")){
-                        spinnerEstados.setSelection(0);
-                    }
-                    if(status.equalsIgnoreCase("FINALIZADO")){
-                        spinnerEstados.setSelection(1);
-                    }
-                    if(status.equalsIgnoreCase("DEBAJA")){
-                        spinnerEstados.setSelection(2);
-                    }
-                }
                 spinnerEstados.setAdapter(adapter5);
-
 
                 String imagenProyectoUri = (String) dataSnapshot.child("imagen").getValue();
                 mImageUri = Uri.parse(imagenProyectoUri);

@@ -76,7 +76,7 @@
 
     <fragment
         android:id="@+id/crearProyectoFragment"
-        android:name="com.valdemar.emprendedores.view.ui.proyectos.registro.CrearProyectoFragment"
+        android:name="com.valdemar.emprendedores.view.ui.proyectos.registro_proyecto.CrearProyectoFragment"
         android:label="CrearProyectoFragment" >
         <argument
             android:name="categoria"
@@ -92,6 +92,7 @@
         android:id="@+id/nav_share"
         android:name="com.valdemar.emprendedores.view.ui.ShareFragment"
         android:label="Compartir App"
+
         tools:layout="@layout/fragment_share" />
 
 

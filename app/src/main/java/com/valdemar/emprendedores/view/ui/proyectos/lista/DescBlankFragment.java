@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -213,6 +214,11 @@ public class DescBlankFragment extends Fragment {
                         textoFinalizado.setVisibility(View.VISIBLE);
                         iconoFinalizado.setVisibility(View.VISIBLE);
                     }
+                    if(estadoTrazabilidad.equalsIgnoreCase("ACTIVO")){
+                        shares(root,post_title);
+                        initComentarios(root, mPost_key);
+
+                    }
 
                 }
 
@@ -226,7 +232,6 @@ public class DescBlankFragment extends Fragment {
                 webViewDetail.loadDataWithBaseURL("", dataString, "text/html", "UTF-8", "");
                 /*****************************************/
 
-                shares(root,post_title);
 
                 mPostTitleDetails.setText(post_title);
                 txt_nombre_proyecto.setText(post_title);
@@ -287,7 +292,6 @@ public class DescBlankFragment extends Fragment {
                             .into(img_foto_proyecto);
                 }
 
-                initComentarios(root, mPost_key);
 
                 FloatingActionButton btnActualizarProyecto = root.findViewById(R.id.btn_actualizar_proyecto);
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -330,6 +334,7 @@ public class DescBlankFragment extends Fragment {
     private void shares(View root, final String post_title) {
         FloatingActionButton fav_favorite;
         fav_favorite = root.findViewById(R.id.fav_favorite);
+        fav_favorite.setVisibility(View.VISIBLE);
         fav_favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -416,15 +421,19 @@ public class DescBlankFragment extends Fragment {
                                 if(user != null){
                                     Random random = new Random();
                                     int randomNumber = random.nextInt(9999999);
+                                    if(!txtComentario.getText().toString().isEmpty()){
+                                        DatabaseReference newPost = mDatabaseMisComentarios.child(mPost_key).push();
 
-                                    DatabaseReference newPost = mDatabaseMisComentarios.child(mPost_key).push();
+                                        newPost.child("foto").setValue(user.getPhotoUrl().toString());
+                                        newPost.child("comentario").setValue(txtComentario.getText().toString());
+                                        newPost.child("nombre").setValue(user.getDisplayName().toString());
 
-                                    newPost.child("foto").setValue(user.getPhotoUrl().toString());
-                                    newPost.child("comentario").setValue(txtComentario.getText().toString());
-                                    newPost.child("nombre").setValue(user.getDisplayName().toString());
+                                        mRecyclerComentarios.setVisibility(View.GONE);
+                                    }else{
+                                        Toast.makeText(getActivity(),"Por favor ingrese un texto válido.",Toast.LENGTH_LONG).show();
 
+                                    }
 
-                                    mRecyclerComentarios.setVisibility(View.GONE);
                                    /* mDatabaseMisComentarios.child(mPost_key).child(String.valueOf(randomNumber)).child("foto").setValue(user.getPhotoUrl().toString());
                                     mDatabaseMisComentarios.child(mPost_key).child(String.valueOf(randomNumber)).child("comentario").setValue(txtComentario.getText().toString());
                                     mDatabaseMisComentarios.child(mPost_key).child(String.valueOf(randomNumber)).child("nombre").setValue(user.getDisplayName().toString());

@@ -60,6 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|bottom"
                     android:src="@drawable/ic_share"
+                    android:visibility="gone"
                     android:contentDescription="Publicar Lectura"
                     android:layout_margin="16dp" />
 
@@ -293,7 +294,7 @@
                     android:textColor="#FFFFFF"  />
 
                 <androidx.core.widget.NestedScrollView
-                    android:id="@+id/scroll2"
+                    android:id="@+id/scrollComentarios"
                     android:background="@color/black"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
