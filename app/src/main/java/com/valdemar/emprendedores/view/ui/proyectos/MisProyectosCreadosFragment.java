@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -109,7 +110,7 @@ public class MisProyectosCreadosFragment extends Fragment {
 
     }
 
-    private void initllamada(final String estado, View root, Query queryRef) {
+    private void initllamada(final String estado, final View root, Query queryRef) {
         FirebaseRecyclerAdapter<ItemFeed, RelatoViewHolderStructure>
                 firebaseRecyclerAdapterMyLecturas = new FirebaseRecyclerAdapter<ItemFeed, RelatoViewHolderStructure>(
                 ItemFeed.class,
@@ -136,7 +137,26 @@ public class MisProyectosCreadosFragment extends Fragment {
 
                 }
 
+                viewHolder.mViewStructure.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mProgress.setMessage("Accediendo...");
+                        mProgress.show();
 
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mProgress.hide();
+                                mProgress.dismiss();
+                                Bundle args = new Bundle();
+                                args.putString("blog_id", post_key);
+
+                                Navigation.findNavController(root).navigate(R.id.next_action_desc,args);
+
+                            }
+                        }, 100);
+                    }
+                });
 
             }
         };

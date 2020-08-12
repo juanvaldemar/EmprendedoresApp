@@ -118,20 +118,21 @@ public class SearchPlaceAdapter extends RecyclerView.Adapter<SearchPlaceAdapter.
 
                 filteredList.addAll(arrayList);
             } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
+                String filterPattern = constraint.toString().toLowerCase();
 
                 for (ItemFeed item : arrayList) {
                     if (item.getPais().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
-                    }
-                    if (item.getCiudad().toLowerCase().contains(filterPattern)) {
+                    }else if(item.getCiudad().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
-                    if (item.getCategoria().toLowerCase().contains(filterPattern)) {
+                    else if (item.getCategoria().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
-                    if (item.getNombre().toLowerCase().contains(filterPattern)) {
+                    else if (item.getNombre().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
+                    }else{
+                        System.out.println("else");
                     }
                 }
             }
@@ -144,6 +145,7 @@ public class SearchPlaceAdapter extends RecyclerView.Adapter<SearchPlaceAdapter.
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults results) {
+            notifyDataSetChanged();
             arrayList.clear();
             arrayList.addAll((List)results.values);
             notifyDataSetChanged();

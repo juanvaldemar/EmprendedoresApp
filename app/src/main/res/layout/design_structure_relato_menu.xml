@@ -22,8 +22,16 @@
         android:layout_height="match_parent"
         android:background="@color/black"
         android:alpha=".4"
-        />
+        >
+    </FrameLayout>
 
+    <ImageView
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:background="@drawable/favorite_flaco"
+        />
     <TextView
         android:id="@+id/item_recycler_structure_title"
         android:layout_width="match_parent"

@@ -108,7 +108,15 @@
         android:id="@+id/nav_mis_proyectos_creados"
         android:name="com.valdemar.emprendedores.view.ui.proyectos.MisProyectosCreadosFragment"
         android:label="Mis proyectos creados"
-        tools:layout="@layout/fragment_mis_proyectos_creados" />
+        tools:layout="@layout/fragment_mis_proyectos_creados" >
+        <argument
+            android:name="blog_id"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/next_action_desc"
+            app:destination="@id/DescBlankFragment" />
+    </fragment>
 
 
     <fragment

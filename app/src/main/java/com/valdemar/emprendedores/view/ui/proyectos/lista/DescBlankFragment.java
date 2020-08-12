@@ -26,6 +26,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -63,16 +64,20 @@ public class DescBlankFragment extends Fragment {
     private String mPost_key = null;
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabaseLike, mDatabaseLikeCount;
-    private TextView mPostTitleDetails,postCategoria,postAutor,
+    private TextView mPostTitleDetails,txt_nombre_proyecto,
+            txt_cantidad_socios_suscritos,txt_cantidad_socios_aceptados,
+            textoFinalizado,postCategoria,
+            postAutor,txt_publicado_por,
             postSocio1,postDesc1
             ,postSocio2,postDesc2
             ,postSocio3,postDesc3
             ,postSocio4,postDesc4
             ,postSocio5,postDesc5;
-    private ImageView mImage_paralax;
+    private ImageView mImage_paralax,img_foto_proyecto,iconoFinalizado;
     private FloatingActionButton mFav_favorite;
     private ImageView mVounn_icon;
     private boolean mProcessLike;
+    private LinearLayout linearDeBaja;
 
     private FirebaseAuth mAuth;
 
@@ -128,8 +133,17 @@ public class DescBlankFragment extends Fragment {
 
 
         mPostTitleDetails = (TextView) root.findViewById(R.id.postTitleDetails);
+        txt_nombre_proyecto = (TextView) root.findViewById(R.id.txt_nombre_proyecto);
+
+
+
+        txt_cantidad_socios_suscritos = (TextView) root.findViewById(R.id.txt_cantidad_socios_suscritos);
+        txt_cantidad_socios_aceptados = (TextView) root.findViewById(R.id.txt_cantidad_socios_aceptados);
+
+
         postCategoria = (TextView) root.findViewById(R.id.postCategoria);
         postAutor = (TextView) root.findViewById(R.id.postAutor);
+        txt_publicado_por = (TextView) root.findViewById(R.id.txt_publicado_por);
         postSocio1 = (TextView) root.findViewById(R.id.postSocio1);
         postDesc1 = (TextView) root.findViewById(R.id.postDesc1);
 
@@ -148,6 +162,7 @@ public class DescBlankFragment extends Fragment {
         mVideoView = (VideoView)root.findViewById(R.id.videoview_proyecto);
 
         mImage_paralax = (ImageView) root.findViewById(R.id.image_paralax);
+        img_foto_proyecto = (ImageView) root.findViewById(R.id.img_foto_proyecto);
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Proyectos");
         mDatabase.child(mPost_key).addValueEventListener(new ValueEventListener() {
@@ -181,8 +196,24 @@ public class DescBlankFragment extends Fragment {
 
                 spinnerEstados = root.findViewById(R.id.spinnerEstados);
 
+                textoFinalizado = root.findViewById(R.id.textoFinalizado);
+                iconoFinalizado = root.findViewById(R.id.iconoFinalizado);
+
+
+                linearDeBaja = root.findViewById(R.id.linearDeBaja);
+
                 if(estadoTrazabilidad != null){
                     spinnerEstados.setText(estadoTrazabilidad.toString());
+
+                    if(estadoTrazabilidad.equalsIgnoreCase("DEBAJA")){
+                        linearDeBaja.setVisibility(View.VISIBLE);
+                    }
+
+                    if(estadoTrazabilidad.equalsIgnoreCase("FINALIZADO")){
+                        textoFinalizado.setVisibility(View.VISIBLE);
+                        iconoFinalizado.setVisibility(View.VISIBLE);
+                    }
+
                 }
 
 
@@ -198,8 +229,12 @@ public class DescBlankFragment extends Fragment {
                 shares(root,post_title);
 
                 mPostTitleDetails.setText(post_title);
+                txt_nombre_proyecto.setText(post_title);
+
                 postCategoria.setText("Categoria: "+post_categoria);
-                postAutor.setText("Publicado por: "+post_autor);
+
+                postAutor.setText("Proyecto publicado por: \n"+post_autor);
+                txt_publicado_por.setText("Proyecto publicado por: \n"+post_autor);
 
                 postSocio1.setText("- "+post_socio1);
                 postDesc1.setText(post_desc1);
@@ -246,11 +281,15 @@ public class DescBlankFragment extends Fragment {
                     Glide.with(getActivity().getApplicationContext())
                             .load(post_image)
                             .into(mImage_paralax);
+
+                    Glide.with(getActivity().getApplicationContext())
+                            .load(post_image)
+                            .into(img_foto_proyecto);
                 }
 
                 initComentarios(root, mPost_key);
 
-                Button btnActualizarProyecto = root.findViewById(R.id.btn_actualizar_proyecto);
+                FloatingActionButton btnActualizarProyecto = root.findViewById(R.id.btn_actualizar_proyecto);
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                 if(user.getUid().equalsIgnoreCase(id_emprendedor)){
@@ -267,6 +306,11 @@ public class DescBlankFragment extends Fragment {
                     });
 
                 }
+
+                Random r = new Random();
+                int valorDado = r.nextInt(12);
+                txt_cantidad_socios_suscritos.setText(valorDado+"");
+                txt_cantidad_socios_aceptados.setText(valorDado+"");
 
             }
 
@@ -319,7 +363,7 @@ public class DescBlankFragment extends Fragment {
                 mRecyclerComentarios.setVisibility(View.VISIBLE);
 
             }
-        },1000);
+        },500);
 
 
         mRecyclerComentarios.setHasFixedSize(true);
@@ -400,7 +444,7 @@ public class DescBlankFragment extends Fragment {
                                 mRecyclerComentarios.setVisibility(View.VISIBLE);
 
                             }
-                        },1000);
+                        },500);
                     }
                 });
 
