@@ -302,7 +302,7 @@ public class RegistrarFragment extends Fragment {
                         newPost.child("edt_instagram").setValue(edt_instagram.getText().toString().trim());
                         newPost.child("edt_twitter").setValue(edt_twitter.getText().toString().trim());
 
-                        newPost.child("imagen").setValue("Vacio");
+                        //newPost.child("imagen").setValue("Vacio");
 
                         SimpleDateFormat sdfFechaRegistro = new SimpleDateFormat("dd/MM/yyyy");
                         Date todayDate = new Date();
