@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,21 +19,32 @@ import android.widget.Button;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.view.ui.proyectos.lista.ItemFeed;
+import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.IModal;
+import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.SearchPlaceAdapter;
+
+import java.util.ArrayList;
 
 public class MisProyectosCreadosFragment extends Fragment {
 
     private RecyclerView mRecyclerMisLecturas;
-    private DatabaseReference mDatabaseMisLecturas;
+    private DatabaseReference mDatabaseMisLecturas,mRef;
     private ProgressDialog mProgress;
     private Dialog MyDialog;
     private Button mBtnPendiente,
             mBtnCancelado,
             mBtnFinalizado;
+    private ArrayList<ItemFeed> arrayLists = new ArrayList<>();
+    private SearchPlaceAdapter mAdapter;
+
+    private String estado_general = "";
 
     public MisProyectosCreadosFragment() {
         // Required empty public constructor
@@ -82,32 +94,92 @@ public class MisProyectosCreadosFragment extends Fragment {
         mBtnCancelado= root.findViewById(R.id.mBtnCancelado);
         mBtnFinalizado = root.findViewById(R.id.mBtnFinalizado);
 
+        if(estado_general.isEmpty()){
+            estado_general = "ACTIVO";
+        }
+        initFiltrarEstados(estado_general, root);
+
         mBtnPendiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                initllamada("ACTIVO",root,queryRef);
-
+                //initllamada("ACTIVO",root,queryRef);
+                estado_general = "ACTIVO";
+                initFiltrarEstados(estado_general, root);
             }
         });
         mBtnCancelado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                initllamada("DEBAJA",root,queryRef);
-
+              //  initllamada("DEBAJA",root,queryRef);
+                estado_general = "DEBAJA";
+                initFiltrarEstados(estado_general, root);
             }
         });
         mBtnFinalizado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                initllamada("FINALIZADO",root,queryRef);
-
+                //initllamada("FINALIZADO",root,queryRef);
+                estado_general = "FINALIZADO";
+                initFiltrarEstados(estado_general, root);
             }
         });
 
 
-        initllamada("",root,queryRef);
+    }
+
+    private void viewDetails(String post_key, View view){
+
+        Bundle args = new Bundle();
+        args.putString("blog_id", post_key);
+
+        Navigation.findNavController(view).navigate(R.id.next_action_desc,args);
+
+    }
+    private void initFiltrarEstados(final String estado, final View view) {
 
 
+        final IModal listener = new IModal() {
+            @Override
+            public void modalIniciar(String nombre, String url, String uidUser) {
+
+            }
+
+            @Override
+            public void modalIniciarDetail(String id) {
+                viewDetails(id,view);
+            }
+        };
+
+
+        mRef = FirebaseDatabase.getInstance().getReference().child("Proyectos");
+        mRef.limitToFirst(50).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                arrayLists.clear();
+                for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+                    String ids = eventSnapshot.getKey();
+                    ItemFeed category = eventSnapshot.getValue(ItemFeed.class);
+                    category.setId(ids);
+                    if(category.getEstadoTrazabilidad() != null){
+                        if(category.getEstadoTrazabilidad().equalsIgnoreCase(estado)){
+                            arrayLists.add(category);
+                        }
+                    }
+
+                }
+
+                // Collections.reverse(arrayLists);
+                mAdapter = new SearchPlaceAdapter(getContext(), arrayLists,listener);
+                mRecyclerMisLecturas.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
+                mProgress.dismiss();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void initllamada(final String estado, final View root, Query queryRef) {
