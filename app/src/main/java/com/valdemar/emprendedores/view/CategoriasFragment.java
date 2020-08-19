@@ -96,6 +96,7 @@ public class CategoriasFragment extends Fragment implements CategoriasAdapter.On
 
 
     }
+
     View mRoot;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -152,14 +153,20 @@ public class CategoriasFragment extends Fragment implements CategoriasAdapter.On
         btnSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mCategoriaSeleccionada != null){
-                    Bundle args = new Bundle();
-                    String json = new Gson().toJson(mCategoriaSeleccionada);
-                    args.putString(ARG_CATEGORIA_SELECCIONADA, json);
-                    Navigation.findNavController(v).navigate(R.id.next_action,args);
-                } else {
-                    showSnackBar("Debe seleccionar una categoría" );
+                if(!mEmprendedorRegistrado) {
+                    Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_categorias);
+                    Toast.makeText(getActivity(), "Primero debe registrarse como emprendedor", Toast.LENGTH_LONG).show();
+                }else{
+                    if(mCategoriaSeleccionada != null){
+                        Bundle args = new Bundle();
+                        String json = new Gson().toJson(mCategoriaSeleccionada);
+                        args.putString(ARG_CATEGORIA_SELECCIONADA, json);
+                        Navigation.findNavController(v).navigate(R.id.next_action,args);
+                    } else {
+                        showSnackBar("Debe seleccionar una categoría" );
+                    }
                 }
+
             }
         });
     }
