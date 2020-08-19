@@ -148,24 +148,34 @@ public class ProyectosFragment extends Fragment {
         mSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
-            public boolean onQueryTextSubmit(String newText) {
+            public boolean onQueryTextSubmit(final String newText) {
                 System.out.println(newText);
                 allSpook(mPost_categoria,listener);
-                if(mAdapter!=null){
-                    if(!newText.isEmpty()){
-                        mAdapter.getFilter().filter(newText);
-                    }else{
-                        allSpook(mPost_categoria,listener);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(mAdapter!=null){
+                            if(!newText.isEmpty()){
+                                mAdapter.getFilter().filter(newText);
+                            }else{
+                                allSpook(mPost_categoria,listener);
 
+                            }
+                        }
                     }
-                }
+                },700);
+
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 if(newText.length() == 0){
+                    System.out.println("asdasdasd");
+                }
+                if(newText.isEmpty()){
                     allSpook(mPost_categoria,listener);
+
                 }
                 return false;
 
@@ -226,7 +236,7 @@ public class ProyectosFragment extends Fragment {
                                     public void run() {
                                         mAdapter.getFilter().filter(model.getCategoria());
                                     }
-                                },100);
+                                },500);
 
                             }
                         });
@@ -341,7 +351,7 @@ public class ProyectosFragment extends Fragment {
                                 }
                             });
                         }
-                    },100);
+                    },700);
 
                     // filterRecycler(root,spinner5.getSelectedItem().toString(),null,null);
 
