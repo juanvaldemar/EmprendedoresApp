@@ -215,7 +215,7 @@ public class DescBlankFragment extends Fragment {
                         iconoFinalizado.setVisibility(View.VISIBLE);
                     }
                     if(estadoTrazabilidad.equalsIgnoreCase("ACTIVO")){
-                        shares(root,post_title);
+                        shares(root,post_title,post_image);
                         initComentarios(root, mPost_key);
 
                     }
@@ -331,7 +331,7 @@ public class DescBlankFragment extends Fragment {
 
     }
 
-    private void shares(View root, final String post_title) {
+    private void shares(View root, final String post_title, final String post_image) {
         FloatingActionButton fav_favorite;
         fav_favorite = root.findViewById(R.id.fav_favorite);
         fav_favorite.setVisibility(View.VISIBLE);
@@ -340,7 +340,7 @@ public class DescBlankFragment extends Fragment {
             public void onClick(View view) {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT,"Hola, estoy creando el Emprendimiento : \""+post_title+"\" , para más detalle te invitamos a descargar la aplicación Emprendedores App https://play.google.com/store");
+                sendIntent.putExtra(Intent.EXTRA_TEXT,"Hola, estoy creando el Emprendimiento : \""+post_title+"\" ,"+"\n"+post_image);
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
             }

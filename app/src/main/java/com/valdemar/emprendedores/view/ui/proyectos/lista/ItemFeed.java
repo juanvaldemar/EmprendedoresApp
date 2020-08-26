@@ -8,6 +8,7 @@ public class ItemFeed {
     private String pais;
     private String ciudad;
     private String estadoTrazabilidad;
+    private String descripcion;
 
 
     public String getId() {
@@ -64,5 +65,13 @@ public class ItemFeed {
 
     public void setEstadoTrazabilidad(String estadoTrazabilidad) {
         this.estadoTrazabilidad = estadoTrazabilidad;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }
