@@ -50,6 +50,7 @@ public class PerfilEmprendedorFragment extends Fragment {
     private String mLinkIG = "";
     private String mLinkTW = "";
     private DataSnapshot mItemSnapshot;
+    Button btnVerProyectosCreados,btnEditarperfil;
 
     public PerfilEmprendedorFragment() {
         // Required empty public constructor
@@ -109,14 +110,14 @@ public class PerfilEmprendedorFragment extends Fragment {
             }
         });
 
-        Button btnVerProyectosCreados = (Button) view.findViewById(R.id.btn_ver_proyectos);
+        btnVerProyectosCreados = (Button) view.findViewById(R.id.btn_ver_proyectos);
         btnVerProyectosCreados.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_mis_proyectos_creados);
             }
         });
-        Button btnEditarperfil = view.findViewById(R.id.btn_editar_perfil);
+        btnEditarperfil = view.findViewById(R.id.btn_editar_perfil);
         btnEditarperfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -235,7 +236,8 @@ public class PerfilEmprendedorFragment extends Fragment {
                     mLinkFB = mEmprendedor.getEdt_facebook();
                     mLinkIG = mEmprendedor.getEdt_instagram();
                     mLinkTW = mEmprendedor.getEdt_twitter();
-
+                btnVerProyectosCreados.setVisibility(View.GONE);
+                btnEditarperfil.setVisibility(View.GONE);
             }
         }, 1000);
     }
