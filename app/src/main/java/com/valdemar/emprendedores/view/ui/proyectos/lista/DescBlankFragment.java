@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -37,6 +38,7 @@ import android.widget.VideoView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -168,7 +170,7 @@ public class DescBlankFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Proyectos");
         mDatabase.child(mPost_key).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(final DataSnapshot dataSnapshot) {
 
                 String videoSubido_ = (String) dataSnapshot.child("videoSubido").getValue();
 
@@ -239,6 +241,22 @@ public class DescBlankFragment extends Fragment {
                 postCategoria.setText("Categoria: "+post_categoria);
 
                 postAutor.setText("Proyecto publicado por: \n"+post_autor);
+
+
+
+                postAutor.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String idEmprendedor = (String)dataSnapshot.child("id_emprendedor").getValue();
+                        Bundle args = new Bundle();
+                        args.putString("idEmprendedor", idEmprendedor);
+
+                        Navigation.findNavController(view).navigate(R.id.next_action_desc,args);
+
+                    }
+                });
+
+
                 txt_publicado_por.setText("Proyecto publicado por: \n"+post_autor);
 
                 postSocio1.setText("- "+post_socio1);
@@ -304,7 +322,7 @@ public class DescBlankFragment extends Fragment {
                         public void onClick(View v) {
                             Bundle args = new Bundle();
                             args.putString("ARG_KEY_PROYECTO", mPost_key);
-                            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_DescBlankFragment_to_crearProyectoFragment, args);
+                           // Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_DescBlankFragment_to_crearProyectoFragment, args);
                             //Navigation.findNavController().navigate(R.id.,args);
                         }
                     });

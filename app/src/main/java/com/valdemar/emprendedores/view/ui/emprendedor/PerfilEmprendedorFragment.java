@@ -126,9 +126,119 @@ public class PerfilEmprendedorFragment extends Fragment {
                 Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.next_action_to_lista,args);
             }
         });
-        cargarPerfil();
+
+        Bundle datosRecuperados = getArguments();
+        if (datosRecuperados == null) {
+            // No hay datos, manejar excepción
+            return;
+        }
+        String idEmprendedor = datosRecuperados.getString("idEmprendedor");
+        if(idEmprendedor != null){
+            cargarPerfil2(idEmprendedor);
+
+        }else{
+            cargarPerfil();
+        }
+
+
     }
 
+    private void cargarPerfil2(final String uId) {
+        mEmprendedorRegistrado = false;
+        final DatabaseReference mEmprendedorReference;
+        mEmprendedorReference = FirebaseDatabase.getInstance().getReference().child("Emprendedor");
+        mEmprendedorReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot itemSpanshot : dataSnapshot.getChildren()) {
+
+                    String id_emprendedor = (String) itemSpanshot.child("id_emprendedor").getValue();
+                    mEmprendedor.setId_emprendedor(id_emprendedor);
+                    if (mEmprendedor.getId_emprendedor().equalsIgnoreCase(uId)) {
+
+                        mEmprendedor.setKey(itemSpanshot.getKey());
+
+                        String imagenUrl = obtenerCampoNoNulo((String) itemSpanshot.child("imagen").getValue());
+                        mEmprendedor.setImagen(imagenUrl);
+
+                        String nombres = obtenerCampoNoNulo((String) itemSpanshot.child("edt_nombres_emprendedor").getValue());
+                        mEmprendedor.setEdt_nombres_emprendedor(nombres);
+
+                        String apellidos = obtenerCampoNoNulo((String) itemSpanshot.child("edt_apellidos_emprendedor").getValue());
+                        mEmprendedor.setEdt_apellidos_emprendedor(apellidos);
+
+                        String dni = (String) itemSpanshot.child("edt_dni_emprendedor").getValue();
+                        mEmprendedor.setEdt_dni_emprendedor(obtenerCampoNoNulo(dni));
+
+                        String direccion = (String) itemSpanshot.child("edt_direccion_emprendedor").getValue();
+                        mEmprendedor.setEdt_direccion_emprendedor(obtenerCampoNoNulo(direccion));
+
+                        mLinkFB = obtenerCampoNoNulo((String) itemSpanshot.child("edt_facebook").getValue());
+                        mEmprendedor.setEdt_facebook(mLinkFB);
+
+                        mLinkIG = obtenerCampoNoNulo((String) itemSpanshot.child("edt_instagram").getValue());
+                        mEmprendedor.setEdt_instagram(mLinkIG);
+
+                        mLinkTW = obtenerCampoNoNulo((String) itemSpanshot.child("edt_twitter").getValue());
+                        mEmprendedor.setEdt_twitter(mLinkTW);
+
+                        String telefono = (String) itemSpanshot.child("edt_num_emprendedor").getValue();
+                        mEmprendedor.setEdt_num_emprendedor(obtenerCampoNoNulo(telefono));
+
+                        String anio = (String) itemSpanshot.child("spinner_anio").getValue();
+                        mEmprendedor.setSpinner_anio(obtenerCampoNoNulo(anio));
+
+                        String mes = (String) itemSpanshot.child("spinner_mes").getValue();
+                        mEmprendedor.setSpinner_mes(obtenerCampoNoNulo(mes));
+
+                        String dia = (String) itemSpanshot.child("spinner_dia").getValue();
+                        mEmprendedor.setSpinner_dia(obtenerCampoNoNulo(dia));
+
+                        String pais = obtenerCampoNoNulo((String) itemSpanshot.child("spinner_pais").getValue());
+                        mEmprendedor.setSpinner_pais(pais);
+
+                        String ciudad = obtenerCampoNoNulo((String) itemSpanshot.child("spinner_ciudad").getValue());
+                        mEmprendedor.setSpinner_ciudad(ciudad);
+
+                        String ocupacion =(String) itemSpanshot.child("spinner_ocupacion").getValue();
+                        mEmprendedor.setSpinner_ocupacion(obtenerCampoNoNulo(ocupacion));
+
+                        String genero = obtenerCampoNoNulo((String) itemSpanshot.child("spinner_genero").getValue());
+                        mEmprendedor.setSpinner_genero(genero.isEmpty()?"Masculino":genero);
+
+                        mEmprendedorRegistrado = true;
+
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                    if(!mEmprendedor.getImagen().equals("Vacio"))
+                        Glide.with(getActivity().getApplicationContext())
+                            .load(mEmprendedor.getImagen())
+                            .into(mImgPerfil);
+                    mTxtNombres.setText(mEmprendedor.getEdt_nombres_emprendedor());
+                    mTxtApellidos.setText(mEmprendedor.getEdt_apellidos_emprendedor());
+                    mTxtPais.setText(mEmprendedor.getSpinner_pais());
+                    mTxtCiudad.setText(mEmprendedor.getSpinner_ciudad());
+                    mLinkFB = mEmprendedor.getEdt_facebook();
+                    mLinkIG = mEmprendedor.getEdt_instagram();
+                    mLinkTW = mEmprendedor.getEdt_twitter();
+
+            }
+        }, 1000);
+    }
     private void cargarPerfil() {
         mEmprendedorRegistrado = false;
         final DatabaseReference mEmprendedorReference;
@@ -211,8 +321,8 @@ public class PerfilEmprendedorFragment extends Fragment {
                 if (mEmprendedorRegistrado) {
                     if(!mEmprendedor.getImagen().equals("Vacio"))
                         Glide.with(getActivity().getApplicationContext())
-                            .load(mEmprendedor.getImagen())
-                            .into(mImgPerfil);
+                                .load(mEmprendedor.getImagen())
+                                .into(mImgPerfil);
                     mTxtNombres.setText(mEmprendedor.getEdt_nombres_emprendedor());
                     mTxtApellidos.setText(mEmprendedor.getEdt_apellidos_emprendedor());
                     mTxtPais.setText(mEmprendedor.getSpinner_pais());
