@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.valdemar.emprendedores.auth.AccessRelato;
 import com.valdemar.emprendedores.auth.ViewSpook;
 
@@ -22,6 +23,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         FirebaseApp.initializeApp(this);
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseMessaging.getInstance().subscribeToTopic("Proyectos");
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -33,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
                 }
                 finish();
             }
-        },0);
+        },200);
 
     }
 
