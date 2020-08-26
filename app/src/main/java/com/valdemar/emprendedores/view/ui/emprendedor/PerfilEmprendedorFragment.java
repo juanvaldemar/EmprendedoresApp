@@ -38,6 +38,7 @@ public class PerfilEmprendedorFragment extends Fragment {
     public static final String ARG_EMPRENDEDOR_DETALLE = "arg_emprendedor_detalle";
     private ImageView mImgPerfil;
     private TextView mTxtNombres;
+    private TextView mTxtGradoAcademico;
     private TextView mTxtApellidos;
     private TextView mTxtPais;
     private TextView mTxtCiudad;
@@ -49,6 +50,7 @@ public class PerfilEmprendedorFragment extends Fragment {
     private String mLinkFB = "";
     private String mLinkIG = "";
     private String mLinkTW = "";
+    private String grado_academico_ = "";
     private DataSnapshot mItemSnapshot;
     Button btnVerProyectosCreados,btnEditarperfil;
 
@@ -73,6 +75,7 @@ public class PerfilEmprendedorFragment extends Fragment {
     private void initUI(View view) {
         mImgPerfil = (ImageView) view.findViewById(R.id.img_foto_emprendedor);
         mTxtNombres = (TextView) view.findViewById(R.id.txt_nombres);
+        mTxtGradoAcademico = (TextView) view.findViewById(R.id.txt_gradoAcademico);
         mTxtApellidos = (TextView) view.findViewById(R.id.txt_apellidos);
         mTxtPais = (TextView) view.findViewById(R.id.txt_pais);
         mTxtCiudad = (TextView) view.findViewById(R.id.txt_ciudad);
@@ -162,6 +165,9 @@ public class PerfilEmprendedorFragment extends Fragment {
                         String imagenUrl = obtenerCampoNoNulo((String) itemSpanshot.child("imagen").getValue());
                         mEmprendedor.setImagen(imagenUrl);
 
+                        String gradoAcademico = obtenerCampoNoNulo((String) itemSpanshot.child("grado_academico").getValue());
+                        mEmprendedor.setGrado_academico(gradoAcademico);
+
                         String nombres = obtenerCampoNoNulo((String) itemSpanshot.child("edt_nombres_emprendedor").getValue());
                         mEmprendedor.setEdt_nombres_emprendedor(nombres);
 
@@ -236,6 +242,8 @@ public class PerfilEmprendedorFragment extends Fragment {
                     mLinkFB = mEmprendedor.getEdt_facebook();
                     mLinkIG = mEmprendedor.getEdt_instagram();
                     mLinkTW = mEmprendedor.getEdt_twitter();
+                grado_academico_ = mEmprendedor.getGrado_academico();
+                mTxtGradoAcademico.setText(grado_academico_);
                 btnVerProyectosCreados.setVisibility(View.GONE);
                 btnEditarperfil.setVisibility(View.GONE);
             }
@@ -280,7 +288,8 @@ public class PerfilEmprendedorFragment extends Fragment {
 
                         mLinkTW = obtenerCampoNoNulo((String) itemSpanshot.child("edt_twitter").getValue());
                         mEmprendedor.setEdt_twitter(mLinkTW);
-
+                        String gradoAcademico = obtenerCampoNoNulo((String) itemSpanshot.child("grado_academico").getValue());
+                        mEmprendedor.setGrado_academico(gradoAcademico);
                         String telefono = (String) itemSpanshot.child("edt_num_emprendedor").getValue();
                         mEmprendedor.setEdt_num_emprendedor(obtenerCampoNoNulo(telefono));
 
@@ -332,6 +341,8 @@ public class PerfilEmprendedorFragment extends Fragment {
                     mLinkFB = mEmprendedor.getEdt_facebook();
                     mLinkIG = mEmprendedor.getEdt_instagram();
                     mLinkTW = mEmprendedor.getEdt_twitter();
+                    grado_academico_ = mEmprendedor.getGrado_academico();
+                    mTxtGradoAcademico.setText(grado_academico_);
                 } else {
                     Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_categorias);
                     Toast.makeText(getActivity(), "Primero debe registrarse como emprendedor", Toast.LENGTH_LONG).show();

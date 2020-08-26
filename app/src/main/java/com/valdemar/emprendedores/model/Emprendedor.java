@@ -10,6 +10,10 @@ public class Emprendedor implements Serializable {
     private String key;
     @SerializedName("id_emprendedor")
     private String id_emprendedor;
+
+    @SerializedName("grado_academico")
+    private String grado_academico;
+
     @SerializedName("edt_nombres_emprendedor")
     private String edt_nombres_emprendedor;
     @SerializedName("edt_apellidos_emprendedor")
@@ -195,5 +199,13 @@ public class Emprendedor implements Serializable {
 
     public void setSpinner_genero(String spinner_genero) {
         this.spinner_genero = spinner_genero;
+    }
+
+    public String getGrado_academico() {
+        return grado_academico;
+    }
+
+    public void setGrado_academico(String grado_academico) {
+        this.grado_academico = grado_academico;
     }
 }

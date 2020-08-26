@@ -78,6 +78,14 @@
         <item>Trujillo</item>
     </string-array>
 
+    <string-array name="gradoAcademico">
+        <item>Grado Academico</item>
+        <item>Bachiller</item>
+        <item>Títulado</item>
+        <item>Colegiado</item>
+    </string-array>
+
+
 
     <string-array name="ocupacion">
         <item>¿Cuál es tu ocupación?</item>
