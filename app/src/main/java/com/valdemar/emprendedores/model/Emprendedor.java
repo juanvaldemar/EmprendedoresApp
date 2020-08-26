@@ -49,6 +49,9 @@ public class Emprendedor implements Serializable {
     @SerializedName("fechaRegistro")
     private String fechaRegistro;
 
+    @SerializedName("intereses")
+    private String intereses;
+
     public String getKey() {
         return key;
     }
@@ -207,5 +210,13 @@ public class Emprendedor implements Serializable {
 
     public void setGrado_academico(String grado_academico) {
         this.grado_academico = grado_academico;
+    }
+
+    public String getIntereses() {
+        return intereses;
+    }
+
+    public void setIntereses(String intereses) {
+        this.intereses = intereses;
     }
 }

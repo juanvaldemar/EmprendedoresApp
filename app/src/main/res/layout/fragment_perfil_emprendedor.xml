@@ -134,6 +134,21 @@
                     android:textSize="18sp"
                     tools:text="Juan" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Interes"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/mTxtIntereses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    tools:text="Juan" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

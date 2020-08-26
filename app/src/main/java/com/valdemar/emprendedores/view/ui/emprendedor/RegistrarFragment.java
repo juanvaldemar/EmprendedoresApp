@@ -76,7 +76,7 @@ public class RegistrarFragment extends Fragment {
             edt_num_emprendedor, edt_dni_emprendedor, edt_direccion_emprendedor,
             edt_facebook, edt_instagram, edt_twitter;
     private Spinner spinner_dia, spinner_mes, spinner_anio, spinner_genero,
-            spinner_pais, spinner_ciudad, spinner_ocupacion, spinner_grado_academico;
+            spinner_pais, spinner_ciudad, spinner_ocupacion, spinner_grado_academico, spinner_intereses;
     private Button btn_registrar_emprendedor;
     private Emprendedor mEmprendedor;
     private boolean mActualizarEmprendedor;
@@ -118,6 +118,7 @@ public class RegistrarFragment extends Fragment {
         edt_direccion_emprendedor = root.findViewById(R.id.edt_direccion_emprendedor);
         spinner_ocupacion = root.findViewById(R.id.spinner_ocupacion);
         spinner_grado_academico = root.findViewById(R.id.spinner_grado_academico);
+        spinner_intereses = root.findViewById(R.id.spinner_intereses);
         edt_facebook = root.findViewById(R.id.edt_facebook);
         edt_instagram = root.findViewById(R.id.edt_instagram);
         edt_twitter = root.findViewById(R.id.edt_twitter);
@@ -180,6 +181,9 @@ public class RegistrarFragment extends Fragment {
 
         ArrayAdapter<CharSequence> spnGradoAdapter = (ArrayAdapter<CharSequence>) spinner_grado_academico.getAdapter();
         spinner_grado_academico.setSelection(spnGradoAdapter.getPosition(mEmprendedor.getGrado_academico()));
+
+      ArrayAdapter<CharSequence> spnInteresAdapter = (ArrayAdapter<CharSequence>) spinner_intereses.getAdapter();
+        spinner_intereses.setSelection(spnInteresAdapter.getPosition(mEmprendedor.getGrado_academico()));
 
         ArrayAdapter<CharSequence> spnPaisAdapter = (ArrayAdapter<CharSequence>) spinner_pais.getAdapter();
         spinner_pais.setSelection(spnPaisAdapter.getPosition(mEmprendedor.getSpinner_pais()));
@@ -268,6 +272,7 @@ public class RegistrarFragment extends Fragment {
                                         newPost.child("edt_twitter").setValue(edt_twitter.getText().toString().trim());
                                         newPost.child("imagen").setValue(downloadUrl.toString());
                                         newPost.child("grado_academico").setValue(spinner_grado_academico.getSelectedItem().toString());
+                                        newPost.child("intereses").setValue(spinner_intereses.getSelectedItem().toString());
 
                                         SimpleDateFormat sdfFechaRegistro = new SimpleDateFormat("dd/MM/yyyy");
                                         Date todayDate = new Date();
@@ -308,6 +313,7 @@ public class RegistrarFragment extends Fragment {
                         newPost.child("edt_instagram").setValue(edt_instagram.getText().toString().trim());
                         newPost.child("edt_twitter").setValue(edt_twitter.getText().toString().trim());
                         newPost.child("grado_academico").setValue(spinner_grado_academico.getSelectedItem().toString());
+                        newPost.child("intereses").setValue(spinner_intereses.getSelectedItem().toString());
 
                         //newPost.child("imagen").setValue("Vacio");
 
@@ -398,7 +404,7 @@ public class RegistrarFragment extends Fragment {
     }
 
     private void initListSpinner(View root) {
-        Spinner spinner1, spinner2, spinner3, spinner4, spinner5, spinner6,spinner7;
+        Spinner spinner1, spinner2, spinner3, spinner4, spinner5, spinner6,spinner7,spinner8;
         spinner1 = (Spinner) root.findViewById(R.id.spinner_dia);
         spinner2 = (Spinner) root.findViewById(R.id.spinner_mes);
         spinner3 = (Spinner) root.findViewById(R.id.spinner_anio);
@@ -406,6 +412,7 @@ public class RegistrarFragment extends Fragment {
         spinner5 = (Spinner) root.findViewById(R.id.spinner_pais);
         spinner6 = (Spinner) root.findViewById(R.id.spinner_ciudad);
         spinner7 = (Spinner) root.findViewById(R.id.spinner_grado_academico);
+        spinner8 = (Spinner) root.findViewById(R.id.spinner_intereses);
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(),
                 R.array.dia, android.R.layout.simple_spinner_item);
@@ -452,9 +459,15 @@ public class RegistrarFragment extends Fragment {
 
         ArrayAdapter<CharSequence> adapterGrado = ArrayAdapter.createFromResource(getActivity(),
                 R.array.gradoAcademico, android.R.layout.simple_spinner_item);
-        adapter6.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterGrado.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner_grado_academico.setAdapter(adapterGrado);
+
+        ArrayAdapter<CharSequence> adapterIntereses = ArrayAdapter.createFromResource(getActivity(),
+                R.array.intereses, android.R.layout.simple_spinner_item);
+        adapterIntereses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner_intereses.setAdapter(adapterIntereses);
 
     }
 

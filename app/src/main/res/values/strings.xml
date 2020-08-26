@@ -85,7 +85,12 @@
         <item>Colegiado</item>
     </string-array>
 
-
+    <string-array name="intereses">
+        <item>intereses</item>
+        <item>ropa</item>
+        <item>comida</item>
+        <item>deportes</item>
+    </string-array>
 
     <string-array name="ocupacion">
         <item>¿Cuál es tu ocupación?</item>
