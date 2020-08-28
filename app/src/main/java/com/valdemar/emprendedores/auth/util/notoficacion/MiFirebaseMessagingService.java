@@ -4,6 +4,8 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.util.Log;
@@ -14,6 +16,11 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.SplashActivity;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class MiFirebaseMessagingService extends FirebaseMessagingService {
     public static final String TAG = "Emprendedores App";
@@ -29,7 +36,8 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "title; " + remoteMessage.getNotification().getTitle());
             Log.d(TAG, "url; " + remoteMessage.getNotification().getImageUrl());
             mostrarNotificacion("SPOOK",
-                    remoteMessage.getNotification().getBody());
+                    remoteMessage.getNotification().getBody()
+                    ,getBitmapFromURL(remoteMessage.getNotification().getImageUrl().toString()));
 
         }
         if(remoteMessage.getData().size() > 0){
@@ -37,8 +45,21 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
         }
 
     }
-
-    private void mostrarNotificacion(String title, String body){
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            // Log exception
+            return null;
+        }
+    }
+    private void mostrarNotificacion(String title, String body, Bitmap url){
 
 
         Intent intent = new Intent(this, SplashActivity.class);
@@ -53,6 +74,8 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentText(body)
                 .setAutoCancel(true)
                 .setSound(soundUri)
+                .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(url))
+
                 .setContentIntent(pendingIntent);
 
 

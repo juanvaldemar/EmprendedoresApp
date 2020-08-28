@@ -23,7 +23,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         FirebaseApp.initializeApp(this);
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseMessaging.getInstance().subscribeToTopic("Proyectos");
+        FirebaseMessaging.getInstance().subscribeToTopic("proyectos");
 
         new Handler().postDelayed(new Runnable() {
             @Override
