@@ -57,13 +57,13 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".auth.util.notoficacion.MiFirebaseInstanceIdService">
+        <service android:name=".util.notoficacion.MiFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
-        <service android:name=".auth.util.notoficacion.MiFirebaseMessagingService">
+        <service android:name=".util.notoficacion.MiFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

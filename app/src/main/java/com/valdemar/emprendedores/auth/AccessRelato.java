@@ -7,14 +7,12 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,11 +45,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.valdemar.emprendedores.MenuLateralActivity;
 import com.valdemar.emprendedores.R;
-import com.valdemar.emprendedores.auth.util.ValidarEmail;
+import com.valdemar.emprendedores.util.ValidarEmail;
 
 import java.util.Arrays;
-
-import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class AccessRelato extends AppCompatActivity {
 

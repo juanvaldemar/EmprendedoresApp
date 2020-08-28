@@ -1,4 +1,4 @@
-package com.valdemar.emprendedores.auth.util.notoficacion;
+package com.valdemar.emprendedores.util.notoficacion;
 
 
 import android.util.Log;

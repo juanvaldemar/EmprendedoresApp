@@ -1,4 +1,4 @@
-package com.valdemar.emprendedores.auth.util;
+package com.valdemar.emprendedores.util;
 
 import android.content.Context;
 import android.util.Patterns;
