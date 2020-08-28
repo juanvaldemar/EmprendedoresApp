@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -29,7 +31,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.model.Emprendedor;
+import com.valdemar.emprendedores.view.ui.proyectos.lista.ItemFeed;
+import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.IModal;
+import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.SearchPlaceAdapter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PerfilEmprendedorFragment extends Fragment {
@@ -57,6 +63,12 @@ public class PerfilEmprendedorFragment extends Fragment {
     private DataSnapshot mItemSnapshot;
     Button btnVerProyectosCreados,btnEditarperfil;
 
+    private RecyclerView mRecyclerMisLecturas;
+    private DatabaseReference mRef;
+    private ArrayList<ItemFeed> arrayLists = new ArrayList<>();
+    private SearchPlaceAdapter mAdapter;
+
+    private FirebaseUser user;
     public PerfilEmprendedorFragment() {
         // Required empty public constructor
     }
@@ -74,6 +86,7 @@ public class PerfilEmprendedorFragment extends Fragment {
         initUI(view);
         return view;
     }
+
 
     private void initUI(View view) {
         mImgPerfil = (ImageView) view.findViewById(R.id.img_foto_emprendedor);
@@ -149,8 +162,69 @@ public class PerfilEmprendedorFragment extends Fragment {
             cargarPerfil();
         }
 
+        LinearLayoutManager layoutManagerMisLecturas
+                = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+
+        layoutManagerMisLecturas.setReverseLayout(true);
+        layoutManagerMisLecturas.setStackFromEnd(true);
+        mRecyclerMisLecturas = (RecyclerView) view.findViewById(R.id.fragmento_mis_lecturas);
+        mRecyclerMisLecturas.setHasFixedSize(true);
+        mRecyclerMisLecturas.setLayoutManager(layoutManagerMisLecturas);
+        initFiltrarEstados("ACTIVO", view);
 
     }
+
+    private void initFiltrarEstados(final String estado, final View view) {
+
+
+        final IModal listener = new IModal() {
+            @Override
+            public void modalIniciar(String nombre, String url, String uidUser) {
+
+            }
+
+            @Override
+            public void modalIniciarDetail(String id) {
+                //viewDetails(id,view);
+            }
+        };
+
+
+        mRef = FirebaseDatabase.getInstance().getReference().child("Proyectos");
+        mRef.limitToFirst(50).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                arrayLists.clear();
+                for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+                    String ids = eventSnapshot.getKey();
+                    ItemFeed category = eventSnapshot.getValue(ItemFeed.class);
+                    category.setId(ids);
+                    if(category.getId_emprendedor().equalsIgnoreCase(user.getUid())){
+                        if(category.getEstadoTrazabilidad() != null){
+                            if(category.getEstadoTrazabilidad().equalsIgnoreCase(estado)){
+                                arrayLists.add(category);
+                            }
+                        }
+                    }
+
+
+                }
+
+                // Collections.reverse(arrayLists);
+                mAdapter = new SearchPlaceAdapter(getContext(), arrayLists,listener);
+                mRecyclerMisLecturas.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
+                //mProgress.dismiss();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
 
     private void cargarPerfil2(final String uId) {
         mEmprendedorRegistrado = false;
@@ -263,10 +337,11 @@ public class PerfilEmprendedorFragment extends Fragment {
             }
         }, 1000);
     }
+
     private void cargarPerfil() {
         mEmprendedorRegistrado = false;
         final DatabaseReference mEmprendedorReference;
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
         mEmprendedorReference = FirebaseDatabase.getInstance().getReference().child("Emprendedor");
         mEmprendedorReference.addValueEventListener(new ValueEventListener() {
             @Override

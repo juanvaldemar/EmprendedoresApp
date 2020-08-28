@@ -9,6 +9,8 @@ public class ItemFeed {
     private String ciudad;
     private String estadoTrazabilidad;
     private String descripcion;
+    private String id_emprendedor;
+
 
 
     public String getId() {
@@ -73,5 +75,13 @@ public class ItemFeed {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getId_emprendedor() {
+        return id_emprendedor;
+    }
+
+    public void setId_emprendedor(String id_emprendedor) {
+        this.id_emprendedor = id_emprendedor;
     }
 }
