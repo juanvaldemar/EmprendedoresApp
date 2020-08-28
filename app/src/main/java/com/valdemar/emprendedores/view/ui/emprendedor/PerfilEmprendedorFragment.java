@@ -43,6 +43,7 @@ public class PerfilEmprendedorFragment extends Fragment {
     private TextView mTxtApellidos;
     private TextView mTxtPais;
     private TextView mTxtCiudad;
+    private TextView mTxtDedicas;
     private boolean mEmprendedorRegistrado;
     private Emprendedor mEmprendedor = new Emprendedor();
     private ImageButton mButtonFB;
@@ -77,6 +78,7 @@ public class PerfilEmprendedorFragment extends Fragment {
     private void initUI(View view) {
         mImgPerfil = (ImageView) view.findViewById(R.id.img_foto_emprendedor);
         mTxtNombres = (TextView) view.findViewById(R.id.txt_nombres);
+        mTxtDedicas = (TextView) view.findViewById(R.id.txt_dedicas);
         mTxtGradoAcademico = (TextView) view.findViewById(R.id.txt_gradoAcademico);
         mTxtIntereses = (TextView) view.findViewById(R.id.mTxtIntereses);
         mTxtApellidos = (TextView) view.findViewById(R.id.txt_apellidos);
@@ -174,6 +176,9 @@ public class PerfilEmprendedorFragment extends Fragment {
                         String intereses = obtenerCampoNoNulo((String) itemSpanshot.child("intereses").getValue());
                         mEmprendedor.setIntereses(intereses);
 
+                        String dedicas = obtenerCampoNoNulo((String) itemSpanshot.child("dedicas").getValue());
+                        mEmprendedor.setDedicas(dedicas);
+
                         String nombres = obtenerCampoNoNulo((String) itemSpanshot.child("edt_nombres_emprendedor").getValue());
                         mEmprendedor.setEdt_nombres_emprendedor(nombres);
 
@@ -242,6 +247,7 @@ public class PerfilEmprendedorFragment extends Fragment {
                             .load(mEmprendedor.getImagen())
                             .into(mImgPerfil);
                     mTxtNombres.setText(mEmprendedor.getEdt_nombres_emprendedor());
+                    mTxtDedicas.setText(mEmprendedor.getDedicas());
                     mTxtApellidos.setText(mEmprendedor.getEdt_apellidos_emprendedor());
                     mTxtPais.setText(mEmprendedor.getSpinner_pais());
                     mTxtCiudad.setText(mEmprendedor.getSpinner_ciudad());
@@ -287,6 +293,9 @@ public class PerfilEmprendedorFragment extends Fragment {
 
                         String direccion = (String) itemSpanshot.child("edt_direccion_emprendedor").getValue();
                         mEmprendedor.setEdt_direccion_emprendedor(obtenerCampoNoNulo(direccion));
+
+                        String dedicas = obtenerCampoNoNulo((String) itemSpanshot.child("dedicas").getValue());
+                        mEmprendedor.setDedicas(dedicas);
 
                         mLinkFB = obtenerCampoNoNulo((String) itemSpanshot.child("edt_facebook").getValue());
                         mEmprendedor.setEdt_facebook(mLinkFB);
@@ -348,6 +357,7 @@ public class PerfilEmprendedorFragment extends Fragment {
                                 .load(mEmprendedor.getImagen())
                                 .into(mImgPerfil);
                     mTxtNombres.setText(mEmprendedor.getEdt_nombres_emprendedor());
+                    mTxtDedicas.setText(mEmprendedor.getDedicas());
                     mTxtApellidos.setText(mEmprendedor.getEdt_apellidos_emprendedor());
                     mTxtPais.setText(mEmprendedor.getSpinner_pais());
                     mTxtCiudad.setText(mEmprendedor.getSpinner_ciudad());

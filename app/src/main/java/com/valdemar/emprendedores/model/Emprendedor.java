@@ -52,6 +52,9 @@ public class Emprendedor implements Serializable {
     @SerializedName("intereses")
     private String intereses;
 
+    @SerializedName("dedicas")
+    private String dedicas;
+
     public String getKey() {
         return key;
     }
@@ -218,5 +221,13 @@ public class Emprendedor implements Serializable {
 
     public void setIntereses(String intereses) {
         this.intereses = intereses;
+    }
+
+    public String getDedicas() {
+        return dedicas;
+    }
+
+    public void setDedicas(String dedicas) {
+        this.dedicas = dedicas;
     }
 }

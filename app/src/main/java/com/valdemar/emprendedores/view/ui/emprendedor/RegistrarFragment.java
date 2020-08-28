@@ -74,7 +74,8 @@ public class RegistrarFragment extends Fragment {
 
     private EditText edt_nombres_emprendedor, edt_apellidos_emprendedor,
             edt_num_emprendedor, edt_dni_emprendedor, edt_direccion_emprendedor,
-            edt_facebook, edt_instagram, edt_twitter;
+            edt_facebook, edt_instagram, edt_twitter,edt_a_que_te_dedicas_emprendedor;
+
     private Spinner spinner_dia, spinner_mes, spinner_anio, spinner_genero,
             spinner_pais, spinner_ciudad, spinner_ocupacion, spinner_grado_academico, spinner_intereses;
     private Button btn_registrar_emprendedor;
@@ -106,6 +107,7 @@ public class RegistrarFragment extends Fragment {
 
         mImgFoto = root.findViewById(R.id.img_foto_emprendedor);
         edt_nombres_emprendedor = root.findViewById(R.id.edt_nombres_emprendedor);
+        edt_a_que_te_dedicas_emprendedor = root.findViewById(R.id.edt_a_que_te_dedicas_emprendedor);
         edt_apellidos_emprendedor = root.findViewById(R.id.edt_apellidos_emprendedor);
         spinner_dia = root.findViewById(R.id.spinner_dia);
         spinner_mes = root.findViewById(R.id.spinner_mes);
@@ -136,6 +138,7 @@ public class RegistrarFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 registrarEmprendedor(view);
+
             }
         });
 
@@ -158,6 +161,7 @@ public class RegistrarFragment extends Fragment {
                     .into(mImgFoto);
 
         edt_nombres_emprendedor.setText(mEmprendedor.getEdt_nombres_emprendedor());
+        edt_a_que_te_dedicas_emprendedor.setText(mEmprendedor.getDedicas());
         edt_apellidos_emprendedor.setText(mEmprendedor.getEdt_apellidos_emprendedor());
 
         ArrayAdapter<CharSequence> spnGeneroAdapter = (ArrayAdapter<CharSequence>) spinner_genero.getAdapter();
@@ -256,6 +260,7 @@ public class RegistrarFragment extends Fragment {
                                         }
 
                                         newPost.child("edt_nombres_emprendedor").setValue(edt_nombres_emprendedor.getText().toString().trim());
+                                        newPost.child("dedicas").setValue(edt_a_que_te_dedicas_emprendedor.getText().toString().trim());
                                         newPost.child("edt_apellidos_emprendedor").setValue(edt_apellidos_emprendedor.getText().toString().trim());
                                         newPost.child("spinner_dia").setValue(spinner_dia.getSelectedItem().toString());
                                         newPost.child("spinner_mes").setValue(spinner_mes.getSelectedItem().toString());
@@ -298,6 +303,7 @@ public class RegistrarFragment extends Fragment {
                         }
 
                         newPost.child("edt_nombres_emprendedor").setValue(edt_nombres_emprendedor.getText().toString().trim());
+                        newPost.child("dedicas").setValue(edt_a_que_te_dedicas_emprendedor.getText().toString().trim());
                         newPost.child("edt_apellidos_emprendedor").setValue(edt_apellidos_emprendedor.getText().toString().trim());
                         newPost.child("spinner_dia").setValue(spinner_dia.getSelectedItem().toString());
                         newPost.child("spinner_mes").setValue(spinner_mes.getSelectedItem().toString());
@@ -341,6 +347,7 @@ public class RegistrarFragment extends Fragment {
         if (!(validarEditText(edt_nombres_emprendedor)
                 && validarEditText(edt_apellidos_emprendedor)
                 && validarEditText(edt_num_emprendedor)
+                && validarEditText(edt_a_que_te_dedicas_emprendedor)
                 && !spinner_ocupacion.getSelectedItem().toString().equals("¿Cuál es tu ocupación?")
                 && !spinner_dia.getSelectedItem().toString().equals("Día")
                 && !spinner_mes.getSelectedItem().toString().equals("Mes")

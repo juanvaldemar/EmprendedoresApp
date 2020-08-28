@@ -149,7 +149,7 @@ admin.initializeApp(functions.config().firebase);
         const news = change.after.val();
         const payload = {
             notification: {
-                body: "Emprendimiento "+`${news.nombre}`+" Detalle: "+`${news.descripcion}`,
+                body: `${news.nombre}`+" - "+`${news.descripcion}`,
                 image:`${news.imagen}`,
             }
         }; 
