@@ -74,8 +74,9 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentText(body)
                 .setAutoCancel(true)
                 .setSound(soundUri)
-                .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(url))
-
+                .setStyle(new NotificationCompat.BigPictureStyle()
+                        .bigPicture(url).bigLargeIcon(null)
+                        )
                 .setContentIntent(pendingIntent);
 
 
