@@ -369,7 +369,7 @@ public class DescBlankFragment extends Fragment {
 
         btnPostular = root.findViewById(R.id.btnPostular);
         initPostulacion(root);
-
+        initCount(root,mPost_key);
     }
 
     private void initPostulacion(final View root) {
@@ -514,6 +514,23 @@ public class DescBlankFragment extends Fragment {
                 .make(root.findViewById(R.id.coordinator), msg, Snackbar.LENGTH_LONG)
                 .show();
     }
+
+    private void initCount(final View root, final String mPost_key){
+        mDatabaseLikeCount = FirebaseDatabase.getInstance().getReference().child("HistoriasDetalle").child("count").child(mPost_key);
+        mDatabaseLikeCount.keepSynced(true);
+        mDatabaseLikeCount.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                txt_cantidad_socios_suscritos.setText(dataSnapshot.getChildrenCount()+" ");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
     private void shares(View root, final String post_title, final String post_image) {
         FloatingActionButton fav_favorite;
