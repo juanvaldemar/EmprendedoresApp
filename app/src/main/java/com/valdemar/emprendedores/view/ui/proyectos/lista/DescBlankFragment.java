@@ -390,11 +390,11 @@ public class DescBlankFragment extends Fragment {
                     mDatabase.child(mPost_key).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            final String post_title = (String) dataSnapshot.child("title").getValue();
-                            final String post_image = (String) dataSnapshot.child("image").getValue();
-                            final String post_category = (String) dataSnapshot.child("category").getValue();
-                            final String post_author = (String) dataSnapshot.child("author").getValue();
-                            final String post_desc = (String) dataSnapshot.child("desc").getValue();
+                            final String nombre = (String) dataSnapshot.child("nombre").getValue();
+                            final String imagen = (String) dataSnapshot.child("imagen").getValue();
+                            final String categoria = (String) dataSnapshot.child("categoria").getValue();
+                            final String descripcion = (String) dataSnapshot.child("descripcion").getValue();
+                            final String id_emprendedor = (String) dataSnapshot.child("id_emprendedor").getValue();
 
                             mDatabaseLike.addValueEventListener(new ValueEventListener() {
                                 @Override
@@ -409,10 +409,11 @@ public class DescBlankFragment extends Fragment {
                                             //btnPostular.setText("Eliminado");
                                             mProcessLike = false;
                                         }else{
-                                            mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("title").setValue(post_title);
-                                            mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("image").setValue(post_image);
-                                            mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("author").setValue(post_author);
-                                            mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("category").setValue(post_category);
+                                            mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("nombre").setValue(nombre);
+                                            mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("imagen").setValue(imagen);
+                                            mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("categoria").setValue(categoria);
+                                            mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("descripcion").setValue(descripcion);
+                                            mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("id_emprendedor").setValue(id_emprendedor);
 
                                             //btnPostular.setText("favoritos");
 
