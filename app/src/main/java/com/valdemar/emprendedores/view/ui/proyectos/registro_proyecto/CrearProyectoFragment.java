@@ -50,6 +50,8 @@ import com.valdemar.emprendedores.model.Proyecto;
 import com.valdemar.emprendedores.view.CategoriasFragment;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -175,7 +177,9 @@ public class CrearProyectoFragment extends Fragment {
         edt_inversion_proyecto = (EditText) view.findViewById(R.id.edt_inversion_proyecto);
         edt_beneficio_proyecto = (EditText) view.findViewById(R.id.edt_beneficio_proyecto);
         edt_fecha_proyecto = (EditText) view.findViewById(R.id.edt_fecha_proyecto);
-
+        SimpleDateFormat ISO_8601_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+        String now = ISO_8601_FORMAT.format(new Date());
+        edt_fecha_proyecto.setText(now);
 
         mEdtNombreProyecto = (EditText) view.findViewById(R.id.edt_nombre_proyecto);
         mEdtDescripcionProyecto = (EditText) view.findViewById(R.id.edt_descripcion_proyecto);
@@ -590,7 +594,10 @@ public class CrearProyectoFragment extends Fragment {
 
         proyecto.setBeneficio(edt_beneficio_proyecto.getText().toString());
         proyecto.setInversion(edt_inversion_proyecto.getText().toString());
-        proyecto.setFecha(edt_fecha_proyecto.getText().toString());
+        SimpleDateFormat ISO_8601_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
+        String now = ISO_8601_FORMAT.format(new Date());
+        proyecto.setFecha(now);
 
         proyecto.setDescripcion(mEdtDescripcionProyecto.getText().toString());
         proyecto.setSocio1(mEdtSocio1.getText().toString());
