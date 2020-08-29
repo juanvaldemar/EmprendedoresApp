@@ -89,43 +89,48 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
                     String idEmprendedor = (String)itemSpanshot.child("id_emprendedor").getValue();
                     String intereses_emprendedor = (String)itemSpanshot.child("intereses").getValue();
 
-                        if(user.getUid().equalsIgnoreCase(idEmprendedor)){
+                    if(user.getUid().equalsIgnoreCase(idEmprendedor)){
                             if(intereses_emprendedor != null){
-                                if(intereses_emprendedor.equalsIgnoreCase(categoria)){
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0,intent, PendingIntent.FLAG_ONE_SHOT);
+                                String[] segmentacionCanalSplit = intereses_emprendedor.split(",");
 
-                                    Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+                                for (String i : segmentacionCanalSplit) {
+                                    if(i.equalsIgnoreCase(categoria)){
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0,intent, PendingIntent.FLAG_ONE_SHOT);
 
-                                    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext())
-                                            .setSmallIcon(R.mipmap.ic_launcher)
-                                            .setContentTitle("Emprendedores App")
-                                            .setContentText(body)
-                                            .setAutoCancel(true)
-                                            .setSound(soundUri)
-                                            .setStyle(new NotificationCompat.BigPictureStyle()
-                                                    .bigPicture(url).bigLargeIcon(null)
-                                            )
-                                            .setContentIntent(pendingIntent);
+                                        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+
+                                        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext())
+                                                .setSmallIcon(R.mipmap.ic_launcher)
+                                                .setContentTitle("Emprendedores App")
+                                                .setContentText(body)
+                                                .setAutoCancel(true)
+                                                .setSound(soundUri)
+                                                .setStyle(new NotificationCompat.BigPictureStyle()
+                                                        .bigPicture(url).bigLargeIcon(null)
+                                                )
+                                                .setContentIntent(pendingIntent);
 
 
-                                    int mNotificationId = (int) System.currentTimeMillis();
-                                    // NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                                        int mNotificationId = (int) System.currentTimeMillis();
+                                        // NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-                                    NotificationManager mNotifyMgr =
-                                            (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
-                                    {
-                                        int importance = NotificationManager.IMPORTANCE_HIGH;
-                                        NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "News", importance);
+                                        NotificationManager mNotifyMgr =
+                                                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
+                                        {
+                                            int importance = NotificationManager.IMPORTANCE_HIGH;
+                                            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "News", importance);
 
-                                        notificationBuilder.setChannelId(NOTIFICATION_CHANNEL_ID);
-                                        mNotifyMgr.createNotificationChannel(notificationChannel);
+                                            notificationBuilder.setChannelId(NOTIFICATION_CHANNEL_ID);
+                                            mNotifyMgr.createNotificationChannel(notificationChannel);
+                                        }
+
+                                        mNotifyMgr.notify(mNotificationId, notificationBuilder.build());
+                                        break;
                                     }
-
-                                    mNotifyMgr.notify(mNotificationId, notificationBuilder.build());
-                                    break;
                                 }
+
                             }
 
                         }

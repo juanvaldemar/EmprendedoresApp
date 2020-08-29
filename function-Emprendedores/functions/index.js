@@ -150,7 +150,7 @@ admin.initializeApp(functions.config().firebase);
         const payload = {
             notification: {
                 title: `${news.categoria}`,
-                body: `${news.categoria}`+"-"+ `${news.nombre}`+" - "+`${news.descripcion}`,
+                body: `${news.nombre}`+" - "+`${news.descripcion}`,
                 image:`${news.imagen}`,
             }
         }; 
