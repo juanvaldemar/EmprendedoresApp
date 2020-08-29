@@ -1,5 +1,6 @@
 package com.valdemar.emprendedores.view.ui.proyectos.lista;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
@@ -39,6 +41,7 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -99,8 +102,8 @@ public class DescBlankFragment extends Fragment {
     private ProgressDialog mProgress;
 
     private VideoView mVideoView;
-
     private TextView spinnerEstados;
+    private Button btnPostular;
 
     public DescBlankFragment() {
         // Required empty public constructor
@@ -126,6 +129,7 @@ public class DescBlankFragment extends Fragment {
     }
 
     private void initView(final View root) {
+
 
         Bundle datosRecuperados = getArguments();
         if (datosRecuperados == null) {
@@ -363,7 +367,152 @@ public class DescBlankFragment extends Fragment {
             }
         });
 
+        btnPostular = root.findViewById(R.id.btnPostular);
+        initPostulacion(root);
 
+    }
+
+    private void initPostulacion(final View root) {
+
+        //mVounn_icon =  root.findViewById(R.id.vounn_icon);
+        mDatabaseLike = FirebaseDatabase.getInstance().getReference().child("Likes");
+        mDatabaseLike.keepSynced(true);
+        mDatabaseLikeCount = FirebaseDatabase.getInstance().getReference().child("HistoriasDetalle").child("count").child(mPost_key);
+        mDatabaseLikeCount.keepSynced(true);
+
+        btnPostular.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mProcessLike = true;
+                final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if(user != null){
+
+                    mDatabase.child(mPost_key).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            final String post_title = (String) dataSnapshot.child("title").getValue();
+                            final String post_image = (String) dataSnapshot.child("image").getValue();
+                            final String post_category = (String) dataSnapshot.child("category").getValue();
+                            final String post_author = (String) dataSnapshot.child("author").getValue();
+                            final String post_desc = (String) dataSnapshot.child("desc").getValue();
+
+                            mDatabaseLike.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                    if (mProcessLike){
+
+                                        if(dataSnapshot.child(mAuth.getCurrentUser().getUid()).hasChild(mPost_key)){
+                                            Log.v("TAG_LIKE","LINE NO");
+                                            mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).removeValue();
+                                            showSnackBar("Eliminado de favoritos",root);
+                                            //btnPostular.setText("Eliminado");
+                                            mProcessLike = false;
+                                        }else{
+                                            mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("title").setValue(post_title);
+                                            mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("image").setValue(post_image);
+                                            mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("author").setValue(post_author);
+                                            mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("category").setValue(post_category);
+
+                                            //btnPostular.setText("favoritos");
+
+                                            mProcessLike = false;
+                                            showSnackBar("Agregado a favoritos", root);
+                                        }
+                                        if(dataSnapshot.child(mPost_key).hasChild(mAuth.getCurrentUser().getUid())){
+                                            showSnackBar("Dislike", root);
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.v("TAG_LIKE","LINE onCancelled");
+
+                                }
+                            });
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    mDatabaseLikeCount.addListenerForSingleValueEvent(new ValueEventListener(){
+
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Boolean status = false;
+                            if(dataSnapshot.child(user.getUid()).getValue() != null){
+                                if(dataSnapshot.child(user.getUid()).getValue().equals(true)){
+                                    status = true;
+                                }
+                            }
+                            if(status){
+                                mDatabaseLikeCount.child(mAuth.getCurrentUser().getUid()).removeValue();
+                                showSnackBar("I love", root);
+                                btnPostular.setText("Postular");
+
+                            }else{
+                                mDatabaseLikeCount.child(user.getUid()).setValue(true);
+                                showSnackBar("I don't love", root);
+                                btnPostular.setText("Ya haz postulado");
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }else{
+                    showSnackBar("Necesitas Iniciar Sesión", root);
+                }
+            }
+        });
+
+        mDatabaseLikeCount.addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                Boolean status = false;
+                if(dataSnapshot.child(user.getUid()).getValue() != null){
+                    if(dataSnapshot.child(user.getUid()).getValue().equals(true)){
+                        status = true;
+                    }
+                }
+                if(status){
+                   // mDatabaseLikeCount.child(mAuth.getCurrentUser().getUid()).removeValue();
+                    showSnackBar("I love", root);
+                    btnPostular.setText("Ya haz postulado");
+
+                }else{
+                    //mDatabaseLikeCount.child(user.getUid()).setValue(true);
+                    showSnackBar("I don't love", root);
+                    btnPostular.setText("Postular");
+
+                }
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void showSnackBar(String msg, View root) {
+        Snackbar
+                .make(root.findViewById(R.id.coordinator), msg, Snackbar.LENGTH_LONG)
+                .show();
     }
 
     private void shares(View root, final String post_title, final String post_image) {
@@ -381,7 +530,6 @@ public class DescBlankFragment extends Fragment {
             }
         });
     }
-
 
     private void initComentarios(View root, final String mPost_key) {
         mProgress = new ProgressDialog(getContext());
