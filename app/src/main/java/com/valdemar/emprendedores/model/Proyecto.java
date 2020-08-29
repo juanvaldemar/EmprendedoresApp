@@ -1,5 +1,7 @@
 package com.valdemar.emprendedores.model;
 
+import java.util.Date;
+
 public class Proyecto {
     String id;
     String nombre;
@@ -22,6 +24,10 @@ public class Proyecto {
     String videoSubido;
     String estadoTrazabilidad;
     String autor;
+
+    String inversion;
+    String beneficio;
+    String fecha;
     // la imagen o video se guardara en el storage de firebase con el id del proyecto
     // falta agregar usuario
     public Proyecto() {
@@ -193,5 +199,29 @@ public class Proyecto {
 
     public void setAutor(String autor) {
         this.autor = autor;
+    }
+
+    public String getInversion() {
+        return inversion;
+    }
+
+    public void setInversion(String inversion) {
+        this.inversion = inversion;
+    }
+
+    public String getBeneficio() {
+        return beneficio;
+    }
+
+    public void setBeneficio(String beneficio) {
+        this.beneficio = beneficio;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 }

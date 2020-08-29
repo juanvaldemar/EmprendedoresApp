@@ -75,7 +75,7 @@ public class DescBlankFragment extends Fragment {
             ,postSocio2,postDesc2
             ,postSocio3,postDesc3
             ,postSocio4,postDesc4
-            ,postSocio5,postDesc5;
+            ,postSocio5,postDesc5,postFecha,postInversion,postBeneficio;
     private ImageView mImage_paralax,img_foto_proyecto,iconoFinalizado;
     private FloatingActionButton mFav_favorite;
     private ImageView mVounn_icon;
@@ -136,6 +136,13 @@ public class DescBlankFragment extends Fragment {
 
 
         mPostTitleDetails = (TextView) root.findViewById(R.id.postTitleDetails);
+
+        postFecha = (TextView) root.findViewById(R.id.postFecha);
+        postInversion = (TextView) root.findViewById(R.id.postInversion);
+        postBeneficio = (TextView) root.findViewById(R.id.postBeneficio);
+
+
+
         txt_nombre_proyecto = (TextView) root.findViewById(R.id.txt_nombre_proyecto);
 
 
@@ -177,6 +184,10 @@ public class DescBlankFragment extends Fragment {
                 boolean videoSubido = Boolean.parseBoolean(videoSubido_);
 
                 String post_autor = (String) dataSnapshot.child("autor").getValue();
+
+                String post_fecha = (String) dataSnapshot.child("fecha").getValue();
+                String post_inversion = (String) dataSnapshot.child("inversion").getValue();
+                String post_beneficio = (String) dataSnapshot.child("beneficio").getValue();
 
                 String post_title = (String) dataSnapshot.child("nombre").getValue();
                 String post_desc = (String) dataSnapshot.child("descripcion").getValue();
@@ -236,6 +247,12 @@ public class DescBlankFragment extends Fragment {
 
 
                 mPostTitleDetails.setText(post_title);
+
+                    postFecha.setText("Fecha: "+post_fecha);
+                    postInversion.setText("Inversion: "+post_inversion);
+                    postBeneficio.setText("Beneficio: "+post_beneficio);
+
+
                 txt_nombre_proyecto.setText(post_title);
 
                 postCategoria.setText("Categoria: "+post_categoria);

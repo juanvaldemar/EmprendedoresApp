@@ -57,6 +57,54 @@
 
 
                 <EditText
+                    android:id="@+id/edt_inversion_proyecto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:hint="Inversión"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    android:maxLength="23"
+                    android:maxLines="1"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/design_one"
+                    android:textColor="@color/black"
+                    android:nextFocusForward="@id/edt_descripcion_proyecto"
+                    android:gravity="left" />
+
+                <EditText
+                    android:id="@+id/edt_beneficio_proyecto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:hint="Beneficio"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    android:maxLength="23"
+                    android:maxLines="1"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/design_one"
+                    android:textColor="@color/black"
+                    android:nextFocusForward="@id/edt_descripcion_proyecto"
+                    android:gravity="left" />
+
+                <EditText
+                    android:id="@+id/edt_fecha_proyecto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:hint="Fecha"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    android:maxLength="23"
+                    android:maxLines="1"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/design_one"
+                    android:textColor="@color/black"
+                    android:nextFocusForward="@id/edt_descripcion_proyecto"
+                    android:gravity="left" />
+
+                <EditText
                     android:id="@+id/edt_descripcion_proyecto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

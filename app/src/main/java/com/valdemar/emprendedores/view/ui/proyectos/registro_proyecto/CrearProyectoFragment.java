@@ -77,6 +77,11 @@ public class CrearProyectoFragment extends Fragment {
     private LinearLayout mLLSocio4;
     private LinearLayout mLLSocio5;
     private ImageView mImgFoto;
+
+    private EditText edt_inversion_proyecto;
+    private EditText edt_beneficio_proyecto;
+    private EditText edt_fecha_proyecto;
+
     private EditText mEdtNombreProyecto;
     private EditText mEdtDescripcionProyecto;
     private EditText mEdtSocio1;
@@ -166,6 +171,11 @@ public class CrearProyectoFragment extends Fragment {
 
         spinnerEstados = view.findViewById(R.id.spinnerEstados);
         spinnerEstados.setVisibility(View.VISIBLE);
+
+        edt_inversion_proyecto = (EditText) view.findViewById(R.id.edt_inversion_proyecto);
+        edt_beneficio_proyecto = (EditText) view.findViewById(R.id.edt_beneficio_proyecto);
+        edt_fecha_proyecto = (EditText) view.findViewById(R.id.edt_fecha_proyecto);
+
 
         mEdtNombreProyecto = (EditText) view.findViewById(R.id.edt_nombre_proyecto);
         mEdtDescripcionProyecto = (EditText) view.findViewById(R.id.edt_descripcion_proyecto);
@@ -268,6 +278,11 @@ public class CrearProyectoFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mCategoria.setNombre((String) dataSnapshot.child("categoria").getValue());
                 mEdtNombreProyecto.setText((String) dataSnapshot.child("nombre").getValue());
+
+                edt_inversion_proyecto.setText((String) dataSnapshot.child("inversion").getValue());
+                edt_beneficio_proyecto.setText((String) dataSnapshot.child("beneficio").getValue());
+                edt_fecha_proyecto.setText((String) dataSnapshot.child("fecha").getValue());
+
                 mEdtDescripcionProyecto.setText((String) dataSnapshot.child("descripcion").getValue());
                 String status = (String) dataSnapshot.child("estadoTrazabilidad").getValue();
 
@@ -572,6 +587,11 @@ public class CrearProyectoFragment extends Fragment {
         proyecto.setId_emprendedor(userId);
         proyecto.setCategoria(mCategoria.getNombre());
         proyecto.setNombre(mEdtNombreProyecto.getText().toString());
+
+        proyecto.setBeneficio(edt_beneficio_proyecto.getText().toString());
+        proyecto.setInversion(edt_inversion_proyecto.getText().toString());
+        proyecto.setFecha(edt_fecha_proyecto.getText().toString());
+
         proyecto.setDescripcion(mEdtDescripcionProyecto.getText().toString());
         proyecto.setSocio1(mEdtSocio1.getText().toString());
         proyecto.setDescripcionSocio1(mEdtDescripcionSocio1.getText().toString());
@@ -599,6 +619,9 @@ public class CrearProyectoFragment extends Fragment {
     private boolean validarCampos() {
 
         if (!(validarEditText(mEdtNombreProyecto)
+                && validarEditText(edt_beneficio_proyecto)
+                && validarEditText(edt_fecha_proyecto)
+                && validarEditText(edt_inversion_proyecto)
                 && validarEditText(mEdtDescripcionProyecto)
                 && validarEditText(mEdtSocio1) && validarEditText(mEdtDescripcionSocio1)
                 && !mSpnPais.getSelectedItem().toString().equals("País")
