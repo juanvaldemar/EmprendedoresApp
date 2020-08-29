@@ -353,7 +353,7 @@ public class DescBlankFragment extends Fragment {
                 Random r = new Random();
                 int valorDado = r.nextInt(12);
                 txt_cantidad_socios_suscritos.setText(valorDado+"");
-                txt_cantidad_socios_aceptados.setText(valorDado+"");
+                txt_cantidad_socios_aceptados.setText("");
 
             }
 
