@@ -58,6 +58,9 @@ import com.valdemar.emprendedores.SplashActivity;
 import com.valdemar.emprendedores.auth.AccessRelato;
 import com.valdemar.emprendedores.view.ui.proyectos.Comentarios;
 import com.valdemar.emprendedores.view.ui.proyectos.RelatoViewHolderStructureComentarios;
+import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.IModal;
+import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.SearchPlaceAdapter;
+import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.SearchPlaceAdapter2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +108,8 @@ public class DescBlankFragment extends Fragment {
     private TextView spinnerEstados;
     private Button btnPostular;
     private RecyclerView mRecyclerMisLecturas;
-    private ArrayList<Object> arrayLists = new ArrayList<>();
+    private ArrayList<ItemFeed> arrayLists = new ArrayList<>();
+    private SearchPlaceAdapter2 mAdapter;
 
     public DescBlankFragment() {
         // Required empty public constructor
@@ -375,6 +379,15 @@ public class DescBlankFragment extends Fragment {
         initListado(root);
     }
     public void initListado(View root){
+        LinearLayoutManager layoutManagerMisLecturas
+                = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+
+        layoutManagerMisLecturas.setReverseLayout(true);
+        layoutManagerMisLecturas.setStackFromEnd(true);
+        mRecyclerMisLecturas = (RecyclerView) root.findViewById(R.id.asdasd);
+        mRecyclerMisLecturas.setHasFixedSize(true);
+        mRecyclerMisLecturas.setLayoutManager(layoutManagerMisLecturas);
+
         final LinearLayout llMain = root.findViewById(R.id.rlMain);
         TextView textView = new TextView(getActivity());
 
@@ -390,7 +403,15 @@ public class DescBlankFragment extends Fragment {
                     final String ids = eventSnapshot.getKey();
                     TextView textView = new TextView(getActivity());
                     Object category = eventSnapshot.getValue(Object.class);
-                    arrayLists.add(category);
+
+                    String convertedToString = String.valueOf(category);
+
+                    String[] segmentacionCanalSplit = convertedToString.split(",");
+                    ItemFeed data_ = new ItemFeed();
+                    data_.setId_emprendedor(segmentacionCanalSplit[0]);
+                    data_.setNombre(segmentacionCanalSplit[1]);
+
+                    arrayLists.add(data_);
 
                     textView.setText(category.toString());
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -401,8 +422,24 @@ public class DescBlankFragment extends Fragment {
                     llMain.addView(textView);
 
                 }
+                final IModal listener = new IModal() {
+                    @Override
+                    public void modalIniciar(String nombre, String url, String uidUser) {
 
+                    }
+
+                    @Override
+                    public void modalIniciarDetail(String id) {
+                        //viewDetails(id,view);
+                    }
+                };
+
+                mAdapter = new SearchPlaceAdapter2(getContext(), arrayLists,listener);
+                mRecyclerMisLecturas.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
                 System.out.println(arrayLists);
+
+
 
             }
 
