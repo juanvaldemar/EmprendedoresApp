@@ -104,6 +104,8 @@ public class DescBlankFragment extends Fragment {
     private VideoView mVideoView;
     private TextView spinnerEstados;
     private Button btnPostular;
+    private RecyclerView mRecyclerMisLecturas;
+    private ArrayList<Object> arrayLists = new ArrayList<>();
 
     public DescBlankFragment() {
         // Required empty public constructor
@@ -370,8 +372,46 @@ public class DescBlankFragment extends Fragment {
         btnPostular = root.findViewById(R.id.btnPostular);
         initPostulacion(root);
         initCount(root,mPost_key);
+        initListado(root);
     }
+    public void initListado(View root){
+        final LinearLayout llMain = root.findViewById(R.id.rlMain);
+        TextView textView = new TextView(getActivity());
 
+        mDatabaseLikeCount.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                txt_cantidad_socios_suscritos.setText(dataSnapshot.getChildrenCount()+" ");
+                String asd = dataSnapshot.child(getId()+"").toString();
+                arrayLists.clear();
+                //llMain.removeView(textView);
+
+                for (final DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+                    final String ids = eventSnapshot.getKey();
+                    TextView textView = new TextView(getActivity());
+                    Object category = eventSnapshot.getValue(Object.class);
+                    arrayLists.add(category);
+
+                    textView.setText(category.toString());
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.MATCH_PARENT
+                    );
+                    textView.setLayoutParams(params);
+                    llMain.addView(textView);
+
+                }
+
+                System.out.println(arrayLists);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
     private void initPostulacion(final View root) {
 
         //mVounn_icon =  root.findViewById(R.id.vounn_icon);
@@ -445,7 +485,9 @@ public class DescBlankFragment extends Fragment {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             Boolean status = false;
                             if(dataSnapshot.child(user.getUid()).getValue() != null){
-                                if(dataSnapshot.child(user.getUid()).getValue().equals(true)){
+                                String data_ = dataSnapshot.child(user.getUid()).getValue().toString();
+
+                                if(!data_.isEmpty()){
                                     status = true;
                                 }
                             }
@@ -455,7 +497,7 @@ public class DescBlankFragment extends Fragment {
                                 btnPostular.setText("Postular");
 
                             }else{
-                                mDatabaseLikeCount.child(user.getUid()).setValue(true);
+                                mDatabaseLikeCount.child(user.getUid()).setValue(user.getUid() +" , "+user.getDisplayName());
                                 showSnackBar("I don't love", root);
                                 btnPostular.setText("Ya haz postulado");
 
