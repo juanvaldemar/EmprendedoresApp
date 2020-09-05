@@ -379,17 +379,8 @@ public class DescBlankFragment extends Fragment {
         initListado(root);
     }
     public void initListado(View root){
-        LinearLayoutManager layoutManagerMisLecturas
-                = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false);
 
-        layoutManagerMisLecturas.setReverseLayout(true);
-        layoutManagerMisLecturas.setStackFromEnd(true);
-        mRecyclerMisLecturas = (RecyclerView) root.findViewById(R.id.asdasd);
-        mRecyclerMisLecturas.setHasFixedSize(true);
-        mRecyclerMisLecturas.setLayoutManager(layoutManagerMisLecturas);
 
-        final LinearLayout llMain = root.findViewById(R.id.rlMain);
-        TextView textView = new TextView(getActivity());
 
         mDatabaseLikeCount.addValueEventListener(new ValueEventListener() {
             @Override
@@ -413,35 +404,19 @@ public class DescBlankFragment extends Fragment {
 
                     arrayLists.add(data_);
 
-                   /* textView.setText(category.toString());
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT
-                    );
-                    textView.setLayoutParams(params);
-                    llMain.addView(textView);
-                    */
+
                 }
-                final IModal listener = new IModal() {
+
+
+
+
+                txt_cantidad_socios_suscritos.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void modalIniciar(String nombre, String url, String uidUser) {
+                    public void onClick(View view) {
+                        iniProfileModal(view,arrayLists);
 
                     }
-
-                    @Override
-                    public void modalIniciarDetail(String id) {
-                        //viewDetails(id,view);
-                        Toast.makeText(getContext(),id,Toast.LENGTH_LONG).show();
-                    }
-                };
-
-                mAdapter = new SearchPlaceAdapter2(getContext(), arrayLists,listener);
-                mRecyclerMisLecturas.setAdapter(mAdapter);
-                mAdapter.notifyDataSetChanged();
-                System.out.println(arrayLists);
-
-
-
+                });
             }
 
             @Override
@@ -612,7 +587,6 @@ public class DescBlankFragment extends Fragment {
         });
     }
 
-
     private void shares(View root, final String post_title, final String post_image) {
         FloatingActionButton fav_favorite;
         fav_favorite = root.findViewById(R.id.fav_favorite);
@@ -754,9 +728,52 @@ public class DescBlankFragment extends Fragment {
 
     }
 
+    private void iniProfileModal(View v, ArrayList<ItemFeed> arrayLists){
+        final Dialog MyDialog;
+        MyDialog = new Dialog(getActivity());
+        MyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        MyDialog.setContentView(R.layout.profile_modal);
+        MyDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Button btnModalCancel = MyDialog.findViewById(R.id.modal_need_cancel);
+
+        LinearLayoutManager layoutManagerMisLecturas
+                = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+
+        layoutManagerMisLecturas.setReverseLayout(true);
+        layoutManagerMisLecturas.setStackFromEnd(true);
+        mRecyclerMisLecturas = (RecyclerView) MyDialog.findViewById(R.id.asdasd);
+        mRecyclerMisLecturas.setHasFixedSize(true);
+        mRecyclerMisLecturas.setLayoutManager(layoutManagerMisLecturas);
+
+        final IModal listener = new IModal() {
+            @Override
+            public void modalIniciar(String nombre, String url, String uidUser) {
+
+            }
+
+            @Override
+            public void modalIniciarDetail(String id) {
+                //viewDetails(id,view);
+                Toast.makeText(getContext(),id,Toast.LENGTH_LONG).show();
+            }
+        };
+
+        mAdapter = new SearchPlaceAdapter2(getContext(), arrayLists,listener);
+        mRecyclerMisLecturas.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+        System.out.println(arrayLists);
+
+        btnModalCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyDialog.dismiss();
+            }
+        });
+
+        MyDialog.show();
 
 
-
+        }
 
 
 
