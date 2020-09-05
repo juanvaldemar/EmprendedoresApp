@@ -506,12 +506,12 @@ public class DescBlankFragment extends Fragment {
                             }
                             if(status){
                                 mDatabaseLikeCount.child(mAuth.getCurrentUser().getUid()).removeValue();
-                                showSnackBar("I love", root);
+                             //   showSnackBar("I love", root);
                                 btnPostular.setText("Postular");
 
                             }else{
                                 mDatabaseLikeCount.child(user.getUid()).setValue(user.getUid() +" , "+user.getDisplayName());
-                                showSnackBar("I don't love", root);
+                               // showSnackBar("I don't love", root);
                                 btnPostular.setText("Ya haz postulado");
 
                             }
@@ -728,7 +728,7 @@ public class DescBlankFragment extends Fragment {
 
     }
 
-    private void iniProfileModal(View v, ArrayList<ItemFeed> arrayLists){
+    private void iniProfileModal(final View v, ArrayList<ItemFeed> arrayLists){
         final Dialog MyDialog;
         MyDialog = new Dialog(getActivity());
         MyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -754,7 +754,14 @@ public class DescBlankFragment extends Fragment {
             @Override
             public void modalIniciarDetail(String id) {
                 //viewDetails(id,view);
-                Toast.makeText(getContext(),id,Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(),id,Toast.LENGTH_LONG).show();
+                String idEmprendedor = id;
+                Bundle args = new Bundle();
+                args.putString("idEmprendedor", idEmprendedor);
+
+                Navigation.findNavController(v).navigate(R.id.next_action_desc,args);
+                MyDialog.dismiss();
+
             }
         };
 

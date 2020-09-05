@@ -156,7 +156,7 @@ public class PerfilEmprendedorFragment extends Fragment {
         }
         String idEmprendedor = datosRecuperados.getString("idEmprendedor");
         if(idEmprendedor != null){
-            cargarPerfil2(idEmprendedor);
+            cargarPerfil2(idEmprendedor.trim());
 
         }else{
             cargarPerfil();
@@ -170,11 +170,11 @@ public class PerfilEmprendedorFragment extends Fragment {
         mRecyclerMisLecturas = (RecyclerView) view.findViewById(R.id.fragmento_mis_lecturas);
         mRecyclerMisLecturas.setHasFixedSize(true);
         mRecyclerMisLecturas.setLayoutManager(layoutManagerMisLecturas);
-        initFiltrarEstados("ACTIVO", view);
+        initFiltrarEstados("ACTIVO", view,idEmprendedor);
 
     }
 
-    private void initFiltrarEstados(final String estado, final View view) {
+    private void initFiltrarEstados(final String estado, final View view, final String idEmprendedor) {
 
 
         final IModal listener = new IModal() {
@@ -199,7 +199,7 @@ public class PerfilEmprendedorFragment extends Fragment {
                     String ids = eventSnapshot.getKey();
                     ItemFeed category = eventSnapshot.getValue(ItemFeed.class);
                     category.setId(ids);
-                    if(category.getId_emprendedor().equalsIgnoreCase(user.getUid())){
+                    if(category.getId_emprendedor().equalsIgnoreCase(idEmprendedor)){
                         if(category.getEstadoTrazabilidad() != null){
                             if(category.getEstadoTrazabilidad().equalsIgnoreCase(estado)){
                                 arrayLists.add(category);
@@ -315,11 +315,10 @@ public class PerfilEmprendedorFragment extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-
-                    if(!mEmprendedor.getImagen().equals("Vacio"))
+                if(!mEmprendedor.getImagen().equals("Vacio")){
                         Glide.with(getActivity().getApplicationContext())
-                            .load(mEmprendedor.getImagen())
-                            .into(mImgPerfil);
+                                .load(mEmprendedor.getImagen())
+                                .into(mImgPerfil);
                     mTxtNombres.setText(mEmprendedor.getEdt_nombres_emprendedor());
                     mTxtDedicas.setText(mEmprendedor.getDedicas());
                     mTxtApellidos.setText(mEmprendedor.getEdt_apellidos_emprendedor());
@@ -328,12 +327,13 @@ public class PerfilEmprendedorFragment extends Fragment {
                     mLinkFB = mEmprendedor.getEdt_facebook();
                     mLinkIG = mEmprendedor.getEdt_instagram();
                     mLinkTW = mEmprendedor.getEdt_twitter();
-                grado_academico_ = mEmprendedor.getGrado_academico();
-                intereses_ = mEmprendedor.getIntereses();
-                mTxtGradoAcademico.setText(grado_academico_);
-                mTxtIntereses.setText(intereses_);
-                btnVerProyectosCreados.setVisibility(View.GONE);
-                btnEditarperfil.setVisibility(View.GONE);
+                    grado_academico_ = mEmprendedor.getGrado_academico();
+                    intereses_ = mEmprendedor.getIntereses();
+                    mTxtGradoAcademico.setText(grado_academico_);
+                    mTxtIntereses.setText(intereses_);
+                }
+
+
             }
         }, 1000);
     }
