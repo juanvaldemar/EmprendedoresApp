@@ -170,13 +170,18 @@ public class PerfilEmprendedorFragment extends Fragment {
         mRecyclerMisLecturas = (RecyclerView) view.findViewById(R.id.fragmento_mis_lecturas);
         mRecyclerMisLecturas.setHasFixedSize(true);
         mRecyclerMisLecturas.setLayoutManager(layoutManagerMisLecturas);
+
         initFiltrarEstados("ACTIVO", view,idEmprendedor);
 
     }
 
-    private void initFiltrarEstados(final String estado, final View view, final String idEmprendedor) {
+    private void initFiltrarEstados(final String estado, final View view, String idEmprendedor) {
 
-
+        if(idEmprendedor == null) {
+            idEmprendedor = user.getUid();
+        }else{
+            idEmprendedor.trim();
+        }
         final IModal listener = new IModal() {
             @Override
             public void modalIniciar(String nombre, String url, String uidUser) {
@@ -191,6 +196,7 @@ public class PerfilEmprendedorFragment extends Fragment {
 
 
         mRef = FirebaseDatabase.getInstance().getReference().child("Proyectos");
+        final String finalIdEmprendedor = idEmprendedor.trim();
         mRef.limitToFirst(50).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -199,7 +205,7 @@ public class PerfilEmprendedorFragment extends Fragment {
                     String ids = eventSnapshot.getKey();
                     ItemFeed category = eventSnapshot.getValue(ItemFeed.class);
                     category.setId(ids);
-                    if(category.getId_emprendedor().equalsIgnoreCase(idEmprendedor)){
+                    if(category.getId_emprendedor().equalsIgnoreCase(finalIdEmprendedor)){
                         if(category.getEstadoTrazabilidad() != null){
                             if(category.getEstadoTrazabilidad().equalsIgnoreCase(estado)){
                                 arrayLists.add(category);
