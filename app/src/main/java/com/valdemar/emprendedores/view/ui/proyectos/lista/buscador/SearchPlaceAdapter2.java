@@ -62,7 +62,7 @@ public class SearchPlaceAdapter2 extends RecyclerView.Adapter<SearchPlaceAdapter
     @Override
     public SearchPlaceAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.design_structure_relato_menu, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.design_structure_profile, parent, false);
 
         SearchPlaceAdapterViewHolder viewHolder = new SearchPlaceAdapterViewHolder(view);
         return viewHolder;
@@ -73,16 +73,13 @@ public class SearchPlaceAdapter2 extends RecyclerView.Adapter<SearchPlaceAdapter
     {
 
 
-        holder.txtPlace.setText(arrayListFiltered.get(position).getNombre());
-        holder.cardPlace.setText(arrayListFiltered.get(position).getPais() +" - " +arrayListFiltered.get(position).getCiudad());
+        holder.txtNameProfile.setText(arrayListFiltered.get(position).getNombre());
 
-        Glide.with(mCntx).load(arrayListFiltered.get(position).getImagen()).into(holder.image);
-
-        holder.image.setOnClickListener(new View.OnClickListener()
+        holder.txtNameProfile.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view) {
-                listener.modalIniciarDetail(arrayListFiltered.get(position).getId());
+                listener.modalIniciarDetail(arrayListFiltered.get(position).getId_emprendedor());
 
             }
         });
@@ -91,15 +88,11 @@ public class SearchPlaceAdapter2 extends RecyclerView.Adapter<SearchPlaceAdapter
 
     public class SearchPlaceAdapterViewHolder extends RecyclerView.ViewHolder
     {
-        TextView txtPlace;
-        ImageView image;
-        TextView cardPlace;
+        TextView txtNameProfile;
 
         public SearchPlaceAdapterViewHolder(View itemView) {
             super(itemView);
-            txtPlace = (TextView) itemView.findViewById(R.id.item_recycler_structure_title);
-            image = (ImageView) itemView.findViewById(R.id.item_recycler_structure_imagen);
-            cardPlace = (TextView) itemView.findViewById(R.id.item_recycler_structure_category);
+            txtNameProfile = (TextView) itemView.findViewById(R.id.item_name);
         }
     }
 

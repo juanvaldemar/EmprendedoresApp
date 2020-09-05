@@ -401,7 +401,7 @@ public class DescBlankFragment extends Fragment {
 
                 for (final DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
                     final String ids = eventSnapshot.getKey();
-                    TextView textView = new TextView(getActivity());
+                   //TextView textView = new TextView(getActivity());
                     Object category = eventSnapshot.getValue(Object.class);
 
                     String convertedToString = String.valueOf(category);
@@ -413,14 +413,14 @@ public class DescBlankFragment extends Fragment {
 
                     arrayLists.add(data_);
 
-                    textView.setText(category.toString());
+                   /* textView.setText(category.toString());
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.MATCH_PARENT
                     );
                     textView.setLayoutParams(params);
                     llMain.addView(textView);
-
+                    */
                 }
                 final IModal listener = new IModal() {
                     @Override
@@ -431,6 +431,7 @@ public class DescBlankFragment extends Fragment {
                     @Override
                     public void modalIniciarDetail(String id) {
                         //viewDetails(id,view);
+                        Toast.makeText(getContext(),id,Toast.LENGTH_LONG).show();
                     }
                 };
 
