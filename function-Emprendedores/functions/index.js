@@ -144,7 +144,7 @@ admin.initializeApp(functions.config().firebase);
 //     })
 
 
-    exports.sendAdminNotification = functions.database.ref('/Proyectos/{pushId}')
+    exports.sendAdminNotification = functions.database.ref('/Proyectos/{newId}')
     .onWrite((change, context) => {
         const news = change.after.val();
         const payload = {
@@ -158,7 +158,7 @@ admin.initializeApp(functions.config().firebase);
      
         return admin.messaging().sendToTopic("Proyectos", payload)
             .then(function (response) {
-                console.log('Notification sent successfully:', response);
+                console.log('Notification sent successfully:', response+`${news.nombre}`);
             })
             .catch(function (error) {
                 console.log('Notification sent failed:', error);

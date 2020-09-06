@@ -560,7 +560,7 @@ public class DescBlankFragment extends Fragment {
                                         if(dataSnapshot.child(mAuth.getCurrentUser().getUid()).hasChild(mPost_key)){
                                             Log.v("TAG_LIKE","LINE NO");
                                             mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).removeValue();
-                                            showSnackBar("Eliminado de favoritos",root);
+                                            showSnackBar("Eliminando Suscripción",root);
                                             //btnPostular.setText("Eliminado");
                                             mProcessLike = false;
                                         }else{
@@ -573,7 +573,7 @@ public class DescBlankFragment extends Fragment {
                                             //btnPostular.setText("favoritos");
 
                                             mProcessLike = false;
-                                            showSnackBar("Agregado a favoritos", root);
+                                            showSnackBar("Suscrito", root);
                                         }
                                         if(dataSnapshot.child(mPost_key).hasChild(mAuth.getCurrentUser().getUid())){
                                             showSnackBar("Dislike", root);
@@ -614,7 +614,7 @@ public class DescBlankFragment extends Fragment {
                             }else{
                                 mDatabaseLikeCount.child(user.getUid()).setValue(user.getUid() +" , "+user.getDisplayName());
                                // showSnackBar("I don't love", root);
-                                btnPostular.setText("Ya haz postulado");
+                                //btnPostular.setText("Ya haz postulado");
 
                             }
 
@@ -647,7 +647,7 @@ public class DescBlankFragment extends Fragment {
                 if(status){
                    // mDatabaseLikeCount.child(mAuth.getCurrentUser().getUid()).removeValue();
                    // showSnackBar("I love", root);
-                    btnPostular.setText("Ya haz postulado");
+                    //btnPostular.setText("Ya haz postulado");
 
                 }else{
                     //mDatabaseLikeCount.child(user.getUid()).setValue(true);

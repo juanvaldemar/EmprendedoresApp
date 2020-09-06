@@ -94,6 +94,9 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
                                 String[] segmentacionCanalSplit = intereses_emprendedor.split(",");
 
                                 for (String i : segmentacionCanalSplit) {
+                                    i.replace("[","");
+                                    i.replace("]","");
+                                    i.trim();
                                     if(i.equalsIgnoreCase(categoria)){
                                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0,intent, PendingIntent.FLAG_ONE_SHOT);
