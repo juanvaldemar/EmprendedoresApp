@@ -18,8 +18,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -48,8 +50,10 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -82,6 +86,9 @@ public class RegistrarFragment extends Fragment {
     private Emprendedor mEmprendedor;
     private boolean mActualizarEmprendedor;
 
+    private CheckBox CheckBox1,CheckBox2,CheckBox3,CheckBox4,CheckBox5,CheckBox6,CheckBox7,CheckBox8,CheckBox9,CheckBox10,CheckBox11,CheckBox12;
+    private ArrayList<String> items;
+
     public RegistrarFragment() {
         // Required empty public constructor
     }
@@ -103,6 +110,19 @@ public class RegistrarFragment extends Fragment {
     }
 
     private void initView(View root) {
+
+        CheckBox1 = root.findViewById(R.id.checkoutBoxComida);
+        CheckBox2 = root.findViewById(R.id.checkoutBoxRopa);
+        CheckBox3 = root.findViewById(R.id.checkoutBoxTecnologia);
+        CheckBox4 = root.findViewById(R.id.checkoutBoxSalud);
+        CheckBox5 = root.findViewById(R.id.checkoutBoxEntretenimiento);
+        CheckBox6 = root.findViewById(R.id.checkoutBoxDeportes);
+        CheckBox7 = root.findViewById(R.id.checkoutBoxVideojuegos);
+        CheckBox8 = root.findViewById(R.id.checkoutBoxConsultorias);
+        CheckBox9 = root.findViewById(R.id.checkoutBoxTransportes);
+        CheckBox10 = root.findViewById(R.id.checkoutBoxMarketing);
+        CheckBox11 = root.findViewById(R.id.checkoutBoxFinanzas);
+        CheckBox12 = root.findViewById(R.id.checkoutBoxHogar);
 
 
         mImgFoto = root.findViewById(R.id.img_foto_emprendedor);
@@ -138,6 +158,11 @@ public class RegistrarFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 registrarEmprendedor(view);
+
+                    if (getActivity().getCurrentFocus() != null) { InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                        inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+
+                    }
 
             }
         });
@@ -277,7 +302,7 @@ public class RegistrarFragment extends Fragment {
                                         newPost.child("edt_twitter").setValue(edt_twitter.getText().toString().trim());
                                         newPost.child("imagen").setValue(downloadUrl.toString());
                                         newPost.child("grado_academico").setValue(spinner_grado_academico.getSelectedItem().toString());
-                                        newPost.child("intereses").setValue(spinner_intereses.getSelectedItem().toString());
+                                        newPost.child("intereses").setValue(items.toString());
 
                                         SimpleDateFormat sdfFechaRegistro = new SimpleDateFormat("dd/MM/yyyy");
                                         Date todayDate = new Date();
@@ -319,7 +344,7 @@ public class RegistrarFragment extends Fragment {
                         newPost.child("edt_instagram").setValue(edt_instagram.getText().toString().trim());
                         newPost.child("edt_twitter").setValue(edt_twitter.getText().toString().trim());
                         newPost.child("grado_academico").setValue(spinner_grado_academico.getSelectedItem().toString());
-                        newPost.child("intereses").setValue(spinner_intereses.getSelectedItem().toString());
+                        newPost.child("intereses").setValue(items.toString());
 
                         //newPost.child("imagen").setValue("Vacio");
 
@@ -341,6 +366,58 @@ public class RegistrarFragment extends Fragment {
 
 
     private boolean validarCampos() {
+       items = new ArrayList<String>();
+        int counter = 0;
+
+        if (CheckBox1.isChecked()) {
+            counter++;
+            items.add(CheckBox1.getText().toString());
+        }
+        if (CheckBox2.isChecked()){
+            counter++;
+            items.add(CheckBox2.getText().toString());
+        }
+        if (CheckBox3.isChecked()){
+            counter++; items.add(CheckBox3.getText().toString());
+        }
+        if (CheckBox4.isChecked()){
+            counter++; items.add(CheckBox4.getText().toString());
+        }
+        if (CheckBox5.isChecked()) {
+            counter++; items.add(CheckBox5.getText().toString());
+        }
+        if (CheckBox6.isChecked()) {
+            counter++; items.add(CheckBox6.getText().toString());
+        }
+        if (CheckBox7.isChecked()) {
+            counter++; items.add(CheckBox7.getText().toString());
+        }
+        if (CheckBox8.isChecked()) {
+            counter++; items.add(CheckBox8.getText().toString());
+        }
+        if (CheckBox9.isChecked()) {
+            counter++; items.add(CheckBox9.getText().toString());
+        }
+        if (CheckBox10.isChecked()) {
+            counter++; items.add(CheckBox10.getText().toString());
+        }
+        if (CheckBox11.isChecked()) {
+            counter++; items.add(CheckBox11.getText().toString());
+        }
+        if (CheckBox12.isChecked()) {
+            counter++; items.add(CheckBox12.getText().toString());
+        }
+
+        if (counter < 4) {
+            showSnackBar("OKIIIII");
+            System.out.println(items);
+        }
+        // ...more than 2 CheckBoxes checked
+        else {
+            showSnackBar("No puedes seleccionar más de 3 intereses");
+
+            return false;
+        }
 
         String s = spinner_dia.getSelectedItem().toString();
 

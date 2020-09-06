@@ -232,8 +232,80 @@
                     android:id="@+id/spinner_intereses"
                     android:layout_width="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:visibility="gone"
                     android:layout_marginBottom="10dp"
                     android:layout_height="40dp" />
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Comida"
+                            android:id="@+id/checkoutBoxComida"/>
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ropa"
+                            android:id="@+id/checkoutBoxRopa"/>
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tecnologia"
+                            android:id="@+id/checkoutBoxTecnologia"/>
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Salud"
+                            android:id="@+id/checkoutBoxSalud"/>
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Entretenimiento"
+                            android:id="@+id/checkoutBoxEntretenimiento"/>
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Deportes"
+                            android:id="@+id/checkoutBoxDeportes"/>
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Videojuegos"
+                            android:id="@+id/checkoutBoxVideojuegos"/>
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Consultorias"
+                            android:id="@+id/checkoutBoxConsultorias"/>
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Transportes"
+                            android:id="@+id/checkoutBoxTransportes"/>
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Marketing"
+                            android:id="@+id/checkoutBoxMarketing"/>
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Finanzas"
+                            android:id="@+id/checkoutBoxFinanzas"/>
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Hogar"
+                            android:id="@+id/checkoutBoxHogar"/>
+
+                    </LinearLayout>
+
 
 
 
