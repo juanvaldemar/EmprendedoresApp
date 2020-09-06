@@ -103,6 +103,15 @@
         <item>Pintor</item>
         <item>Comerciante</item>
     </string-array>
+
+    <string-array name="comentarios">
+        <item>Eliminar</item>
+        <item>Editar</item>
+        <item>Responder</item>
+    </string-array>
+
+
+
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="fcm_message">FCM Message</string>
 </resources>

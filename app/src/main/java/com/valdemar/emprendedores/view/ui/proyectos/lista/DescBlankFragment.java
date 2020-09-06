@@ -2,10 +2,12 @@ package com.valdemar.emprendedores.view.ui.proyectos.lista;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -19,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,6 +41,7 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
@@ -83,8 +87,10 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
 
@@ -699,6 +705,7 @@ public class DescBlankFragment extends Fragment {
         });
     }
 
+
     private void initComentarios(View root, final String mPost_key) {
         mProgress = new ProgressDialog(getContext());
 
@@ -733,13 +740,61 @@ public class DescBlankFragment extends Fragment {
                 R.layout.view_comentarios,
                 RelatoViewHolderStructureComentarios.class,queryRef) {
             @Override
-            protected void populateViewHolder(RelatoViewHolderStructureComentarios viewHolder, Comentarios model, int i) {
+            protected void populateViewHolder(RelatoViewHolderStructureComentarios viewHolder, final Comentarios model, int i) {
                  //  final String post_key = getRef(i).getKey();
                     viewHolder.setAutor(model.getNombre());
                     viewHolder.setMensaje(model.getComentario());
                     viewHolder.goneHora();
                     viewHolder.setImage(getActivity().getApplicationContext(), model.getFoto());
+                    viewHolder.mViewStructure.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            System.out.println("model: "+model);
+                            final Dialog MyDialog;
+                            MyDialog = new Dialog(getActivity());
+                            MyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            MyDialog.setContentView(R.layout.comentario_opcion);
+                            final Button btnEliminar = MyDialog.findViewById(R.id.eliminar);
+                            final Button btnEditar = MyDialog.findViewById(R.id.editar);
+                            final Button btnEditar_ = MyDialog.findViewById(R.id.editar_);
+                            final EditText editarComentario = MyDialog.findViewById(R.id.editarComentario);
+                            btnEliminar.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    mDatabaseMisComentarios.child(mPost_key).child(model.getIdss()).removeValue();
+                                    MyDialog.dismiss();
+                                }
+                            });
+                            btnEditar.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    btnEliminar.setVisibility(View.GONE);
+                                    editarComentario.setVisibility(View.VISIBLE);
+                                    editarComentario.setText(model.getComentario());
 
+                                    btnEditar.setVisibility(View.GONE);
+                                    btnEditar_.setVisibility(View.VISIBLE);
+
+                                }
+                            });
+
+                            btnEditar_.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    editarComentario.setVisibility(View.VISIBLE);
+
+                                    Map<String, Object> proyectoHashMap = new HashMap<>();
+                                    model.setComentario(editarComentario.getText().toString());
+                                    proyectoHashMap.put(model.getIdss(), model);
+
+                                    mDatabaseMisComentarios.child(mPost_key).updateChildren(proyectoHashMap);
+                                    MyDialog.dismiss();
+                                }
+                            });
+
+                            MyDialog.show();
+                        }
+                    });
             }
 
         };
@@ -778,6 +833,7 @@ public class DescBlankFragment extends Fragment {
                                         newPost.child("foto").setValue(user.getPhotoUrl().toString());
                                         newPost.child("comentario").setValue(txtComentario.getText().toString());
                                         newPost.child("nombre").setValue(user.getDisplayName().toString());
+                                        newPost.child("idss").setValue(newPost.getKey());
 
                                         mRecyclerComentarios.setVisibility(View.GONE);
                                     }else{

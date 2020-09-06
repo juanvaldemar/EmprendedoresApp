@@ -4,6 +4,8 @@ public class Comentarios {
     private String foto;
     private String nombre;
     private String comentario;
+    private String idss;
+    private String id;
 
     public Comentarios() {
     }
@@ -32,5 +34,19 @@ public class Comentarios {
         this.comentario = comentario;
     }
 
+    public String getIdss() {
+        return idss;
+    }
 
+    public void setIdss(String idss) {
+        this.idss = idss;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }

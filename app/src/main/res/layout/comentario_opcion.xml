@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:background="@color/black">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:orientation="vertical"
+        android:background="@color/black">
+
+
+        <TextView
+            android:id="@+id/title_pop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Opcciones"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:layout_marginBottom="20dp"
+            android:textSize="20sp"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/eliminar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Eliminar"
+                android:background="@drawable/design_one"
+                android:layout_weight=".5"
+                android:textColor="@color/white"
+                android:layout_marginRight="5dp"
+                />
+
+            <EditText
+                android:id="@+id/editarComentario"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:background="@color/gray"
+                android:textColor="@color/white"
+                android:layout_height="wrap_content"
+                />
+            <Button
+                android:id="@+id/editar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/design_one"
+                android:textColor="@color/white"
+                android:text="Editar"
+                android:layout_gravity="center"
+                android:layout_weight=".5"
+                />
+            <Button
+                android:id="@+id/editar_"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/design_one"
+                android:textColor="@color/white"
+                android:text="Editar"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:layout_weight=".5"
+                />
+
+            <Button
+                android:id="@+id/responder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/design_one"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                android:text="Cerrar"
+                android:layout_gravity="center"
+                android:layout_weight=".5"
+                />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>
