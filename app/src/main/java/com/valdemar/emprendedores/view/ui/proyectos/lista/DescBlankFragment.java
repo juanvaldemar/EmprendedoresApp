@@ -445,7 +445,7 @@ public class DescBlankFragment extends Fragment {
 
                 if(user.getUid().equalsIgnoreCase(id_emprendedor)){
                     btnActualizarProyecto.setVisibility(View.VISIBLE);
-
+                    btnPostular.setVisibility(View.GONE);
                     btnActualizarProyecto.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

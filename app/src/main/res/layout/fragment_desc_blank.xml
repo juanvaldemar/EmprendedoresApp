@@ -528,6 +528,7 @@
                             </LinearLayout>
                             <Button
                                 android:id="@+id/btnPostular"
+                                android:visibility="gone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Postular"/>
