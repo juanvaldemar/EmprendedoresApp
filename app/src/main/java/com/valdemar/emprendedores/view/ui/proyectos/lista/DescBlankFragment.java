@@ -1,23 +1,32 @@
 package com.valdemar.emprendedores.view.ui.proyectos.lista;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,6 +48,8 @@ import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -51,17 +62,26 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 import com.valdemar.emprendedores.MenuLateralActivity;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.SplashActivity;
 import com.valdemar.emprendedores.auth.AccessRelato;
+import com.valdemar.emprendedores.util.DownloadTask;
 import com.valdemar.emprendedores.view.ui.proyectos.Comentarios;
 import com.valdemar.emprendedores.view.ui.proyectos.RelatoViewHolderStructureComentarios;
 import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.IModal;
 import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.SearchPlaceAdapter;
 import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.SearchPlaceAdapter2;
 
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -111,6 +131,16 @@ public class DescBlankFragment extends Fragment {
     private ArrayList<ItemFeed> arrayLists = new ArrayList<>();
     private SearchPlaceAdapter2 mAdapter;
 
+    private ImageView downloadVideo;
+
+
+    private final static int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISOS = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+    private Toast toast;
+
     public DescBlankFragment() {
         // Required empty public constructor
     }
@@ -124,9 +154,32 @@ public class DescBlankFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         initView(root);
-
-
         return root;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults){
+        String mensaje = "";
+        if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            mensaje = "Permiso Concedido";
+        }else{
+            mensaje = "Permiso no concedido";
+        }
+        toast = Toast.makeText(getActivity(), mensaje, Toast.LENGTH_LONG);
+        toast.show();
+    }
+    private void permisos(){
+        int permissionCheck = ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if(permissionCheck!= PackageManager.PERMISSION_GRANTED){ //No tiene el permiso
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            } else {
+                ActivityCompat.requestPermissions(getActivity(),
+                        PERMISOS,
+                        MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+            }
+        }
     }
 
     @Override
@@ -135,6 +188,7 @@ public class DescBlankFragment extends Fragment {
     }
 
     private void initView(final View root) {
+
 
 
         Bundle datosRecuperados = getArguments();
@@ -146,7 +200,7 @@ public class DescBlankFragment extends Fragment {
 
 
         mPostTitleDetails = (TextView) root.findViewById(R.id.postTitleDetails);
-
+        downloadVideo = root.findViewById(R.id.downloadVideo);
         postFecha = (TextView) root.findViewById(R.id.postFecha);
         postInversion = (TextView) root.findViewById(R.id.postInversion);
         postBeneficio = (TextView) root.findViewById(R.id.postBeneficio);
@@ -201,7 +255,7 @@ public class DescBlankFragment extends Fragment {
 
                 String post_title = (String) dataSnapshot.child("nombre").getValue();
                 String post_desc = (String) dataSnapshot.child("descripcion").getValue();
-                String post_image = (String) dataSnapshot.child("imagen").getValue();
+                final String post_image = (String) dataSnapshot.child("imagen").getValue();
                 String post_categoria = (String) dataSnapshot.child("categoria").getValue();
                 String post_socio1 = (String) dataSnapshot.child("socio1").getValue();
                 String post_desc1 = (String) dataSnapshot.child("descripcionSocio1").getValue();
@@ -217,6 +271,46 @@ public class DescBlankFragment extends Fragment {
 
                 String id_emprendedor = (String) dataSnapshot.child("id_emprendedor").getValue();
                 String estadoTrazabilidad = (String) dataSnapshot.child("estadoTrazabilidad").getValue();
+
+
+                if(videoSubido){
+                    downloadVideo.setVisibility(View.VISIBLE);
+                    downloadVideo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                            StrictMode.setThreadPolicy(policy);
+
+                            permisos();
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                                //Verifica permisos para Android 6.0+
+                                int permissionCheck = ContextCompat.checkSelfPermission(
+                                        getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                                if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                                    Log.i("Mensaje", "No se tiene permiso para leer.");
+                                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 225);
+                                } else {
+                                    Log.i("Mensaje", "Se tiene permiso para leer!");
+                                }
+                            }
+
+                            final File file = new File (Environment
+                                    .getExternalStorageDirectory()
+                                    .getPath() + "/Android/data/"
+                                    + getActivity().getPackageName()
+                                    + "/files/sdcard/DirName/const/const.html");
+
+                            Log.i("playy", "Folder "+file);
+
+                            DownloadTask downloadTask = new DownloadTask(getActivity());
+                            String url = "https://firebasestorage.googleapis.com/v0/b/app-emprendedores.appspot.com/o/Proyectos_images%2Fvideo%3A258112?alt=media&token=7a42882e-9030-4866-aee4-73cc648b1c76";
+                            downloadTask.execute(url,"valdemar","valdemar.mp4");
+
+                        }
+
+
+                    });
+                }
 
                 spinnerEstados = root.findViewById(R.id.spinnerEstados);
 
@@ -244,6 +338,7 @@ public class DescBlankFragment extends Fragment {
                     }
 
                 }
+                dataSnapshot.child("imagen").getValue();
 
 
                 final String textoCentradoDesc = post_desc;
@@ -325,6 +420,7 @@ public class DescBlankFragment extends Fragment {
                     mVideoView.setVideoURI(Uri.parse(post_image));
                     mVideoView.setMediaController(mediaController);
                     mVideoView.start();
+
                 } else{
                     mImage_paralax.setVisibility(View.VISIBLE);
                     mVideoView.setVisibility(View.GONE);
@@ -544,12 +640,12 @@ public class DescBlankFragment extends Fragment {
                 }
                 if(status){
                    // mDatabaseLikeCount.child(mAuth.getCurrentUser().getUid()).removeValue();
-                    showSnackBar("I love", root);
+                   // showSnackBar("I love", root);
                     btnPostular.setText("Ya haz postulado");
 
                 }else{
                     //mDatabaseLikeCount.child(user.getUid()).setValue(true);
-                    showSnackBar("I don't love", root);
+                   // showSnackBar("I don't love", root);
                     btnPostular.setText("Postular");
 
                 }
