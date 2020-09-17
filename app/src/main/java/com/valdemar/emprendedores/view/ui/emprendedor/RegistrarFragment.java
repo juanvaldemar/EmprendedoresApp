@@ -58,6 +58,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static android.app.Activity.RESULT_OK;
+import static android.view.View.GONE;
 
 /**
  * @author Valdemar
@@ -207,7 +208,7 @@ public class RegistrarFragment extends Fragment {
 
         ArrayAdapter<CharSequence> spnOcupacionAdapter = (ArrayAdapter<CharSequence>) spinner_ocupacion.getAdapter();
         spinner_ocupacion.setSelection(spnOcupacionAdapter.getPosition(mEmprendedor.getSpinner_ocupacion()));
-
+        spinner_ocupacion.setVisibility(GONE);
         ArrayAdapter<CharSequence> spnGradoAdapter = (ArrayAdapter<CharSequence>) spinner_grado_academico.getAdapter();
         spinner_grado_academico.setSelection(spnGradoAdapter.getPosition(mEmprendedor.getGrado_academico()));
 
@@ -409,7 +410,7 @@ public class RegistrarFragment extends Fragment {
         }
 
         if (counter < 4) {
-            showSnackBar("OKIIIII");
+            showSnackBar("Registrado");
             System.out.println(items);
         }
         // ...more than 2 CheckBoxes checked
@@ -420,12 +421,11 @@ public class RegistrarFragment extends Fragment {
         }
 
         String s = spinner_dia.getSelectedItem().toString();
-
+//                && !spinner_ocupacion.getSelectedItem().toString().equals("¿Cuál es tu ocupación?")
         if (!(validarEditText(edt_nombres_emprendedor)
                 && validarEditText(edt_apellidos_emprendedor)
                 && validarEditText(edt_num_emprendedor)
                 && validarEditText(edt_a_que_te_dedicas_emprendedor)
-                && !spinner_ocupacion.getSelectedItem().toString().equals("¿Cuál es tu ocupación?")
                 && !spinner_dia.getSelectedItem().toString().equals("Día")
                 && !spinner_mes.getSelectedItem().toString().equals("Mes")
                 && !spinner_anio.getSelectedItem().toString().equals("Año")
