@@ -58,7 +58,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static android.app.Activity.RESULT_OK;
-import static android.view.View.GONE;
 
 /**
  * @author Valdemar
@@ -208,7 +207,7 @@ public class RegistrarFragment extends Fragment {
 
         ArrayAdapter<CharSequence> spnOcupacionAdapter = (ArrayAdapter<CharSequence>) spinner_ocupacion.getAdapter();
         spinner_ocupacion.setSelection(spnOcupacionAdapter.getPosition(mEmprendedor.getSpinner_ocupacion()));
-        spinner_ocupacion.setVisibility(GONE);
+        spinner_ocupacion.setVisibility(View.GONE);
         ArrayAdapter<CharSequence> spnGradoAdapter = (ArrayAdapter<CharSequence>) spinner_grado_academico.getAdapter();
         spinner_grado_academico.setSelection(spnGradoAdapter.getPosition(mEmprendedor.getGrado_academico()));
 
