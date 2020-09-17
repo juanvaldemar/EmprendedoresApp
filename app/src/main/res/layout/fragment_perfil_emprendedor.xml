@@ -37,20 +37,56 @@
                     android:layout_marginBottom="25dp"
                     android:src="@drawable/person_ic" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Nombres"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:id="@+id/txt_nombres"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="15dp"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    tools:text="Juan" />
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Nombres"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/txt_nombres"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="15dp"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            tools:text="Juan" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Apellidos"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/txt_apellidos"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="15dp"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            tools:text="Salas Soto" />
+                    </LinearLayout>
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -67,20 +103,7 @@
                     android:textSize="18sp"
                     tools:text="Juan" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Apellidos"
-                    android:textSize="11sp" />
 
-                <TextView
-                    android:id="@+id/txt_apellidos"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    tools:text="Salas Soto" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
