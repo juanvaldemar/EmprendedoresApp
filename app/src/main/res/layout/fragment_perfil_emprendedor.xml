@@ -188,6 +188,7 @@
                     tools:text="Juan" />
 
                 <TextView
+                    android:id="@+id/titulo_mis_lecturas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Mis proyectos"

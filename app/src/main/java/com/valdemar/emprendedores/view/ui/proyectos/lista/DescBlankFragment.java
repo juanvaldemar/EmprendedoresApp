@@ -378,6 +378,7 @@ public class DescBlankFragment extends Fragment {
                         String idEmprendedor = (String)dataSnapshot.child("id_emprendedor").getValue();
                         Bundle args = new Bundle();
                         args.putString("idEmprendedor", idEmprendedor);
+                        args.putBoolean("visitante", true);
 
                         Navigation.findNavController(view).navigate(R.id.next_action_desc,args);
 

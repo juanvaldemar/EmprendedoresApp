@@ -155,6 +155,8 @@ public class PerfilEmprendedorFragment extends Fragment {
             return;
         }
         String idEmprendedor = datosRecuperados.getString("idEmprendedor");
+
+
         if(idEmprendedor != null){
             cargarPerfil2(idEmprendedor.trim());
 
@@ -170,6 +172,15 @@ public class PerfilEmprendedorFragment extends Fragment {
         mRecyclerMisLecturas = (RecyclerView) view.findViewById(R.id.fragmento_mis_lecturas);
         mRecyclerMisLecturas.setHasFixedSize(true);
         mRecyclerMisLecturas.setLayoutManager(layoutManagerMisLecturas);
+
+
+        Boolean visitante = (Boolean) datosRecuperados.getBoolean("visitante");
+        if(visitante){
+            TextView titulo_mis_lecturas = view.findViewById(R.id.titulo_mis_lecturas);
+            mRecyclerMisLecturas.setVisibility(View.GONE);
+            titulo_mis_lecturas.setVisibility(View.GONE);
+        }
+        Toast.makeText(getActivity(),""+visitante,Toast.LENGTH_LONG).show();
 
         if(idEmprendedor == null) {
             idEmprendedor = user.getUid();
