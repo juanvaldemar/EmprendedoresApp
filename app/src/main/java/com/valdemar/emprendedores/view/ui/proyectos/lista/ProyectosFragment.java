@@ -163,7 +163,7 @@ public class ProyectosFragment extends Fragment {
                             }
                         }
                     }
-                },700);
+                },600);
 
                 return false;
             }
@@ -351,7 +351,7 @@ public class ProyectosFragment extends Fragment {
                                 }
                             });
                         }
-                    },700);
+                    },600);
 
                     // filterRecycler(root,spinner5.getSelectedItem().toString(),null,null);
 
