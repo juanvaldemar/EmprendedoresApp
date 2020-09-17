@@ -473,7 +473,7 @@ public class DescBlankFragment extends Fragment {
                         public void onClick(View v) {
                             Bundle args = new Bundle();
                             args.putString("ARG_KEY_PROYECTO", mPost_key);
-                           // Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_DescBlankFragment_to_crearProyectoFragment, args);
+                            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_DescBlankFragment_to_crearProyectoFragment, args);
                             //Navigation.findNavController().navigate(R.id.,args);
                         }
                     });

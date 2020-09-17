@@ -313,8 +313,8 @@ public class CrearProyectoFragment extends Fragment {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                         String selectedItem = adapterView.getItemAtPosition(position).toString();
-                        Toast.makeText(getActivity(),selectedItem+"",Toast.LENGTH_LONG)
-                                .show();
+                        /*Toast.makeText(getActivity(),selectedItem+"",Toast.LENGTH_LONG)
+                                .show();*/
                         estadoSeleccionado = selectedItem;
                     }
 
