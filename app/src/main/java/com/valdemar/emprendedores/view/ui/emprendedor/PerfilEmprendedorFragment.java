@@ -176,11 +176,14 @@ public class PerfilEmprendedorFragment extends Fragment {
 
         Boolean visitante = (Boolean) datosRecuperados.getBoolean("visitante");
         if(visitante){
+
             TextView titulo_mis_lecturas = view.findViewById(R.id.titulo_mis_lecturas);
             mRecyclerMisLecturas.setVisibility(View.GONE);
             titulo_mis_lecturas.setVisibility(View.GONE);
+            btnEditarperfil.setVisibility(View.GONE);
+            btnVerProyectosCreados.setVisibility(View.GONE);
         }
-        Toast.makeText(getActivity(),""+visitante,Toast.LENGTH_LONG).show();
+       // Toast.makeText(getActivity(),""+visitante,Toast.LENGTH_LONG).show();
 
         if(idEmprendedor == null) {
             idEmprendedor = user.getUid();
