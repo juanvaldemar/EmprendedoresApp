@@ -124,6 +124,7 @@ public class CrearProyectoFragment extends Fragment {
 
     private String estadoSeleccionado;
     Spinner spinnerEstados;
+    Spinner mSpnMoneda;
 
     public CrearProyectoFragment() {
         // Required empty public constructor
@@ -207,6 +208,12 @@ public class CrearProyectoFragment extends Fragment {
         spnCiudadAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpnCiudad.setAdapter(spnCiudadAdapter);
 
+        mSpnMoneda = (Spinner) view.findViewById(R.id.spinner_moneda);
+        ArrayAdapter<CharSequence> spnMonedaAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.moneda, android.R.layout.simple_spinner_item);
+        spnMonedaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpnMoneda.setAdapter(spnMonedaAdapter);
+
         ImageButton btnSubirFotoVideo = (ImageButton) view.findViewById(R.id.btn_subir_foto_video);
         mImgFoto = (ImageView) view.findViewById(R.id.img_foto_proyecto);
         mVideoView = (VideoView)mRoot.findViewById(R.id.videoview_proyecto);
@@ -286,6 +293,12 @@ public class CrearProyectoFragment extends Fragment {
                 edt_inversion_proyecto.setText((String) dataSnapshot.child("inversion").getValue());
                 edt_beneficio_proyecto.setText((String) dataSnapshot.child("beneficio").getValue());
                 edt_fecha_proyecto.setText((String) dataSnapshot.child("fecha").getValue());
+
+                String moneda = (String) dataSnapshot.child("moneda").getValue();
+                if(moneda != null ){
+                    ArrayAdapter<CharSequence>  spnMonedaAdapter = (ArrayAdapter<CharSequence>) mSpnMoneda.getAdapter();
+                    mSpnMoneda.setSelection(spnMonedaAdapter.getPosition(moneda));
+                }
 
                 mEdtDescripcionProyecto.setText((String) dataSnapshot.child("descripcion").getValue());
                 String status = (String) dataSnapshot.child("estadoTrazabilidad").getValue();
@@ -390,7 +403,7 @@ public class CrearProyectoFragment extends Fragment {
                     mSpnPais.setSelection(spnPaisAdapter.getPosition(pais));
                 }
                 String ciudad = (String) dataSnapshot.child("ciudad").getValue();
-                if(pais != null ){
+                if(ciudad != null ){
                     ArrayAdapter<CharSequence>  spnCiudadAdapter = (ArrayAdapter<CharSequence>) mSpnCiudad.getAdapter();
                     mSpnCiudad.setSelection(spnCiudadAdapter.getPosition(ciudad));
                 }
@@ -594,6 +607,7 @@ public class CrearProyectoFragment extends Fragment {
 
         proyecto.setBeneficio(edt_beneficio_proyecto.getText().toString());
         proyecto.setInversion(edt_inversion_proyecto.getText().toString());
+        proyecto.setMoneda(mSpnMoneda.getSelectedItem().toString());
         SimpleDateFormat ISO_8601_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
         String now = ISO_8601_FORMAT.format(new Date());

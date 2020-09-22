@@ -26,6 +26,7 @@ public class Proyecto {
     String autor;
 
     String inversion;
+    String moneda;
     String beneficio;
     String fecha;
     // la imagen o video se guardara en el storage de firebase con el id del proyecto
@@ -223,5 +224,13 @@ public class Proyecto {
 
     public void setFecha(String fecha) {
         this.fecha = fecha;
+    }
+
+    public String getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(String moneda) {
+        this.moneda = moneda;
     }
 }

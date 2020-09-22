@@ -257,6 +257,7 @@ public class DescBlankFragment extends Fragment {
 
                 String post_fecha = (String) dataSnapshot.child("fecha").getValue();
                 String post_inversion = (String) dataSnapshot.child("inversion").getValue();
+                String post_moneda = (String) dataSnapshot.child("moneda").getValue();
                 String post_beneficio = (String) dataSnapshot.child("beneficio").getValue();
 
                 String post_title = (String) dataSnapshot.child("nombre").getValue();
@@ -381,7 +382,7 @@ public class DescBlankFragment extends Fragment {
                 mPostTitleDetails.setText(post_title);
 
                     postFecha.setText("Fecha: "+post_fecha);
-                    postInversion.setText("Inversion: "+post_inversion);
+                    postInversion.setText("Inversion: "+post_inversion + " "+ ((post_moneda!=null)?post_moneda:""));
                     postBeneficio.setText("Beneficio: "+post_beneficio);
 
 
