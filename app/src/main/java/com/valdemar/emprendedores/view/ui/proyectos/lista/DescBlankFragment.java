@@ -147,6 +147,8 @@ public class DescBlankFragment extends Fragment {
     };
     private Toast toast;
 
+    private String uiEmprendedor;
+
     public DescBlankFragment() {
         // Required empty public constructor
     }
@@ -277,6 +279,7 @@ public class DescBlankFragment extends Fragment {
                 String post_desc5 = (String) dataSnapshot.child("descripcionSocio5").getValue();
 
                 String id_emprendedor = (String) dataSnapshot.child("id_emprendedor").getValue();
+                uiEmprendedor = id_emprendedor;
                 String estadoTrazabilidad = (String) dataSnapshot.child("estadoTrazabilidad").getValue();
 
 
@@ -538,7 +541,12 @@ public class DescBlankFragment extends Fragment {
                 txt_cantidad_socios_suscritos.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        iniProfileModal(view,arrayLists);
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                        if(user.getUid().equalsIgnoreCase(uiEmprendedor)){
+                            iniProfileModal(view,arrayLists);
+                        }
+
 
                     }
                 });
