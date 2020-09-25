@@ -941,7 +941,7 @@ public class DescBlankFragment extends Fragment {
                 String idEmprendedor = id;
                 Bundle args = new Bundle();
                 args.putString("idEmprendedor", idEmprendedor);
-
+                args.putBoolean("visitante", true);
                 Navigation.findNavController(v).navigate(R.id.next_action_desc,args);
                 MyDialog.dismiss();
 
