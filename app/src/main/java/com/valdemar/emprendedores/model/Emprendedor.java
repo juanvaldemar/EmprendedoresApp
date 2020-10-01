@@ -34,8 +34,6 @@ public class Emprendedor implements Serializable {
     private String spinner_pais;
     @SerializedName("spinner_ciudad")
     private String spinner_ciudad;
-    @SerializedName("spinner_ocupacion")
-    private String spinner_ocupacion;
     @SerializedName("spinner_genero")
     private String spinner_genero;
     @SerializedName("edt_num_emprendedor")
@@ -189,14 +187,6 @@ public class Emprendedor implements Serializable {
 
     public void setFechaRegistro(String fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
-    }
-
-    public String getSpinner_ocupacion() {
-        return spinner_ocupacion;
-    }
-
-    public void setSpinner_ocupacion(String spinner_ocupacion) {
-        this.spinner_ocupacion = spinner_ocupacion;
     }
 
     public String getSpinner_genero() {

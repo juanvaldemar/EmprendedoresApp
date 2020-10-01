@@ -317,8 +317,6 @@ public class PerfilEmprendedorFragment extends Fragment {
                         String ciudad = obtenerCampoNoNulo((String) itemSpanshot.child("spinner_ciudad").getValue());
                         mEmprendedor.setSpinner_ciudad(ciudad);
 
-                        String ocupacion =(String) itemSpanshot.child("spinner_ocupacion").getValue();
-                        mEmprendedor.setSpinner_ocupacion(obtenerCampoNoNulo(ocupacion));
 
                         String genero = obtenerCampoNoNulo((String) itemSpanshot.child("spinner_genero").getValue());
                         mEmprendedor.setSpinner_genero(genero.isEmpty()?"Masculino":genero);
@@ -430,8 +428,6 @@ public class PerfilEmprendedorFragment extends Fragment {
                         String ciudad = obtenerCampoNoNulo((String) itemSpanshot.child("spinner_ciudad").getValue());
                         mEmprendedor.setSpinner_ciudad(ciudad);
 
-                        String ocupacion =(String) itemSpanshot.child("spinner_ocupacion").getValue();
-                        mEmprendedor.setSpinner_ocupacion(obtenerCampoNoNulo(ocupacion));
 
                         String genero = obtenerCampoNoNulo((String) itemSpanshot.child("spinner_genero").getValue());
                         mEmprendedor.setSpinner_genero(genero.isEmpty()?"Masculino":genero);
