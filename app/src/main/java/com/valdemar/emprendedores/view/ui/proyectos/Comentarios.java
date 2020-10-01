@@ -6,6 +6,7 @@ public class Comentarios {
     private String comentario;
     private String idss;
     private String id;
+    private String idEmprendedor;
 
     public Comentarios() {
     }
@@ -48,5 +49,13 @@ public class Comentarios {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getIdEmprendedor() {
+        return idEmprendedor;
+    }
+
+    public void setIdEmprendedor(String idEmprendedor) {
+        this.idEmprendedor = idEmprendedor;
     }
 }

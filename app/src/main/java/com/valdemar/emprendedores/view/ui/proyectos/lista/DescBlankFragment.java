@@ -724,50 +724,56 @@ public class DescBlankFragment extends Fragment {
                     viewHolder.mViewStructure.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            System.out.println("model: "+model);
-                            final Dialog MyDialog;
-                            MyDialog = new Dialog(getActivity());
-                            MyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                            MyDialog.setContentView(R.layout.comentario_opcion);
-                            final Button btnEliminar = MyDialog.findViewById(R.id.eliminar);
-                            final Button btnEditar = MyDialog.findViewById(R.id.editar);
-                            final Button btnEditar_ = MyDialog.findViewById(R.id.editar_);
-                            final EditText editarComentario = MyDialog.findViewById(R.id.editarComentario);
-                            btnEliminar.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    mDatabaseMisComentarios.child(mPost_key).child(model.getIdss()).removeValue();
-                                    MyDialog.dismiss();
-                                }
-                            });
-                            btnEditar.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    btnEliminar.setVisibility(View.GONE);
-                                    editarComentario.setVisibility(View.VISIBLE);
-                                    editarComentario.setText(model.getComentario());
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                                    btnEditar.setVisibility(View.GONE);
-                                    btnEditar_.setVisibility(View.VISIBLE);
+                            // sólo puede modificar un comentario el creador del proyecto o el que hizo el comentario
+                            if(user.getUid().equalsIgnoreCase(uiEmprendedor) || user.getUid().equalsIgnoreCase(model.getIdEmprendedor())){
+                                System.out.println("model: "+model);
+                                final Dialog MyDialog;
+                                MyDialog = new Dialog(getActivity());
+                                MyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                MyDialog.setContentView(R.layout.comentario_opcion);
+                                final Button btnEliminar = MyDialog.findViewById(R.id.eliminar);
+                                final Button btnEditar = MyDialog.findViewById(R.id.editar);
+                                final Button btnEditar_ = MyDialog.findViewById(R.id.editar_);
+                                final EditText editarComentario = MyDialog.findViewById(R.id.editarComentario);
+                                btnEliminar.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        mDatabaseMisComentarios.child(mPost_key).child(model.getIdss()).removeValue();
+                                        MyDialog.dismiss();
+                                    }
+                                });
+                                btnEditar.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        btnEliminar.setVisibility(View.GONE);
+                                        editarComentario.setVisibility(View.VISIBLE);
+                                        editarComentario.setText(model.getComentario());
 
-                                }
-                            });
+                                        btnEditar.setVisibility(View.GONE);
+                                        btnEditar_.setVisibility(View.VISIBLE);
 
-                            btnEditar_.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    editarComentario.setVisibility(View.VISIBLE);
+                                    }
+                                });
 
-                                    Map<String, Object> proyectoHashMap = new HashMap<>();
-                                    model.setComentario(editarComentario.getText().toString());
-                                    proyectoHashMap.put(model.getIdss(), model);
+                                btnEditar_.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        editarComentario.setVisibility(View.VISIBLE);
 
-                                    mDatabaseMisComentarios.child(mPost_key).updateChildren(proyectoHashMap);
-                                    MyDialog.dismiss();
-                                }
-                            });
+                                        Map<String, Object> proyectoHashMap = new HashMap<>();
+                                        model.setComentario(editarComentario.getText().toString());
+                                        proyectoHashMap.put(model.getIdss(), model);
 
-                            MyDialog.show();
+                                        mDatabaseMisComentarios.child(mPost_key).updateChildren(proyectoHashMap);
+                                        MyDialog.dismiss();
+                                    }
+                                });
+
+                                MyDialog.show();
+                            }
+
                         }
                     });
             }
@@ -809,6 +815,7 @@ public class DescBlankFragment extends Fragment {
                                         newPost.child("comentario").setValue(txtComentario.getText().toString());
                                         newPost.child("nombre").setValue(user.getDisplayName().toString());
                                         newPost.child("idss").setValue(newPost.getKey());
+                                        newPost.child("idEmprendedor").setValue(user.getUid());
 
                                         mRecyclerComentarios.setVisibility(View.GONE);
                                     }else{
