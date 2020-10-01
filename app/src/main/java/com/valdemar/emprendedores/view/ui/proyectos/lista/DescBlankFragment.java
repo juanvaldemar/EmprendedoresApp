@@ -137,7 +137,6 @@ public class DescBlankFragment extends Fragment {
     private ArrayList<ItemFeed> arrayLists = new ArrayList<>();
     private SearchPlaceAdapter2 mAdapter;
 
-    private ImageView downloadVideo;
 
 
     private final static int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
@@ -208,7 +207,6 @@ public class DescBlankFragment extends Fragment {
 
 
         mPostTitleDetails = (TextView) root.findViewById(R.id.postTitleDetails);
-        downloadVideo = root.findViewById(R.id.downloadVideo);
         postFecha = (TextView) root.findViewById(R.id.postFecha);
         postInversion = (TextView) root.findViewById(R.id.postInversion);
         postBeneficio = (TextView) root.findViewById(R.id.postBeneficio);
@@ -283,65 +281,7 @@ public class DescBlankFragment extends Fragment {
                 String estadoTrazabilidad = (String) dataSnapshot.child("estadoTrazabilidad").getValue();
 
 
-                if(videoSubido){
-                    downloadVideo.setVisibility(View.VISIBLE);
-                    downloadVideo.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                            builder.setTitle("Iniciar descarga");
-                            builder.setMessage("Si presiona aceptar se iniciará la descarga.");
-                            builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                                    StrictMode.setThreadPolicy(policy);
-
-                                    permisos();
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                                        //Verifica permisos para Android 6.0+
-                                        int permissionCheck = ContextCompat.checkSelfPermission(
-                                                getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                                        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                                            Log.i("Mensaje", "No se tiene permiso para leer.");
-                                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 225);
-                                        } else {
-                                            Log.i("Mensaje", "Se tiene permiso para leer!");
-                                        }
-                                    }
-
-                                    final File file = new File (Environment
-                                            .getExternalStorageDirectory()
-                                            .getPath() + "/Android/data/"
-                                            + getActivity().getPackageName()
-                                            + "/files/sdcard/DirName/const/const.html");
-
-                                    Log.i("playy", "Folder "+file);
-
-                                    DownloadTask downloadTask = new DownloadTask(getActivity());
-                                    String url = "https://firebasestorage.googleapis.com/v0/b/app-emprendedores.appspot.com/o/Proyectos_images%2Fvideo%3A258112?alt=media&token=7a42882e-9030-4866-aee4-73cc648b1c76";
-                                    downloadTask.execute(url,"valdemar","valdemar.mp4");
-                                }
-                            });
-
-                            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-
-                                }
-                            });
-
-
-                            builder.show();
-
-
-
-                        }
-
-
-                    });
-                }
 
                 spinnerEstados = root.findViewById(R.id.spinnerEstados);
 
