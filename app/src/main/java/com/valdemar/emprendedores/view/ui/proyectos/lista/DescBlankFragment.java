@@ -531,28 +531,17 @@ public class DescBlankFragment extends Fragment {
                                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                                     if (mProcessLike){
+                                        mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("nombre").setValue(nombre);
+                                        mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("imagen").setValue(imagen);
+                                        mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("categoria").setValue(categoria);
+                                        mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("descripcion").setValue(descripcion);
+                                        mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("id_emprendedor").setValue(id_emprendedor);
 
-                                        if(dataSnapshot.child(mAuth.getCurrentUser().getUid()).hasChild(mPost_key)){
-                                            Log.v("TAG_LIKE","LINE NO");
-                                            mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).removeValue();
-                                            showSnackBar("Eliminando Suscripción",root);
-                                            //btnPostular.setText("Eliminado");
-                                            mProcessLike = false;
-                                        }else{
-                                            mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("nombre").setValue(nombre);
-                                            mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("imagen").setValue(imagen);
-                                            mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("categoria").setValue(categoria);
-                                            mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("descripcion").setValue(descripcion);
-                                            mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("id_emprendedor").setValue(id_emprendedor);
+                                        mProcessLike = false;
+                                        showSnackBar("Suscrito", root);
+                                        btnPostular.setText("Suscrito");
+                                        btnPostular.setEnabled(false);
 
-                                            //btnPostular.setText("favoritos");
-
-                                            mProcessLike = false;
-                                            showSnackBar("Suscrito", root);
-                                        }
-                                        if(dataSnapshot.child(mPost_key).hasChild(mAuth.getCurrentUser().getUid())){
-                                            showSnackBar("Dislike", root);
-                                        }
                                     }
                                 }
 
@@ -582,7 +571,7 @@ public class DescBlankFragment extends Fragment {
                                 }
                             }
                             if(status){
-                                mDatabaseLikeCount.child(mAuth.getCurrentUser().getUid()).removeValue();
+                                mDatabaseLikeCount.child(user.getUid()).removeValue();
                              //   showSnackBar("I love", root);
                                 btnPostular.setText("Postular");
 
@@ -607,39 +596,6 @@ public class DescBlankFragment extends Fragment {
             }
         });
 
-        mDatabaseLikeCount.addListenerForSingleValueEvent(new ValueEventListener() {
-            @SuppressLint("ResourceAsColor")
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                Boolean status = false;
-                if(dataSnapshot.child(user.getUid()).getValue() != null){
-                    if(dataSnapshot.child(user.getUid()).getValue().equals(true)){
-                        status = true;
-                    }
-                }
-                if(status){
-                   // mDatabaseLikeCount.child(mAuth.getCurrentUser().getUid()).removeValue();
-                   // showSnackBar("I love", root);
-                    //btnPostular.setText("Ya haz postulado");
-
-                }else{
-                    //mDatabaseLikeCount.child(user.getUid()).setValue(true);
-                   // showSnackBar("I don't love", root);
-                    btnPostular.setText("Postular");
-
-                }
-
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 
     private void showSnackBar(String msg, View root) {
@@ -655,6 +611,14 @@ public class DescBlankFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 txt_cantidad_socios_suscritos.setText(dataSnapshot.getChildrenCount()+" ");
+                String uIdCurrentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                if (dataSnapshot.hasChild(uIdCurrentUser)) {
+                    btnPostular.setText("Suscrito");
+                    btnPostular.setEnabled(false);
+                } else {
+                    btnPostular.setText("Postular");
+                    btnPostular.setEnabled(true);
+                }
             }
 
             @Override
