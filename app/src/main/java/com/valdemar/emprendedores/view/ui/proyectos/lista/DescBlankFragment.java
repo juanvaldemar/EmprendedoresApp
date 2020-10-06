@@ -72,6 +72,7 @@ import com.valdemar.emprendedores.MenuLateralActivity;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.SplashActivity;
 import com.valdemar.emprendedores.auth.AccessRelato;
+import com.valdemar.emprendedores.model.Proyecto;
 import com.valdemar.emprendedores.util.DownloadTask;
 import com.valdemar.emprendedores.view.ui.proyectos.Comentarios;
 import com.valdemar.emprendedores.view.ui.proyectos.RelatoViewHolderStructureComentarios;
@@ -147,6 +148,7 @@ public class DescBlankFragment extends Fragment {
     private Toast toast;
 
     private String uiEmprendedor;
+    private Proyecto mDetalleProyecto = new Proyecto();
 
     public DescBlankFragment() {
         // Required empty public constructor
@@ -249,6 +251,7 @@ public class DescBlankFragment extends Fragment {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
 
+
                 String videoSubido_ = (String) dataSnapshot.child("videoSubido").getValue();
 
                 boolean videoSubido = Boolean.parseBoolean(videoSubido_);
@@ -261,9 +264,13 @@ public class DescBlankFragment extends Fragment {
                 String post_beneficio = (String) dataSnapshot.child("beneficio").getValue();
 
                 String post_title = (String) dataSnapshot.child("nombre").getValue();
+                mDetalleProyecto.setNombre(post_title);
                 String post_desc = (String) dataSnapshot.child("descripcion").getValue();
+                mDetalleProyecto.setDescripcion(post_desc);
                 final String post_image = (String) dataSnapshot.child("imagen").getValue();
+                mDetalleProyecto.setImagen(post_image);
                 String post_categoria = (String) dataSnapshot.child("categoria").getValue();
+                mDetalleProyecto.setCategoria(post_categoria);
                 String post_socio1 = (String) dataSnapshot.child("socio1").getValue();
                 String post_desc1 = (String) dataSnapshot.child("descripcionSocio1").getValue();
 
@@ -277,7 +284,7 @@ public class DescBlankFragment extends Fragment {
                 String post_desc5 = (String) dataSnapshot.child("descripcionSocio5").getValue();
 
                 String id_emprendedor = (String) dataSnapshot.child("id_emprendedor").getValue();
-                uiEmprendedor = id_emprendedor;
+                mDetalleProyecto.setId_emprendedor(id_emprendedor);
                 String estadoTrazabilidad = (String) dataSnapshot.child("estadoTrazabilidad").getValue();
 
 
@@ -344,7 +351,7 @@ public class DescBlankFragment extends Fragment {
                         Bundle args = new Bundle();
                         args.putString("idEmprendedor", idEmprendedor);
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        if(!user.getUid().equalsIgnoreCase(uiEmprendedor)){
+                        if(!user.getUid().equalsIgnoreCase(mDetalleProyecto.getId_emprendedor())){
                             args.putBoolean("visitante", true);
                         }
 
@@ -487,7 +494,7 @@ public class DescBlankFragment extends Fragment {
                     public void onClick(View view) {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                        if(user.getUid().equalsIgnoreCase(uiEmprendedor)){
+                        if(user.getUid().equalsIgnoreCase(mDetalleProyecto.getId_emprendedor())){
                             iniProfileModal(view,arrayLists);
                         }
 
@@ -513,82 +520,19 @@ public class DescBlankFragment extends Fragment {
         btnPostular.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mProcessLike = true;
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
                 if(user != null){
 
-                    mDatabase.child(mPost_key).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            final String nombre = (String) dataSnapshot.child("nombre").getValue();
-                            final String imagen = (String) dataSnapshot.child("imagen").getValue();
-                            final String categoria = (String) dataSnapshot.child("categoria").getValue();
-                            final String descripcion = (String) dataSnapshot.child("descripcion").getValue();
-                            final String id_emprendedor = (String) dataSnapshot.child("id_emprendedor").getValue();
-
-                            mDatabaseLike.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                    if (mProcessLike){
-                                        mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("nombre").setValue(nombre);
-                                        mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("imagen").setValue(imagen);
-                                        mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("categoria").setValue(categoria);
-                                        mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("descripcion").setValue(descripcion);
-                                        mDatabaseLike.child(mAuth.getCurrentUser().getUid()).child(mPost_key).child("id_emprendedor").setValue(id_emprendedor);
-
-                                        mProcessLike = false;
-                                        showSnackBar("Suscrito", root);
-                                        btnPostular.setText("Suscrito");
-                                        btnPostular.setEnabled(false);
-
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-                                    Log.v("TAG_LIKE","LINE onCancelled");
-
-                                }
-                            });
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-
-                    mDatabaseLikeCount.addListenerForSingleValueEvent(new ValueEventListener(){
-
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Boolean status = false;
-                            if(dataSnapshot.child(user.getUid()).getValue() != null){
-                                String data_ = dataSnapshot.child(user.getUid()).getValue().toString();
-
-                                if(!data_.isEmpty()){
-                                    status = true;
-                                }
-                            }
-                            if(status){
-                                mDatabaseLikeCount.child(user.getUid()).removeValue();
-                             //   showSnackBar("I love", root);
-                                btnPostular.setText("Postular");
-
-                            }else{
-                                mDatabaseLikeCount.child(user.getUid()).setValue(user.getUid() +" , "+user.getDisplayName());
-                               // showSnackBar("I don't love", root);
-                                //btnPostular.setText("Ya haz postulado");
-
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
+                    mDatabaseLike.child(user.getUid()).child(mPost_key).child("nombre").setValue(mDetalleProyecto.getNombre());
+                    mDatabaseLike.child(user.getUid()).child(mPost_key).child("imagen").setValue(mDetalleProyecto.getImagen());
+                    mDatabaseLike.child(user.getUid()).child(mPost_key).child("categoria").setValue(mDetalleProyecto.getCategoria());
+                    mDatabaseLike.child(user.getUid()).child(mPost_key).child("descripcion").setValue(mDetalleProyecto.getDescripcion());
+                    mDatabaseLike.child(user.getUid()).child(mPost_key).child("id_emprendedor").setValue(mDetalleProyecto.getId_emprendedor());
+                    showSnackBar("Suscrito", root);
+                    btnPostular.setText("Suscrito");
+                    btnPostular.setEnabled(false);
+                    mDatabaseLikeCount.child(user.getUid()).setValue(user.getUid() +" , "+user.getDisplayName());
 
                 }else{
                     showSnackBar("Necesitas Iniciar Sesión", root);
@@ -691,7 +635,7 @@ public class DescBlankFragment extends Fragment {
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                             // sólo puede modificar un comentario el creador del proyecto o el que hizo el comentario
-                            if(user.getUid().equalsIgnoreCase(uiEmprendedor) || user.getUid().equalsIgnoreCase(model.getIdEmprendedor())){
+                            if(user.getUid().equalsIgnoreCase(mDetalleProyecto.getId_emprendedor()) || user.getUid().equalsIgnoreCase(model.getIdEmprendedor())){
                                 System.out.println("model: "+model);
                                 final Dialog MyDialog;
                                 MyDialog = new Dialog(getActivity());
