@@ -332,7 +332,11 @@ public class DescBlankFragment extends Fragment {
                 mPostTitleDetails.setText(post_title);
 
                     postFecha.setText("Fecha: "+post_fecha);
-                    postInversion.setText("Inversion: "+post_inversion + " "+ ((post_moneda!=null)?post_moneda:""));
+                    if(post_inversion!=null && !post_inversion.isEmpty())
+                        postInversion.setText("Inversion: "+post_inversion + " "+ ((post_moneda!=null)?post_moneda:""));
+                    else
+                        postInversion.setVisibility(View.GONE);
+
                     postBeneficio.setText("Beneficio: "+post_beneficio);
 
 

@@ -642,7 +642,6 @@ public class CrearProyectoFragment extends Fragment {
         if (!(validarEditText(mEdtNombreProyecto)
                 && validarEditText(edt_beneficio_proyecto)
                 && validarEditText(edt_fecha_proyecto)
-                && validarEditText(edt_inversion_proyecto)
                 && validarEditText(mEdtDescripcionProyecto)
                 && validarEditText(mEdtSocio1) && validarEditText(mEdtDescripcionSocio1)
                 && !mSpnPais.getSelectedItem().toString().equals("País")
