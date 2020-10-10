@@ -149,9 +149,12 @@ public class MisProyectosCreadosFragment extends Fragment {
                 viewDetails(id,view);
             }
         };
-
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final String userId = user.getUid();
 
         mRef = FirebaseDatabase.getInstance().getReference().child("Proyectos");
+        mRef.orderByChild("id_emprendedor").equalTo(userId);
+
         mRef.limitToFirst(50).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -160,11 +163,17 @@ public class MisProyectosCreadosFragment extends Fragment {
                     String ids = eventSnapshot.getKey();
                     ItemFeed category = eventSnapshot.getValue(ItemFeed.class);
                     category.setId(ids);
-                    if(category.getEstadoTrazabilidad() != null){
-                        if(category.getEstadoTrazabilidad().equalsIgnoreCase(estado)){
-                            arrayLists.add(category);
+
+                    if (category.getId_emprendedor() != null){
+                        if (category.getId_emprendedor().equalsIgnoreCase(userId)) {
+                            if (category.getEstadoTrazabilidad() != null) {
+                                if (category.getEstadoTrazabilidad().equalsIgnoreCase(estado)) {
+                                    arrayLists.add(category);
+                                }
+                            }
                         }
                     }
+
 
                 }
 
