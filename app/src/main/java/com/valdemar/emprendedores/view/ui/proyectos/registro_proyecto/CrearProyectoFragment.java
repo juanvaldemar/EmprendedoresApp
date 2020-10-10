@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -521,10 +522,15 @@ public class CrearProyectoFragment extends Fragment {
         }
     }
 
-
+    public void hideSoftKeyboard() {
+        if (getActivity().getCurrentFocus() != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+        }
+    }
 
     private void registrarProyecto(View v) {
-
+        hideSoftKeyboard();
         if (validarCampos()) {
             final Proyecto proyecto = initDataProyecto();
             mStorage = FirebaseStorage.getInstance().getReference();
@@ -626,6 +632,8 @@ public class CrearProyectoFragment extends Fragment {
         proyecto.setDescripcionSocio5(validarEditText(mEdtDescripcionSocio5) ? mEdtDescripcionSocio5.getText().toString() : "");
         proyecto.setPais(mSpnPais.getSelectedItem().toString());
         proyecto.setCiudad(mSpnCiudad.getSelectedItem().toString());
+
+        proyecto.setAutor(user.getDisplayName());
 
         return proyecto;
     }
