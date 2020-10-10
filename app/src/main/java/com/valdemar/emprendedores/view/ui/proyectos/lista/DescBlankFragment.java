@@ -303,11 +303,14 @@ public class DescBlankFragment extends Fragment {
 
                     if(estadoTrazabilidad.equalsIgnoreCase("DEBAJA")){
                         linearDeBaja.setVisibility(View.VISIBLE);
+                        btnPostular.setVisibility(View.GONE);
+
                     }
 
                     if(estadoTrazabilidad.equalsIgnoreCase("FINALIZADO")){
                         textoFinalizado.setVisibility(View.VISIBLE);
-                        iconoFinalizado.setVisibility(View.VISIBLE);
+                       // iconoFinalizado.setVisibility(View.VISIBLE);
+                        btnPostular.setVisibility(View.GONE);
                     }
                     if(estadoTrazabilidad.equalsIgnoreCase("ACTIVO")){
                         shares(root,post_title,post_image);
