@@ -314,7 +314,11 @@ public class DescBlankFragment extends Fragment {
                     }
                     if(estadoTrazabilidad.equalsIgnoreCase("ACTIVO")){
                         shares(root,post_title,post_image);
-                        initComentarios(root, mPost_key);
+                        try {
+                            initComentarios(root, mPost_key);
+                        }catch (Exception e){
+                            Log.v("Listo","Listo catch Exception"+e);
+                        }
 
                     }
 
