@@ -4,10 +4,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -29,33 +27,23 @@ import android.widget.Spinner;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.valdemar.emprendedores.R;
-import com.valdemar.emprendedores.model.CategoriaProyecto;
 import com.valdemar.emprendedores.model.Emprendedor;
-import com.valdemar.emprendedores.view.CategoriasFragment;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -86,7 +74,8 @@ public class RegistrarFragment extends Fragment {
     private Emprendedor mEmprendedor;
     private boolean mActualizarEmprendedor;
 
-    private CheckBox CheckBox1,CheckBox2,CheckBox3,CheckBox4,CheckBox5,CheckBox6,CheckBox7,CheckBox8,CheckBox9,CheckBox10,CheckBox11,CheckBox12;
+    private CheckBox checkBoxComida, checkBoxRopa, checkBoxTecnologia, checkBoxSalud, checkBoxEntrenimiento, checkBoxDeportes,
+            checkBoxVideojuegos, checkBoxConsultorias, checkBoxTransportes, checkBoxMarketing, checkBoxFinanzas, checkBoxHogar;
     private ArrayList<String> items;
 
     public RegistrarFragment() {
@@ -111,18 +100,18 @@ public class RegistrarFragment extends Fragment {
 
     private void initView(View root) {
 
-        CheckBox1 = root.findViewById(R.id.checkoutBoxComida);
-        CheckBox2 = root.findViewById(R.id.checkoutBoxRopa);
-        CheckBox3 = root.findViewById(R.id.checkoutBoxTecnologia);
-        CheckBox4 = root.findViewById(R.id.checkoutBoxSalud);
-        CheckBox5 = root.findViewById(R.id.checkoutBoxEntretenimiento);
-        CheckBox6 = root.findViewById(R.id.checkoutBoxDeportes);
-        CheckBox7 = root.findViewById(R.id.checkoutBoxVideojuegos);
-        CheckBox8 = root.findViewById(R.id.checkoutBoxConsultorias);
-        CheckBox9 = root.findViewById(R.id.checkoutBoxTransportes);
-        CheckBox10 = root.findViewById(R.id.checkoutBoxMarketing);
-        CheckBox11 = root.findViewById(R.id.checkoutBoxFinanzas);
-        CheckBox12 = root.findViewById(R.id.checkoutBoxHogar);
+        checkBoxComida = root.findViewById(R.id.checkoutBoxComida);
+        checkBoxRopa = root.findViewById(R.id.checkoutBoxRopa);
+        checkBoxTecnologia = root.findViewById(R.id.checkoutBoxTecnologia);
+        checkBoxSalud = root.findViewById(R.id.checkoutBoxSalud);
+        checkBoxEntrenimiento = root.findViewById(R.id.checkoutBoxEntretenimiento);
+        checkBoxDeportes = root.findViewById(R.id.checkoutBoxDeportes);
+        checkBoxVideojuegos = root.findViewById(R.id.checkoutBoxVideojuegos);
+        checkBoxConsultorias = root.findViewById(R.id.checkoutBoxConsultorias);
+        checkBoxTransportes = root.findViewById(R.id.checkoutBoxTransportes);
+        checkBoxMarketing = root.findViewById(R.id.checkoutBoxMarketing);
+        checkBoxFinanzas = root.findViewById(R.id.checkoutBoxFinanzas);
+        checkBoxHogar = root.findViewById(R.id.checkoutBoxHogar);
 
 
         mImgFoto = root.findViewById(R.id.img_foto_emprendedor);
@@ -210,6 +199,8 @@ public class RegistrarFragment extends Fragment {
       ArrayAdapter<CharSequence> spnInteresAdapter = (ArrayAdapter<CharSequence>) spinner_intereses.getAdapter();
         spinner_intereses.setSelection(spnInteresAdapter.getPosition(mEmprendedor.getGrado_academico()));
 
+        cargarIntereses(mEmprendedor.getIntereses());
+
         ArrayAdapter<CharSequence> spnPaisAdapter = (ArrayAdapter<CharSequence>) spinner_pais.getAdapter();
         spinner_pais.setSelection(spnPaisAdapter.getPosition(mEmprendedor.getSpinner_pais()));
 
@@ -227,6 +218,29 @@ public class RegistrarFragment extends Fragment {
             edt_apellidos_emprendedor.setEnabled(false);
         }
 
+    }
+
+    private void cargarIntereses(String intereses) {
+        if(intereses!=null && !intereses.isEmpty()){
+            String interesesSinCorchetes = intereses.replace("[","").replace("]","");
+            List<String> listaIntereses = Arrays.asList(interesesSinCorchetes.split(", "));
+            for(String interes : listaIntereses){
+                switch(interes){
+                    case "Comida": checkBoxComida.setChecked(true); break;
+                    case "Ropa": checkBoxRopa.setChecked(true); break;
+                    case "Tecnologia": checkBoxTecnologia.setChecked(true); break;
+                    case "Salud": checkBoxSalud.setChecked(true); break;
+                    case "Entretenimiento": checkBoxEntrenimiento.setChecked(true); break;
+                    case "Deportes": checkBoxDeportes.setChecked(true); break;
+                    case "Videojuegos": checkBoxVideojuegos.setChecked(true); break;
+                    case "Consultorias": checkBoxConsultorias.setChecked(true); break;
+                    case "Transportes": checkBoxTransportes.setChecked(true); break;
+                    case "Marketing": checkBoxMarketing.setChecked(true); break;
+                    case "Finanzas": checkBoxFinanzas.setChecked(true); break;
+                    case "Hogar": checkBoxHogar.setChecked(true);
+                }
+            }
+        }
     }
 
     private int calcularDiasRegistrado(String fechaRegistroStr){
@@ -363,43 +377,43 @@ public class RegistrarFragment extends Fragment {
        items = new ArrayList<String>();
         int counter = 0;
 
-        if (CheckBox1.isChecked()) {
+        if (checkBoxComida.isChecked()) {
             counter++;
-            items.add(CheckBox1.getText().toString());
+            items.add(checkBoxComida.getText().toString());
         }
-        if (CheckBox2.isChecked()){
+        if (checkBoxRopa.isChecked()){
             counter++;
-            items.add(CheckBox2.getText().toString());
+            items.add(checkBoxRopa.getText().toString());
         }
-        if (CheckBox3.isChecked()){
-            counter++; items.add(CheckBox3.getText().toString());
+        if (checkBoxTecnologia.isChecked()){
+            counter++; items.add(checkBoxTecnologia.getText().toString());
         }
-        if (CheckBox4.isChecked()){
-            counter++; items.add(CheckBox4.getText().toString());
+        if (checkBoxSalud.isChecked()){
+            counter++; items.add(checkBoxSalud.getText().toString());
         }
-        if (CheckBox5.isChecked()) {
-            counter++; items.add(CheckBox5.getText().toString());
+        if (checkBoxEntrenimiento.isChecked()) {
+            counter++; items.add(checkBoxEntrenimiento.getText().toString());
         }
-        if (CheckBox6.isChecked()) {
-            counter++; items.add(CheckBox6.getText().toString());
+        if (checkBoxDeportes.isChecked()) {
+            counter++; items.add(checkBoxDeportes.getText().toString());
         }
-        if (CheckBox7.isChecked()) {
-            counter++; items.add(CheckBox7.getText().toString());
+        if (checkBoxVideojuegos.isChecked()) {
+            counter++; items.add(checkBoxVideojuegos.getText().toString());
         }
-        if (CheckBox8.isChecked()) {
-            counter++; items.add(CheckBox8.getText().toString());
+        if (checkBoxConsultorias.isChecked()) {
+            counter++; items.add(checkBoxConsultorias.getText().toString());
         }
-        if (CheckBox9.isChecked()) {
-            counter++; items.add(CheckBox9.getText().toString());
+        if (checkBoxTransportes.isChecked()) {
+            counter++; items.add(checkBoxTransportes.getText().toString());
         }
-        if (CheckBox10.isChecked()) {
-            counter++; items.add(CheckBox10.getText().toString());
+        if (checkBoxMarketing.isChecked()) {
+            counter++; items.add(checkBoxMarketing.getText().toString());
         }
-        if (CheckBox11.isChecked()) {
-            counter++; items.add(CheckBox11.getText().toString());
+        if (checkBoxFinanzas.isChecked()) {
+            counter++; items.add(checkBoxFinanzas.getText().toString());
         }
-        if (CheckBox12.isChecked()) {
-            counter++; items.add(CheckBox12.getText().toString());
+        if (checkBoxHogar.isChecked()) {
+            counter++; items.add(checkBoxHogar.getText().toString());
         }
 
         if (counter < 4) {
