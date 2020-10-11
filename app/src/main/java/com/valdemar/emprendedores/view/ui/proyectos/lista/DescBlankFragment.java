@@ -418,13 +418,16 @@ public class DescBlankFragment extends Fragment {
                 } else{
                     mImage_paralax.setVisibility(View.VISIBLE);
                     mVideoView.setVisibility(View.GONE);
-                    Glide.with(getActivity().getApplicationContext())
-                            .load(post_image)
-                            .into(mImage_paralax);
+                    if(getActivity().getApplicationContext() != null){
+                        Glide.with(getActivity().getApplicationContext())
+                                .load(post_image)
+                                .into(mImage_paralax);
 
-                    Glide.with(getActivity().getApplicationContext())
-                            .load(post_image)
-                            .into(img_foto_proyecto);
+                        Glide.with(getActivity().getApplicationContext())
+                                .load(post_image)
+                                .into(img_foto_proyecto);
+                    }
+
                 }
 
 
