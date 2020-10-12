@@ -418,18 +418,24 @@ public class DescBlankFragment extends Fragment {
                 } else{
                     mImage_paralax.setVisibility(View.VISIBLE);
                     mVideoView.setVisibility(View.GONE);
-                    if(getActivity().getApplicationContext() != null){
-                        Glide.with(getActivity().getApplicationContext())
-                                .load(post_image)
-                                .into(mImage_paralax);
+                    if(getActivity() != null){
+                        if(getActivity().getApplicationContext() != null){
+                            Glide.with(getActivity().getApplicationContext())
+                                    .load(post_image)
+                                    .into(mImage_paralax);
 
-                        Glide.with(getActivity().getApplicationContext())
-                                .load(post_image)
-                                .into(img_foto_proyecto);
+                            Glide.with(getActivity().getApplicationContext())
+                                    .load(post_image)
+                                    .into(img_foto_proyecto);
+                        }else {
+                            Log.v("Msg","Error al guardar");
+                            return;
+                        }
+                    }else{
+                        Log.v("Msg","Error al guardar");
+                        return;
                     }
-
                 }
-
 
                 FloatingActionButton btnActualizarProyecto = root.findViewById(R.id.btn_actualizar_proyecto);
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
