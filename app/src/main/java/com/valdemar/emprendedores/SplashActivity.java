@@ -1,6 +1,7 @@
 package com.valdemar.emprendedores;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import com.valdemar.emprendedores.auth.ViewSpook;
 
 public class SplashActivity extends AppCompatActivity {
     private TextView mTitle;
+    private SharedPreferences prefs_notificacion = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +25,18 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         FirebaseApp.initializeApp(this);
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseMessaging.getInstance().subscribeToTopic("Proyectos");
+  /*
+      prefs_notificacion = getSharedPreferences("com.valdemar.spook.intereses", MODE_PRIVATE);
+        String intereses_emprendedor = prefs_notificacion.getString("intereses","");
+        String[] segmentacionCanalSplit = intereses_emprendedor.split(",");
+        for (String i : segmentacionCanalSplit) {
+            String i_ = i.replace("[","");
+            String i__ = i_.replace("]","");
+            if(i__.trim().equalsIgnoreCase("")){
+                FirebaseMessaging.getInstance().subscribeToTopic(i__);
+            }
+        }*/
+
 
         new Handler().postDelayed(new Runnable() {
             @Override

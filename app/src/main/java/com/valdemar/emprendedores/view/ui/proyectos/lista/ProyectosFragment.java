@@ -1,6 +1,7 @@
 package com.valdemar.emprendedores.view.ui.proyectos.lista;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -35,6 +36,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.valdemar.emprendedores.MenuLateralActivity;
 import com.valdemar.emprendedores.R;
@@ -65,12 +67,63 @@ public class ProyectosFragment extends Fragment {
     private ProgressDialog mProgress;
 
     private String post_key;
-
+    private SharedPreferences prefs_notificacion = null;
+    private DatabaseReference mDatabase2;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.fragment_search, container, false);
+        mDatabase2 = FirebaseDatabase.getInstance().getReference().child("Emprendedor");
+
+        prefs_notificacion = getActivity().getSharedPreferences("com.valdemar.spook.intereses", getActivity().MODE_PRIVATE);
+        String intereses_emprendedor = prefs_notificacion.getString("intereses","");
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(intereses_emprendedor !=null){
+            String[] segmentacionCanalSplit = intereses_emprendedor.split(",");
+
+            for (String i : segmentacionCanalSplit) {
+                String i_ = i.replace("[","");
+                String i__ = i_.replace("]","");
+                if(i__.trim().equalsIgnoreCase("")){
+                    FirebaseMessaging.getInstance().subscribeToTopic(i__);
+                }
+            }
+        }else{
+            mDatabase2.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot itemSpanshot: dataSnapshot.getChildren()) {
+                        String idEmprendedor = (String)itemSpanshot.child("id_emprendedor").getValue();
+                        String intereses_emprendedor = (String)itemSpanshot.child("intereses").getValue();
+                        if(user.getUid().equalsIgnoreCase(idEmprendedor)) {
+                            if (intereses_emprendedor != null) {
+
+                                String[] segmentacionCanalSplit = intereses_emprendedor.split(",");
+
+                                for (String i : segmentacionCanalSplit) {
+                                    String i_ = i.replace("[","");
+                                    String i__ = i_.replace("]","");
+                                    if(i__.trim().equalsIgnoreCase("")){
+                                        FirebaseMessaging.getInstance().subscribeToTopic(i__);
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+
         mProgress = new ProgressDialog(getActivity());
         mProgress.setMessage("Cargando ...");
         mProgress.setCancelable(false);

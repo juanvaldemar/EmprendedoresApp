@@ -3,6 +3,7 @@ package com.valdemar.emprendedores.view.ui.emprendedor;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -77,6 +78,7 @@ public class RegistrarFragment extends Fragment {
     private CheckBox checkBoxComida, checkBoxRopa, checkBoxTecnologia, checkBoxSalud, checkBoxEntrenimiento, checkBoxDeportes,
             checkBoxVideojuegos, checkBoxConsultorias, checkBoxTransportes, checkBoxMarketing, checkBoxFinanzas, checkBoxHogar;
     private ArrayList<String> items;
+    private SharedPreferences prefs_notificacion = null;
 
     public RegistrarFragment() {
         // Required empty public constructor
@@ -99,6 +101,8 @@ public class RegistrarFragment extends Fragment {
     }
 
     private void initView(View root) {
+        prefs_notificacion = getActivity().getSharedPreferences("com.valdemar.spook.intereses", getActivity().MODE_PRIVATE);
+
 
         checkBoxComida = root.findViewById(R.id.checkoutBoxComida);
         checkBoxRopa = root.findViewById(R.id.checkoutBoxRopa);
@@ -312,6 +316,7 @@ public class RegistrarFragment extends Fragment {
                                         newPost.child("imagen").setValue(downloadUrl.toString());
                                         newPost.child("grado_academico").setValue(spinner_grado_academico.getSelectedItem().toString());
                                         newPost.child("intereses").setValue(items.toString());
+                                        prefs_notificacion.edit().putString("intereses",items.toString()).commit();
 
                                         SimpleDateFormat sdfFechaRegistro = new SimpleDateFormat("dd/MM/yyyy");
                                         Date todayDate = new Date();
@@ -353,6 +358,7 @@ public class RegistrarFragment extends Fragment {
                         newPost.child("edt_twitter").setValue(edt_twitter.getText().toString().trim());
                         newPost.child("grado_academico").setValue(spinner_grado_academico.getSelectedItem().toString());
                         newPost.child("intereses").setValue(items.toString());
+                        prefs_notificacion.edit().putString("intereses",items.toString()).commit();
 
                         //newPost.child("imagen").setValue("Vacio");
 
