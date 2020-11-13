@@ -162,7 +162,31 @@ public class DescBlankFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        initView(root);
+
+
+        LinearLayout layout_ = root.findViewById(R.id.container_);
+        try {
+            View cri = getLayoutInflater().inflate(R.layout.dynamic_linearlayout,null,false);
+
+            layout_.addView(cri);
+
+            initView(root);
+
+            System.out.println("chevere web view: ");
+        }catch (Exception e){
+
+            View cri = getLayoutInflater().inflate(R.layout.text_dynamic_linearlayout,null,false);
+
+            layout_.addView(cri);
+
+            initNoView(root);
+
+            System.out.println("error web view: "+e);
+        }
+
+
+
+
         return root;
     }
 
@@ -477,6 +501,298 @@ public class DescBlankFragment extends Fragment {
         initCount(root,mPost_key);
         initListado(root);
     }
+
+
+    private void initNoView(final View root) {
+
+
+
+        Bundle datosRecuperados = getArguments();
+        if (datosRecuperados == null) {
+            // No hay datos, manejar excepción
+            return;
+        }
+        mPost_key = datosRecuperados.getString("blog_id");
+
+
+        mPostTitleDetails = (TextView) root.findViewById(R.id.postTitleDetails);
+        postFecha = (TextView) root.findViewById(R.id.postFecha);
+        postInversion = (TextView) root.findViewById(R.id.postInversion);
+        postBeneficio = (TextView) root.findViewById(R.id.postBeneficio);
+
+
+
+        txt_nombre_proyecto = (TextView) root.findViewById(R.id.txt_nombre_proyecto);
+
+
+
+        txt_cantidad_socios_suscritos = (TextView) root.findViewById(R.id.txt_cantidad_socios_suscritos);
+        txt_cantidad_socios_aceptados = (TextView) root.findViewById(R.id.txt_cantidad_socios_aceptados);
+
+
+        postCategoria = (TextView) root.findViewById(R.id.postCategoria);
+        postAutor = (TextView) root.findViewById(R.id.postAutor);
+        txt_publicado_por = (TextView) root.findViewById(R.id.txt_publicado_por);
+        postSocio1 = (TextView) root.findViewById(R.id.postSocio1);
+        postDesc1 = (TextView) root.findViewById(R.id.postDesc1);
+
+        postSocio2 = (TextView) root.findViewById(R.id.postSocio2);
+        postDesc2 = (TextView) root.findViewById(R.id.postDesc2);
+
+        postSocio3 = (TextView) root.findViewById(R.id.postSocio3);
+        postDesc3 = (TextView) root.findViewById(R.id.postDesc3);
+
+        postSocio4 = (TextView) root.findViewById(R.id.postSocio4);
+        postDesc4 = (TextView) root.findViewById(R.id.postDesc4);
+
+        postSocio5 = (TextView) root.findViewById(R.id.postSocio5);
+        postDesc5 = (TextView) root.findViewById(R.id.postDesc5);
+
+        mVideoView = (VideoView)root.findViewById(R.id.videoview_proyecto);
+
+        mImage_paralax = (ImageView) root.findViewById(R.id.image_paralax);
+        img_foto_proyecto = (ImageView) root.findViewById(R.id.img_foto_proyecto);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Proyectos");
+        mDatabase.child(mPost_key).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+
+
+                String videoSubido_ = (String) dataSnapshot.child("videoSubido").getValue();
+
+                boolean videoSubido = Boolean.parseBoolean(videoSubido_);
+
+                String post_autor = (String) dataSnapshot.child("autor").getValue();
+
+                String post_fecha = (String) dataSnapshot.child("fecha").getValue();
+                String post_inversion = (String) dataSnapshot.child("inversion").getValue();
+                String post_moneda = (String) dataSnapshot.child("moneda").getValue();
+                String post_beneficio = (String) dataSnapshot.child("beneficio").getValue();
+
+                String post_title = (String) dataSnapshot.child("nombre").getValue();
+                mDetalleProyecto.setNombre(post_title);
+                String post_desc = (String) dataSnapshot.child("descripcion").getValue();
+                mDetalleProyecto.setDescripcion(post_desc);
+                final String post_image = (String) dataSnapshot.child("imagen").getValue();
+                mDetalleProyecto.setImagen(post_image);
+                String post_categoria = (String) dataSnapshot.child("categoria").getValue();
+                mDetalleProyecto.setCategoria(post_categoria);
+                String post_socio1 = (String) dataSnapshot.child("socio1").getValue();
+                String post_desc1 = (String) dataSnapshot.child("descripcionSocio1").getValue();
+
+                String post_socio2 = (String) dataSnapshot.child("socio2").getValue();
+                String post_desc2 = (String) dataSnapshot.child("descripcionSocio2").getValue();
+                String post_socio3 = (String) dataSnapshot.child("socio3").getValue();
+                String post_desc3 = (String) dataSnapshot.child("descripcionSocio3").getValue();
+                String post_socio4 = (String) dataSnapshot.child("socio4").getValue();
+                String post_desc4 = (String) dataSnapshot.child("descripcionSocio4").getValue();
+                String post_socio5 = (String) dataSnapshot.child("socio5").getValue();
+                String post_desc5 = (String) dataSnapshot.child("descripcionSocio5").getValue();
+
+                String id_emprendedor = (String) dataSnapshot.child("id_emprendedor").getValue();
+                mDetalleProyecto.setId_emprendedor(id_emprendedor);
+                String estadoTrazabilidad = (String) dataSnapshot.child("estadoTrazabilidad").getValue();
+
+
+
+
+                spinnerEstados = root.findViewById(R.id.spinnerEstados);
+
+                textoFinalizado = root.findViewById(R.id.textoFinalizado);
+                iconoFinalizado = root.findViewById(R.id.iconoFinalizado);
+
+
+                linearDeBaja = root.findViewById(R.id.linearDeBaja);
+
+                if(estadoTrazabilidad != null){
+                    spinnerEstados.setText(estadoTrazabilidad.toString());
+
+                    if(estadoTrazabilidad.equalsIgnoreCase("DEBAJA")){
+                        linearDeBaja.setVisibility(View.VISIBLE);
+                        btnPostular.setVisibility(View.GONE);
+
+                    }
+
+                    if(estadoTrazabilidad.equalsIgnoreCase("FINALIZADO")){
+                        textoFinalizado.setVisibility(View.VISIBLE);
+                       // iconoFinalizado.setVisibility(View.VISIBLE);
+                        btnPostular.setVisibility(View.GONE);
+                    }
+                    if(estadoTrazabilidad.equalsIgnoreCase("ACTIVO")){
+                        shares(root,post_title,post_image);
+                        try {
+                            initComentarios(root, mPost_key);
+                        }catch (Exception e){
+                            Log.v("Listo","Listo catch Exception"+e);
+                        }
+
+                    }
+
+                }
+                dataSnapshot.child("imagen").getValue();
+
+
+                final String textoCentradoDesc = post_desc;
+                String text_string_center = "<html><body style='text-align:justify;'>"+textoCentradoDesc+"<body><html>";
+                /*****************************************/
+                String justifyTag = "<html><body style='text-align:justify;background:black !important;color:#c1c0c0;font-size:15px;'>%s</body></html>";
+                String dataString = String.format(Locale.US, justifyTag, text_string_center);
+
+                TextView textViewDetails = root.findViewById(R.id.textViewDetails);
+                textViewDetails.setText(post_desc);
+
+
+              //  WebView webViewDetail = (WebView) root.findViewById(R.id.webViewDetail);
+               // webViewDetail.loadDataWithBaseURL("", dataString, "text/html", "UTF-8", "");
+                /*****************************************/
+
+
+                mPostTitleDetails.setText(post_title);
+
+                    postFecha.setText("Fecha: "+post_fecha);
+                    if(post_inversion!=null && !post_inversion.isEmpty())
+                        postInversion.setText("Inversion: "+post_inversion + " "+ ((post_moneda!=null)?post_moneda:""));
+                    else
+                        postInversion.setVisibility(View.GONE);
+
+                    postBeneficio.setText("Beneficio: "+post_beneficio);
+
+
+                txt_nombre_proyecto.setText(post_title);
+
+                postCategoria.setText("Categoria: "+post_categoria);
+
+                postAutor.setText("Proyecto publicado por: \n"+post_autor);
+
+
+
+                postAutor.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String idEmprendedor = (String)dataSnapshot.child("id_emprendedor").getValue();
+                        Bundle args = new Bundle();
+                        args.putString("idEmprendedor", idEmprendedor);
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        if(!user.getUid().equalsIgnoreCase(mDetalleProyecto.getId_emprendedor())){
+                            args.putBoolean("visitante", true);
+                        }
+
+
+                        Navigation.findNavController(view).navigate(R.id.next_action_desc,args);
+
+                    }
+                });
+
+
+                txt_publicado_por.setText("Proyecto publicado por: \n"+post_autor);
+
+                postSocio1.setText("- "+post_socio1);
+                postDesc1.setText(post_desc1);
+
+                if(post_socio2.isEmpty()){
+                    postSocio2.setVisibility(View.GONE);
+                    postDesc2.setVisibility(View.GONE);
+                }
+                postSocio2.setText("- "+post_socio2);
+                postDesc2.setText(post_desc2);
+
+
+                if(post_socio3.isEmpty()){
+                    postSocio3.setVisibility(View.GONE);
+                    postDesc3.setVisibility(View.GONE);
+                }
+                postSocio3.setText("- "+post_socio3);
+                postDesc3.setText(post_desc3);
+
+                if(post_socio4.isEmpty()){
+                    postSocio4.setVisibility(View.GONE);
+                    postDesc4.setVisibility(View.GONE);
+                }
+                postSocio4.setText("- "+post_socio4);
+                postDesc4.setText(post_desc4);
+
+                if(post_socio5.isEmpty()){
+                    postSocio5.setVisibility(View.GONE);
+                    postDesc5.setVisibility(View.GONE);
+                }
+                postSocio5.setText("- "+post_socio5);
+                postDesc5.setText(post_desc5);
+
+                if(videoSubido){
+                    MediaController mediaController= new MediaController(getActivity());
+                    mImage_paralax.setVisibility(View.GONE);
+                    mVideoView.setVisibility(View.VISIBLE);
+                    mVideoView.setVideoURI(Uri.parse(post_image));
+                    mVideoView.setMediaController(mediaController);
+                    mVideoView.start();
+
+                } else{
+                    mImage_paralax.setVisibility(View.VISIBLE);
+                    mVideoView.setVisibility(View.GONE);
+                    if(getActivity() != null){
+                        if(getActivity().getApplicationContext() != null){
+                            Glide.with(getActivity().getApplicationContext())
+                                    .load(post_image)
+                                    .into(mImage_paralax);
+
+                            Glide.with(getActivity().getApplicationContext())
+                                    .load(post_image)
+                                    .into(img_foto_proyecto);
+                        }else {
+                            Log.v("Msg","Error al guardar");
+                            return;
+                        }
+                    }else{
+                        Log.v("Msg","Error al guardar");
+                        return;
+                    }
+                }
+
+                FloatingActionButton btnActualizarProyecto = root.findViewById(R.id.btn_actualizar_proyecto);
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                if(user.getUid().equalsIgnoreCase(id_emprendedor)){
+                    btnActualizarProyecto.setVisibility(View.VISIBLE);
+                    btnPostular.setVisibility(View.GONE);
+                    btnActualizarProyecto.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Bundle args = new Bundle();
+                            args.putString("ARG_KEY_PROYECTO", mPost_key);
+                            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_DescBlankFragment_to_crearProyectoFragment, args);
+                            //Navigation.findNavController().navigate(R.id.,args);
+                        }
+                    });
+
+                }
+
+                Random r = new Random();
+                int valorDado = r.nextInt(12);
+                txt_cantidad_socios_suscritos.setText(valorDado+"");
+                txt_cantidad_socios_aceptados.setText("");
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("asdasd"+databaseError);
+                System.out.println("asdasd"+databaseError);
+
+                Toast.makeText(getActivity(),databaseError.toString(),Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+        btnPostular = root.findViewById(R.id.btnPostular);
+        initPostulacion(root);
+        initCount(root,mPost_key);
+        initListado(root);
+    }
+
+
+
+
     public void initListado(View root){
 
 
