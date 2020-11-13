@@ -35,7 +35,7 @@
         <item
             android:id="@+id/nav_mis_interesados"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Mis Interesados" />
+            android:title="Proyectos con postulaciones" />
 
 
 

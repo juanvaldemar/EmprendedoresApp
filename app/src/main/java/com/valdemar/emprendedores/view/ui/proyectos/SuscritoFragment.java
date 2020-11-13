@@ -61,7 +61,7 @@ public class SuscritoFragment extends Fragment {
         layoutManagerMisLecturas.setReverseLayout(true);
         layoutManagerMisLecturas.setStackFromEnd(true);
 
-        mRecyclerMisLecturas = (RecyclerView) root.findViewById(R.id.suscritos);
+        mRecyclerMisLecturas = (RecyclerView) root.findViewById(R.id.fragmento_mis_lecturas);
         mRecyclerMisLecturas.setHasFixedSize(true);
 
         mRecyclerMisLecturas.setLayoutManager(layoutManagerMisLecturas);
