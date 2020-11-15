@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.ui.proyectos.SuscritoFragment">
+    tools:context=".view.ui.proyectos.lista.DescSuscritosFragment">
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragmento_mis_lecturas"
@@ -15,8 +16,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txt_cantidad_socios_suscritos"
-        />
+        android:id="@+id/txt_cantidad_socios_suscritos"/>
+
 
 
 </FrameLayout>

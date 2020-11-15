@@ -845,6 +845,9 @@ public class DescBlankFragment extends Fragment {
             }
         });
     }
+
+
+
     private void initPostulacion(final View root) {
 
         //mVounn_icon =  root.findViewById(R.id.vounn_icon);
