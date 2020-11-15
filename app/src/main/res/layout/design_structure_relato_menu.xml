@@ -33,7 +33,7 @@
         android:layout_margin="10dp"
         android:layout_alignParentEnd="true">
         <ImageView
-            android:visibility="visible"
+            android:visibility="gone"
             android:id="@+id/me_gusta_icon"
             android:layout_marginRight="2dp"
             android:layout_width="25dp"
@@ -49,7 +49,7 @@
             android:background="@drawable/ic_fb_love"
             />
         <ImageView
-            android:visibility="visible"
+            android:visibility="gone"
             android:id="@+id/me_asombra_icon"
             android:layout_marginRight="2dp"
             android:layout_width="25dp"
@@ -57,20 +57,21 @@
             android:background="@drawable/ic_fb_wow"
             />
         <TextView
-            android:visibility="visible"
+            android:visibility="gone"
             android:id="@+id/txt_nro_reactions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="25"
+            android:text=" "
             android:textColor="@color/white"/>
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/like_icon"
+        android:id="@+id/reaction_icon"
         android:layout_margin="10dp"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:gravity="right"
+        android:tag="empty_reaction"
         android:background="@drawable/favorite_flaco"
         />
     <TextView
