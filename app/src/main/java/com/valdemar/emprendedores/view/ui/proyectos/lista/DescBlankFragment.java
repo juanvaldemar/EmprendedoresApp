@@ -99,7 +99,7 @@ public class DescBlankFragment extends Fragment {
 
     private String mPost_key = null;
     private DatabaseReference mDatabase;
-    private DatabaseReference mDatabaseLike, mDatabaseLikeCount;
+    private DatabaseReference mDatabaseLike, mDatabaseLikeCount,mDatabaseAceptadosCount;
     private TextView mPostTitleDetails,txt_nombre_proyecto,
             txt_cantidad_socios_suscritos,txt_cantidad_socios_aceptados,
             textoFinalizado,postCategoria,
@@ -136,6 +136,7 @@ public class DescBlankFragment extends Fragment {
     private Button btnPostular;
     private RecyclerView mRecyclerMisLecturas;
     private ArrayList<ItemFeed> arrayLists = new ArrayList<>();
+    private ArrayList<ItemFeed> arrayLists2 = new ArrayList<>();
     private SearchPlaceAdapter2 mAdapter;
 
 
@@ -825,6 +826,7 @@ public class DescBlankFragment extends Fragment {
 
 
 
+
                 txt_cantidad_socios_suscritos.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -837,6 +839,8 @@ public class DescBlankFragment extends Fragment {
 
                     }
                 });
+
+
             }
 
             @Override
@@ -844,6 +848,65 @@ public class DescBlankFragment extends Fragment {
 
             }
         });
+
+
+
+
+        mDatabaseAceptadosCount.addValueEventListener(new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                  txt_cantidad_socios_aceptados.setText(dataSnapshot.getChildrenCount() + " ");
+                  String asd2 = dataSnapshot.child(getId()+"").toString();
+                  arrayLists2.clear();
+                  //llMain.removeView(textView);
+
+                  for (final DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+                      final String ids = eventSnapshot.getKey();
+                      //TextView textView = new TextView(getActivity());
+                      Object category = eventSnapshot.getValue(Object.class);
+
+                      String convertedToString = String.valueOf(category);
+
+                      String[] segmentacionCanalSplit = convertedToString.split(",");
+                      ItemFeed data_ = new ItemFeed();
+                      data_.setId_emprendedor(segmentacionCanalSplit[0]);
+                      data_.setNombre(segmentacionCanalSplit[1]);
+
+                      arrayLists2.add(data_);
+
+                  }
+
+                  txt_cantidad_socios_aceptados.setOnClickListener(new View.OnClickListener() {
+                      @Override
+                      public void onClick(View view) {
+
+
+
+                          FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                          if(user.getUid().equalsIgnoreCase(mDetalleProyecto.getId_emprendedor())){
+                              iniProfileModal(view,arrayLists2);
+                          }
+
+
+
+
+                      }
+                  });
+
+
+              }
+
+              @Override
+              public void onCancelled(@NonNull DatabaseError databaseError) {
+
+              }
+          }
+        );
+
+
+
+
     }
 
 
@@ -855,6 +918,9 @@ public class DescBlankFragment extends Fragment {
         mDatabaseLike.keepSynced(true);
         mDatabaseLikeCount = FirebaseDatabase.getInstance().getReference().child("HistoriasDetalle").child("count").child(mPost_key);
         mDatabaseLikeCount.keepSynced(true);
+
+        mDatabaseAceptadosCount = FirebaseDatabase.getInstance().getReference().child("HistoriasDetalle").child("count_aceptados").child(mPost_key);
+        mDatabaseAceptadosCount.keepSynced(true);
 
         btnPostular.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -902,6 +968,22 @@ public class DescBlankFragment extends Fragment {
                     btnPostular.setText("Postular");
                     btnPostular.setEnabled(true);
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        mDatabaseAceptadosCount = FirebaseDatabase.getInstance().getReference().child("HistoriasDetalle").child("count_aceptados").child(mPost_key);
+        mDatabaseAceptadosCount.keepSynced(true);
+        mDatabaseAceptadosCount.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                txt_cantidad_socios_aceptados.setText(dataSnapshot.getChildrenCount()+" ");
+
             }
 
             @Override

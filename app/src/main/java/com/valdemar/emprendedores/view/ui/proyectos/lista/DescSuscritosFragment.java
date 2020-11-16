@@ -175,16 +175,21 @@ public class DescSuscritosFragment extends Fragment {
         MyDialog.setContentView(R.layout.modal_aceptar);
         MyDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        Button btnAceptar = MyDialog.findViewById(R.id.modal_aceptar);
+        final Button btnAceptar = MyDialog.findViewById(R.id.modal_aceptar);
         Button btnCancelar = MyDialog.findViewById(R.id.modal_cancelar);
 
+        final DatabaseReference mDatabaseAceptadosCount;
+        mDatabaseAceptadosCount = FirebaseDatabase.getInstance().getReference().child("HistoriasDetalle").child("count_aceptados").child(mPost_key);
+        mDatabaseAceptadosCount.keepSynced(true);
 
         btnAceptar.setEnabled(true);
         btnAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MyDialog.dismiss();
-                startActivity(new Intent(getActivity(), AccessRelato.class));
+
+                final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                mDatabaseAceptadosCount.child(user.getUid()).setValue(user.getUid() +" , "+user.getDisplayName());
             }
         });
         btnCancelar.setOnClickListener(new View.OnClickListener() {
