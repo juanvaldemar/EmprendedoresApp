@@ -73,11 +73,13 @@ public class DescSuscritosFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_desc_suscritos, container, false);
 
         initView(view);
+
         mDatabaseAceptadosCount = FirebaseDatabase.getInstance().getReference().child("HistoriasDetalle").child("count_aceptados").child(mPost_key);
         mDatabaseAceptadosCount.keepSynced(true);
 
         mDatabaseAceptadosCount2 = FirebaseDatabase.getInstance().getReference().child("HistoriasDetalle").child("count_aceptados_2").child(mPost_key);
         mDatabaseAceptadosCount2.keepSynced(true);
+
         initListado(view);
         return view;
     }
@@ -230,14 +232,9 @@ public class DescSuscritosFragment extends Fragment {
                 DatabaseReference newPost = mDatabaseAceptadosCount2.push();
                 newPost.setValue(user.getUid());
 
-
+                contador++;
                 if(contador == total){
-                    title_pop.setText("Felicidades");
-                    modal_need_text_body.setText("Haz cumplido");
-                    btnCancelar.setText("Cerrar");
-                    btnAceptar.setVisibility(View.GONE);
-                    dialogAceptar("");
-                    Toast.makeText(getActivity(),"FELICIDADES",Toast.LENGTH_LONG).show();
+                    felicitar();
                 }
             }
         });
@@ -259,5 +256,59 @@ public class DescSuscritosFragment extends Fragment {
 
     }
 
+    private void felicitar() {
+        final Dialog MyDialog;
+        MyDialog = new Dialog(getActivity());
+        MyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        MyDialog.setContentView(R.layout.modal_aceptar);
+        MyDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        final TextView modal_need_text_body = MyDialog.findViewById(R.id.modal_need_text_body);
+        final TextView title_pop = MyDialog.findViewById(R.id.title_pop);
+
+        final Button btnAceptar = MyDialog.findViewById(R.id.modal_aceptar);
+        final Button btnCancelar = MyDialog.findViewById(R.id.modal_cancelar);
+
+        title_pop.setText("Felicidades");
+        modal_need_text_body.setText("Haz cumplido");
+        btnCancelar.setText("Cerrar");
+        btnAceptar.setVisibility(View.GONE);
+      //  Toast.makeText(getActivity(),"FELICIDADES",Toast.LENGTH_LONG).show();
+
+
+        btnAceptar.setEnabled(true);
+        btnAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyDialog.dismiss();
+
+                final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                mDatabaseAceptadosCount.child(user.getUid()).setValue(user.getUid() +" , "+user.getDisplayName());
+
+
+                DatabaseReference newPost = mDatabaseAceptadosCount2.push();
+                newPost.setValue(user.getUid());
+
+                contador++;
+
+            }
+        });
+
+
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyDialog.dismiss();
+                startActivity(new Intent(getActivity(), AccessRelato.class));
+            }
+        });
+
+
+        MyDialog.show();
+
+
+
+
+    }
 
 }
