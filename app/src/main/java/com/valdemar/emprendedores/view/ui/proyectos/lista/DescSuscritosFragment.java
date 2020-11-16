@@ -25,6 +25,7 @@ import com.valdemar.emprendedores.model.Proyecto;
 import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.IModal;
 import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.SearchPlaceAdapter;
 import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.SearchPlaceAdapter2;
+import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.SearchPlaceAdapter3;
 
 import java.util.ArrayList;
 
@@ -35,7 +36,7 @@ public class DescSuscritosFragment extends Fragment {
     private Proyecto mDetalleProyecto = new Proyecto();
     private String mPost_key = null;
     private RecyclerView mRecyclerMisLecturas;
-    private SearchPlaceAdapter2 mAdapter;
+    private SearchPlaceAdapter3 mAdapter;
 
     public DescSuscritosFragment() {
         // Required empty public constructor
@@ -130,7 +131,7 @@ public class DescSuscritosFragment extends Fragment {
                 //if(user.getUid().equalsIgnoreCase(mDetalleProyecto.getId_emprendedor())){
                    // iniProfileModal(view,arrayLists);
 
-                    mAdapter = new SearchPlaceAdapter2(getContext(), arrayLists,listener);
+                    mAdapter = new SearchPlaceAdapter3(getContext(), arrayLists,listener);
                     mRecyclerMisLecturas.setAdapter(mAdapter);
                     mAdapter.notifyDataSetChanged();
                 //}
