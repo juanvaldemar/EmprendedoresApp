@@ -46,13 +46,20 @@ import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.SearchPlaceAd
 import java.util.ArrayList;
 
 public class DescSuscritosFragment extends Fragment {
-    private DatabaseReference mDatabaseLike, mDatabaseLikeCount;
+    private DatabaseReference mDatabaseLike, mDatabaseLikeCount,mDatabaseCountAceptados;
     private TextView txt_cantidad_socios_suscritos;
     private ArrayList<ItemFeed> arrayLists = new ArrayList<>();
     private Proyecto mDetalleProyecto = new Proyecto();
     private String mPost_key = null;
     private RecyclerView mRecyclerMisLecturas;
     private SearchPlaceAdapter3 mAdapter;
+    private int total = 0;
+    private int contador = 0;
+
+
+     DatabaseReference mDatabaseAceptadosCount;
+     DatabaseReference mDatabaseAceptadosCount2;
+
 
     public DescSuscritosFragment() {
         // Required empty public constructor
@@ -66,6 +73,11 @@ public class DescSuscritosFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_desc_suscritos, container, false);
 
         initView(view);
+        mDatabaseAceptadosCount = FirebaseDatabase.getInstance().getReference().child("HistoriasDetalle").child("count_aceptados").child(mPost_key);
+        mDatabaseAceptadosCount.keepSynced(true);
+
+        mDatabaseAceptadosCount2 = FirebaseDatabase.getInstance().getReference().child("HistoriasDetalle").child("count_aceptados_2").child(mPost_key);
+        mDatabaseAceptadosCount2.keepSynced(true);
         initListado(view);
         return view;
     }
@@ -91,6 +103,9 @@ public class DescSuscritosFragment extends Fragment {
 
         mDatabaseLikeCount = FirebaseDatabase.getInstance().getReference().child("HistoriasDetalle").child("count").child(mPost_key);
         mDatabaseLikeCount.keepSynced(true);
+
+        mDatabaseCountAceptados = FirebaseDatabase.getInstance().getReference().child("HistoriasDetalle").child("count_aceptados").child(mPost_key);
+        mDatabaseCountAceptados.keepSynced(true);
 
         txt_cantidad_socios_suscritos = (TextView) view.findViewById(R.id.txt_cantidad_socios_suscritos);
 
@@ -126,6 +141,9 @@ public class DescSuscritosFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 txt_cantidad_socios_suscritos.setText(dataSnapshot.getChildrenCount()+" ");
+
+                total = (int) dataSnapshot.getChildrenCount();
+
                 String asd = dataSnapshot.child(getId()+"").toString();
                 arrayLists.clear();
                 //llMain.removeView(textView);
@@ -166,6 +184,21 @@ public class DescSuscritosFragment extends Fragment {
 
             }
         });
+
+        mDatabaseAceptadosCount2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                txt_cantidad_socios_suscritos.setText(dataSnapshot.getChildrenCount()+" ");
+
+                contador = (int) dataSnapshot.getChildrenCount();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void dialogAceptar(String id) {
@@ -175,12 +208,14 @@ public class DescSuscritosFragment extends Fragment {
         MyDialog.setContentView(R.layout.modal_aceptar);
         MyDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        final Button btnAceptar = MyDialog.findViewById(R.id.modal_aceptar);
-        Button btnCancelar = MyDialog.findViewById(R.id.modal_cancelar);
+        final TextView modal_need_text_body = MyDialog.findViewById(R.id.modal_need_text_body);
+        final TextView title_pop = MyDialog.findViewById(R.id.title_pop);
 
-        final DatabaseReference mDatabaseAceptadosCount;
-        mDatabaseAceptadosCount = FirebaseDatabase.getInstance().getReference().child("HistoriasDetalle").child("count_aceptados").child(mPost_key);
-        mDatabaseAceptadosCount.keepSynced(true);
+        final Button btnAceptar = MyDialog.findViewById(R.id.modal_aceptar);
+        final Button btnCancelar = MyDialog.findViewById(R.id.modal_cancelar);
+
+
+
 
         btnAceptar.setEnabled(true);
         btnAceptar.setOnClickListener(new View.OnClickListener() {
@@ -190,8 +225,24 @@ public class DescSuscritosFragment extends Fragment {
 
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 mDatabaseAceptadosCount.child(user.getUid()).setValue(user.getUid() +" , "+user.getDisplayName());
+
+
+                DatabaseReference newPost = mDatabaseAceptadosCount2.push();
+                newPost.setValue(user.getUid());
+
+
+                if(contador == total){
+                    title_pop.setText("Felicidades");
+                    modal_need_text_body.setText("Haz cumplido");
+                    btnCancelar.setText("Cerrar");
+                    btnAceptar.setVisibility(View.GONE);
+                    dialogAceptar("");
+                    Toast.makeText(getActivity(),"FELICIDADES",Toast.LENGTH_LONG).show();
+                }
             }
         });
+
+
         btnCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,6 +253,9 @@ public class DescSuscritosFragment extends Fragment {
 
 
         MyDialog.show();
+
+
+
 
     }
 
