@@ -81,16 +81,28 @@ public class SearchPlaceAdapter3 extends RecyclerView.Adapter<SearchPlaceAdapter
 
             }
         });
+
+
+        holder.txtNameProfileAceptar.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                listener.modalAceptar(arrayListFiltered.get(position).getId_emprendedor());
+
+            }
+        });
     }
 
 
     public class SearchPlaceAdapterViewHolder extends RecyclerView.ViewHolder
     {
         TextView txtNameProfile;
+        TextView txtNameProfileAceptar;
 
         public SearchPlaceAdapterViewHolder(View itemView) {
             super(itemView);
             txtNameProfile = (TextView) itemView.findViewById(R.id.item_name);
+            txtNameProfileAceptar = (TextView) itemView.findViewById(R.id.item_aceptar);
         }
     }
 

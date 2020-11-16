@@ -74,6 +74,11 @@ public class Search extends Fragment {
                 viewDetailsChatStyle(id);
             }
 
+            @Override
+            public void modalAceptar(String id) {
+
+            }
+
         };
 
         initView(view,listener);
@@ -184,6 +189,11 @@ public class Search extends Fragment {
             @Override
             public void modalIniciarDetail(String id) {
                 viewDetailsChatStyle(id);
+            }
+
+            @Override
+            public void modalAceptar(String id) {
+
             }
 
         };

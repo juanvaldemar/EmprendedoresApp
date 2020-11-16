@@ -143,6 +143,11 @@ public class ProyectosFragment extends Fragment {
 
             }
 
+            @Override
+            public void modalAceptar(String id) {
+
+            }
+
         };
 
         initView(view,listener);
@@ -336,6 +341,11 @@ public class ProyectosFragment extends Fragment {
             @Override
             public void modalIniciarDetail(String id) {
                 viewDetails(id,view);
+            }
+
+            @Override
+            public void modalAceptar(String id) {
+
             }
 
         };

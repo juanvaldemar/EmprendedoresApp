@@ -210,6 +210,11 @@ public class PerfilEmprendedorFragment extends Fragment {
             public void modalIniciarDetail(String id) {
                 //viewDetails(id,view);
             }
+
+            @Override
+            public void modalAceptar(String id) {
+
+            }
         };
 
 

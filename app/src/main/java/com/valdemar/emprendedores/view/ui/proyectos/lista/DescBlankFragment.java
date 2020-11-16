@@ -1144,6 +1144,11 @@ public class DescBlankFragment extends Fragment {
                 MyDialog.dismiss();
 
             }
+
+            @Override
+            public void modalAceptar(String id) {
+
+            }
         };
 
         mAdapter = new SearchPlaceAdapter2(getContext(), arrayLists,listener);

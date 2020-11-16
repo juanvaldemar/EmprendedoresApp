@@ -1,5 +1,10 @@
 package com.valdemar.emprendedores.view.ui.proyectos.lista;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,11 +13,20 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,6 +35,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.valdemar.emprendedores.R;
+import com.valdemar.emprendedores.auth.AccessRelato;
+import com.valdemar.emprendedores.auth.ForgetPasswordRelato;
 import com.valdemar.emprendedores.model.Proyecto;
 import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.IModal;
 import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.SearchPlaceAdapter;
@@ -98,6 +114,12 @@ public class DescSuscritosFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.next_action_desc,args);
 
             }
+
+            @Override
+            public void modalAceptar(String id) {
+                //Toast.makeText(getActivity(),"hola",Toast.LENGTH_LONG).show();
+                dialogAceptar(id);
+            }
         };
 
         mDatabaseLikeCount.addValueEventListener(new ValueEventListener() {
@@ -144,6 +166,38 @@ public class DescSuscritosFragment extends Fragment {
 
             }
         });
+    }
+
+    private void dialogAceptar(String id) {
+        final Dialog MyDialog;
+        MyDialog = new Dialog(getActivity());
+        MyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        MyDialog.setContentView(R.layout.modal_aceptar);
+        MyDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        Button btnAceptar = MyDialog.findViewById(R.id.modal_aceptar);
+        Button btnCancelar = MyDialog.findViewById(R.id.modal_cancelar);
+
+
+        btnAceptar.setEnabled(true);
+        btnAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyDialog.dismiss();
+                startActivity(new Intent(getActivity(), AccessRelato.class));
+            }
+        });
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyDialog.dismiss();
+                startActivity(new Intent(getActivity(), AccessRelato.class));
+            }
+        });
+
+
+        MyDialog.show();
+
     }
 
 
