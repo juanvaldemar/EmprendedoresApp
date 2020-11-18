@@ -44,6 +44,7 @@ import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.SearchPlaceAd
 import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.SearchPlaceAdapter3;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class DescSuscritosFragment extends Fragment {
     private DatabaseReference mDatabaseLike, mDatabaseLikeCount,mDatabaseCountAceptados;
@@ -55,7 +56,8 @@ public class DescSuscritosFragment extends Fragment {
     private SearchPlaceAdapter3 mAdapter;
     private int total = 0;
     private int contador = 0;
-
+    private String idSuscriptor = "";
+    private String idSuscriptorName = "";
 
      DatabaseReference mDatabaseAceptadosCount;
      DatabaseReference mDatabaseAceptadosCount2;
@@ -160,6 +162,9 @@ public class DescSuscritosFragment extends Fragment {
                     String[] segmentacionCanalSplit = convertedToString.split(",");
                     ItemFeed data_ = new ItemFeed();
                     data_.setId_emprendedor(segmentacionCanalSplit[0]);
+
+                    idSuscriptor = segmentacionCanalSplit[0];
+                    idSuscriptorName = segmentacionCanalSplit[1];
                     data_.setNombre(segmentacionCanalSplit[1]);
 
                     arrayLists.add(data_);
@@ -226,7 +231,10 @@ public class DescSuscritosFragment extends Fragment {
                 MyDialog.dismiss();
 
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                mDatabaseAceptadosCount.child(user.getUid()).setValue(user.getUid() +" , "+user.getDisplayName());
+                Random r = new Random();
+                int valorDado = r.nextInt(999999);
+
+                mDatabaseAceptadosCount.child(valorDado+"").setValue(idSuscriptor.toString().trim() +" , "+idSuscriptorName.toString().trim());
 
 
                 DatabaseReference newPost = mDatabaseAceptadosCount2.push();
@@ -283,7 +291,7 @@ public class DescSuscritosFragment extends Fragment {
                 MyDialog.dismiss();
 
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                mDatabaseAceptadosCount.child(user.getUid()).setValue(user.getUid() +" , "+user.getDisplayName());
+                mDatabaseAceptadosCount.child(idSuscriptor.toString().trim()).setValue(idSuscriptor.toString().trim() +" , "+idSuscriptorName.toString().trim());
 
 
                 DatabaseReference newPost = mDatabaseAceptadosCount2.push();
