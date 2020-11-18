@@ -356,9 +356,16 @@ public class PerfilEmprendedorFragment extends Fragment {
                     mLinkIG = mEmprendedor.getEdt_instagram();
                     mLinkTW = mEmprendedor.getEdt_twitter();
                     grado_academico_ = mEmprendedor.getGrado_academico();
-                    intereses_ = mEmprendedor.getIntereses();
+
+                    String i_ = mEmprendedor.getIntereses().replace("[","");
+                    String i__ = i_.replace("]","");
+
+
+                   // intereses_ = mEmprendedor.getIntereses();
                     mTxtGradoAcademico.setText(grado_academico_);
-                    mTxtIntereses.setText(intereses_);
+                    mTxtIntereses.setText(i__);
+
+
                 }
 
 
@@ -468,7 +475,10 @@ public class PerfilEmprendedorFragment extends Fragment {
                     grado_academico_ = mEmprendedor.getGrado_academico();
                     intereses_ = mEmprendedor.getIntereses();
                     mTxtGradoAcademico.setText(grado_academico_);
-                    mTxtIntereses.setText(intereses_);
+                    String i_ = mEmprendedor.getIntereses().replace("[","");
+                    String i__ = i_.replace("]","");
+
+                    mTxtIntereses.setText(i__);
                 } else {
                     Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_categorias);
                     Toast.makeText(getActivity(), "Primero debe registrarse como emprendedor", Toast.LENGTH_LONG).show();
