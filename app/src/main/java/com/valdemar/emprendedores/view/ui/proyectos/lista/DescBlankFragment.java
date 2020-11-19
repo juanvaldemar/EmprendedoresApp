@@ -937,7 +937,7 @@ public class DescBlankFragment extends Fragment {
                     showSnackBar("Suscrito", root);
                     btnPostular.setText("Suscrito");
                     btnPostular.setEnabled(false);
-                    mDatabaseLikeCount.child(user.getUid()).setValue(user.getUid() +" , "+user.getDisplayName());
+                    mDatabaseLikeCount.child(user.getUid()).setValue(user.getUid() +", "+user.getDisplayName() +"," +mPost_key);
 
                 }else{
                     showSnackBar("Necesitas Iniciar Sesión", root);

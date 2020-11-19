@@ -75,7 +75,8 @@ public class ProyectosFragment extends Fragment {
 
         final View view = inflater.inflate(R.layout.fragment_search, container, false);
         mDatabase2 = FirebaseDatabase.getInstance().getReference().child("Emprendedor");
-
+        FirebaseMessaging.getInstance().subscribeToTopic("sendsuscrito");
+        FirebaseMessaging.getInstance().subscribeToTopic("sendsuscrito2");
         prefs_notificacion = getActivity().getSharedPreferences("com.valdemar.spook.intereses", getActivity().MODE_PRIVATE);
         String intereses_emprendedor = prefs_notificacion.getString("intereses","");
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
