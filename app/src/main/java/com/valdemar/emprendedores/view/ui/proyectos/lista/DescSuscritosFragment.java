@@ -234,7 +234,7 @@ public class DescSuscritosFragment extends Fragment {
                 Random r = new Random();
                 int valorDado = r.nextInt(999999);
 
-                mDatabaseAceptadosCount.child(valorDado+"").setValue(idSuscriptor.toString().trim() +" , "+idSuscriptorName.toString().trim());
+                mDatabaseAceptadosCount.child(idSuscriptor.toString()).setValue(idSuscriptor.toString().trim() +", "+idSuscriptorName.toString().trim());
 
 
                 DatabaseReference newPost = mDatabaseAceptadosCount2.push();
@@ -291,7 +291,7 @@ public class DescSuscritosFragment extends Fragment {
                 MyDialog.dismiss();
 
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                mDatabaseAceptadosCount.child(idSuscriptor.toString().trim()).setValue(idSuscriptor.toString().trim() +" , "+idSuscriptorName.toString().trim());
+                mDatabaseAceptadosCount.child(idSuscriptor.toString()).setValue(idSuscriptor.toString().trim() +" , "+idSuscriptorName.toString().trim());
 
 
                 DatabaseReference newPost = mDatabaseAceptadosCount2.push();
