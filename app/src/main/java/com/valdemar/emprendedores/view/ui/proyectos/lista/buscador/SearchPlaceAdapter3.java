@@ -91,6 +91,8 @@ public class SearchPlaceAdapter3 extends RecyclerView.Adapter<SearchPlaceAdapter
 
             }
         });
+
+
     }
 
 

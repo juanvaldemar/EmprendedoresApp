@@ -60,21 +60,24 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
                         , replaceCharsLower(remoteMessage.getNotification().getTitle()));
 
             } else {
-                String limpieza_cero = remoteMessage.getNotification().getTitle().replace(":", ",");
-                String limpieza_uno = limpieza_cero.replace("\"", "");
-                String limpieza_dos = limpieza_uno.replace("{", "");
-                String limpieza_tres = limpieza_dos.replace("}", "");
+                if(remoteMessage.getNotification().getTitle() != null){
+                    String limpieza_cero = remoteMessage.getNotification().getTitle().replace(":", ",");
+                    String limpieza_uno = limpieza_cero.replace("\"", "");
+                    String limpieza_dos = limpieza_uno.replace("{", "");
+                    String limpieza_tres = limpieza_dos.replace("}", "");
 
-                String limpieza_cuatro [] = limpieza_tres.split(",");
-                if(limpieza_cuatro != null){
-                    if(limpieza_cuatro.length == 4){
-                        mostrarNotificacionSuscritos(limpieza_cuatro[1]);
+                    String limpieza_cuatro [] = limpieza_tres.split(",");
+                    if(limpieza_cuatro != null){
+                        if(limpieza_cuatro.length == 5){
+                            mostrarNotificacionSuscritos(limpieza_cuatro[1]);
 
-                    }else{
-                        mostrarNotificacionAceptados(limpieza_cuatro[1]);
+                        }else{
+                            mostrarNotificacionAceptados(limpieza_cuatro[1],limpieza_cuatro[3]);
 
+                        }
                     }
                 }
+
 
 
             }
@@ -252,7 +255,7 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
     }
 
 
-    private void mostrarNotificacionAceptados(final String id_transaccion) {
+    private void mostrarNotificacionAceptados(final String id_transaccion, String titulo) {
 
 
 
@@ -262,7 +265,7 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
         mDatabaseNotificacion = FirebaseDatabase.getInstance().getReference().child("Proyectos");
 
 
-        if(id_transaccion.equalsIgnoreCase(id_transaccion)){
+        if(user.getUid().equalsIgnoreCase(id_transaccion)){
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
@@ -271,7 +274,7 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext())
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentTitle("Emprendedores App")
-                    .setContentText("Ahora eres socio de un proyecto ")
+                    .setContentText("Ahora eres socio de un proyecto "+titulo)
                     .setAutoCancel(true)
                     .setSound(soundUri)
                     .setContentIntent(pendingIntent);

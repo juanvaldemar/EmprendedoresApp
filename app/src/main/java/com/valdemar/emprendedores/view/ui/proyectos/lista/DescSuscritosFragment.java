@@ -58,6 +58,7 @@ public class DescSuscritosFragment extends Fragment {
     private int contador = 0;
     private String idSuscriptor = "";
     private String idSuscriptorName = "";
+    private String idSuscriptorTitulo = "";
 
      DatabaseReference mDatabaseAceptadosCount;
      DatabaseReference mDatabaseAceptadosCount2;
@@ -163,8 +164,18 @@ public class DescSuscritosFragment extends Fragment {
                     ItemFeed data_ = new ItemFeed();
                     data_.setId_emprendedor(segmentacionCanalSplit[0]);
 
-                    idSuscriptor = segmentacionCanalSplit[0];
-                    idSuscriptorName = segmentacionCanalSplit[1];
+                    //idSuscriptor = segmentacionCanalSplit[0];
+                    //idSuscriptorName = segmentacionCanalSplit[1];
+
+
+                    int catidad = segmentacionCanalSplit.length;
+                    if(catidad == 4){
+                        idSuscriptorTitulo= segmentacionCanalSplit[3];
+                        data_.setCategoria(segmentacionCanalSplit[0]);
+                        data_.setCiudad(segmentacionCanalSplit[1]);
+                        data_.setDescripcion(idSuscriptorTitulo);
+
+                    }
                     data_.setNombre(segmentacionCanalSplit[1]);
 
                     arrayLists.add(data_);
@@ -208,7 +219,7 @@ public class DescSuscritosFragment extends Fragment {
         });
     }
 
-    private void dialogAceptar(String id) {
+    private void dialogAceptar(final String id) {
         final Dialog MyDialog;
         MyDialog = new Dialog(getActivity());
         MyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -234,11 +245,18 @@ public class DescSuscritosFragment extends Fragment {
                 Random r = new Random();
                 int valorDado = r.nextInt(999999);
 
-                mDatabaseAceptadosCount.child(idSuscriptor.toString()).setValue(idSuscriptor.toString().trim() +", "+idSuscriptorName.toString().trim());
+                for (int i= 0; i<arrayLists.size();i++){
+                    if(arrayLists.get(i).getId_emprendedor().equalsIgnoreCase(id)){
+                        mDatabaseAceptadosCount.child(id).setValue(id.trim() +", "+arrayLists.get(i).getCiudad().trim()+","+arrayLists.get(i).getDescripcion());
+                        break;
+                    }
+                }
 
 
                 DatabaseReference newPost = mDatabaseAceptadosCount2.push();
                 newPost.setValue(user.getUid());
+
+
 
                 contador++;
                 if(contador == total){
@@ -291,7 +309,8 @@ public class DescSuscritosFragment extends Fragment {
                 MyDialog.dismiss();
 
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                mDatabaseAceptadosCount.child(idSuscriptor.toString()).setValue(idSuscriptor.toString().trim() +" , "+idSuscriptorName.toString().trim());
+                mDatabaseAceptadosCount.child(idSuscriptor).setValue(idSuscriptor.trim() +", "+idSuscriptorName.trim()+","+idSuscriptorTitulo);
+
 
 
                 DatabaseReference newPost = mDatabaseAceptadosCount2.push();
