@@ -343,7 +343,7 @@ public class PerfilEmprendedorFragment extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(!mEmprendedor.getImagen().equals("Vacio")){
+                if(!mEmprendedor.getImagen().isEmpty()){
                         Glide.with(getActivity().getApplicationContext())
                                 .load(mEmprendedor.getImagen())
                                 .into(mImgPerfil);
@@ -460,7 +460,7 @@ public class PerfilEmprendedorFragment extends Fragment {
             @Override
             public void run() {
                 if (mEmprendedorRegistrado) {
-                    if(!mEmprendedor.getImagen().equals("Vacio"))
+                    if(!mEmprendedor.getImagen().isEmpty())
                         Glide.with(getActivity().getApplicationContext())
                                 .load(mEmprendedor.getImagen())
                                 .into(mImgPerfil);

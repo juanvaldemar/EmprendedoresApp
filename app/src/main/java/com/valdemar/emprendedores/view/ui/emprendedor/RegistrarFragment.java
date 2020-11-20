@@ -172,7 +172,7 @@ public class RegistrarFragment extends Fragment {
     }
 
     private void cargarEmprendedor() {
-        if (!mEmprendedor.getImagen().equals("Vacio"))
+        if (!mEmprendedor.getImagen().isEmpty())
             Glide.with(getActivity().getApplicationContext())
                     .load(mEmprendedor.getImagen())
                     .into(mImgFoto);

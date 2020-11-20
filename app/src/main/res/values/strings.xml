@@ -22,8 +22,8 @@
     <string name="perfilemprendedor">PerfilEmprendedor</string>
     <string name="errorlogin">El usuario y/o contraseña que ingresaste son incorrectos. Porfavor, <b>Reinténtalo</b> o <b>Créate una cuenta</b></string>
     <string name="registraremprendedor.hint.facebook">Si es www.facebook.com/alex ingresar alex</string>
-    <string name="registraremprendedor.hint.instagram">Si es www.instagram.com/maria ingresar ana</string>
-    <string name="registraremprendedor.hint.twitter">Si es www.twitter.com/raul ingresar raul</string>
+    <string name="registraremprendedor.hint.instagram">Si es www.instagram.com/ana ingresar ana </string>
+    <string name="registraremprendedor.hint.twitter">Si es www.twitter.com/jorge ingresar jorge</string>
 
     <string-array name="dia">
         <item>Día</item>
