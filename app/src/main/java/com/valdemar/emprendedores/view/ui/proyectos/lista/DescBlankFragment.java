@@ -1055,7 +1055,7 @@ public class DescBlankFragment extends Fragment {
                         public void onClick(View view) {
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                            // sólo puede modificar un comentario el creador del proyecto o el que hizo el comentario
+                            // sólo puede editar/eliminar un comentario el que hizo el comentario y eliminar el creador del proyecto
                             if(user.getUid().equalsIgnoreCase(mDetalleProyecto.getId_emprendedor()) || user.getUid().equalsIgnoreCase(model.getIdEmprendedor())){
                                 System.out.println("model: "+model);
                                 final Dialog MyDialog;
@@ -1064,6 +1064,8 @@ public class DescBlankFragment extends Fragment {
                                 MyDialog.setContentView(R.layout.comentario_opcion);
                                 final Button btnEliminar = MyDialog.findViewById(R.id.eliminar);
                                 final Button btnEditar = MyDialog.findViewById(R.id.editar);
+                                // sólo puede editar el comentario el que hizo el comentario
+                                if(user.getUid().equalsIgnoreCase(mDetalleProyecto.getId_emprendedor())) btnEditar.setVisibility(View.GONE);
                                 final Button btnEditar_ = MyDialog.findViewById(R.id.editar_);
                                 final EditText editarComentario = MyDialog.findViewById(R.id.editarComentario);
                                 btnEliminar.setOnClickListener(new View.OnClickListener() {

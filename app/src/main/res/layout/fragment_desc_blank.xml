@@ -393,7 +393,7 @@
                                 android:visibility="visible"
                                 android:scaleType="centerCrop"
                                 android:layout_gravity="center"
-                                android:text="Cantidad de socios suscritos o postulantes al proyecto:"
+                                android:text="Cantidad de postulantes al proyecto:"
                                 android:gravity="center"
                                 android:layout_width="150dp"
                                 android:layout_height="wrap_content"/>
@@ -434,7 +434,7 @@
                                         android:visibility="visible"
                                         android:scaleType="centerCrop"
                                         android:layout_gravity="center"
-                                        android:text="Cantidad de socios suscritos aceptados al proyecto:"
+                                        android:text="Cantidad de socios aceptados al proyecto:"
                                         android:gravity="center"
                                         android:layout_width="150dp"
                                         android:layout_height="wrap_content"/>
