@@ -61,21 +61,32 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
 
             } else {
                 if(remoteMessage.getNotification().getTitle() != null){
-                    String limpieza_cero = remoteMessage.getNotification().getTitle().replace(":", ",");
-                    String limpieza_uno = limpieza_cero.replace("\"", "");
-                    String limpieza_dos = limpieza_uno.replace("{", "");
-                    String limpieza_tres = limpieza_dos.replace("}", "");
+                    if(remoteMessage.getNotification().getTitle().contains("suscritos")){
+                        String limpieza_cero = remoteMessage.getNotification().getTitle().replace(":", ",");
+                        String limpieza_uno = limpieza_cero.replace("\"", "");
+                        String limpieza_dos = limpieza_uno.replace("{", "");
+                        String limpieza_tres = limpieza_dos.replace("}", "");
 
-                    String limpieza_cuatro [] = limpieza_tres.split(",");
-                    if(limpieza_cuatro != null){
-                        if(limpieza_cuatro.length == 5){
-                            mostrarNotificacionSuscritos(limpieza_cuatro[1]);
+                        String limpieza_cuatro [] = limpieza_tres.split(",");
+                        if(limpieza_cuatro != null){
 
-                        }else{
+                                mostrarNotificacionSuscritos(limpieza_cuatro[3]);
+
+                        }
+                    }
+                    if(remoteMessage.getNotification().getTitle().contains("aceptados")){
+                        String limpieza_cero = remoteMessage.getNotification().getTitle().replace(":", ",");
+                        String limpieza_uno = limpieza_cero.replace("\"", "");
+                        String limpieza_dos = limpieza_uno.replace("{", "");
+                        String limpieza_tres = limpieza_dos.replace("}", "");
+
+                        String limpieza_cuatro [] = limpieza_tres.split(",");
+                        if(limpieza_cuatro != null){
                             mostrarNotificacionAceptados(limpieza_cuatro[1],limpieza_cuatro[3]);
 
                         }
                     }
+
                 }
 
 
