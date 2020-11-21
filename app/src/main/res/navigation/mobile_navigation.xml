@@ -176,6 +176,14 @@
         <action
             android:id="@+id/next_action_desc"
             app:destination="@id/DescSuscritos" />
+
+        <argument
+            android:name="id_proyecto"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/next_action_project_desc"
+            app:destination="@id/DescBlankFragment" />
     </fragment>
 
     <fragment
