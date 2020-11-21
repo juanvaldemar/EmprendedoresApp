@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,7 +53,7 @@ public class SuscritoFragment extends Fragment {
         return root;
     }
 
-    private void initView(View root) {
+    private void initView(final View root) {
         mProgress = new ProgressDialog(getContext());
 
         LinearLayoutManager layoutManagerMisLecturas
@@ -89,7 +90,19 @@ public class SuscritoFragment extends Fragment {
                 viewHolder.setAuthor(model.getDescripcion());
 
                 viewHolder.setImage(getActivity().getApplicationContext(), model.getImagen());
-
+                viewHolder.mViewStructure.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Bundle args = new Bundle();
+                                args.putString("blog_id", post_key);
+                                Navigation.findNavController(root).navigate(R.id.next_action_project_desc,args);
+                            }
+                        }, 100);
+                    }
+                });
 
             }
         };
