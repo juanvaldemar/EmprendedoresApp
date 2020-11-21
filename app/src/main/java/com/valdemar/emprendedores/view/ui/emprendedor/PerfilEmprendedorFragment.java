@@ -208,7 +208,7 @@ public class PerfilEmprendedorFragment extends Fragment {
 
             @Override
             public void modalIniciarDetail(String id) {
-                //viewDetails(id,view);
+                viewDetails(id,view);
             }
 
             @Override
@@ -485,6 +485,12 @@ public class PerfilEmprendedorFragment extends Fragment {
                 }
             }
         }, 1000);
+    }
+
+    private void viewDetails(String post_key, View view){
+        Bundle args = new Bundle();
+        args.putString("blog_id", post_key);
+        Navigation.findNavController(view).navigate(R.id.next_action_desc,args);
     }
 
     public String obtenerCampoNoNulo(String campo) {
