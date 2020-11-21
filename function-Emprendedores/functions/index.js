@@ -23,7 +23,7 @@ exports.sendAdminNotification = functions.database.ref('/Proyectos/{pushId}').on
 
     return admin.messaging().sendToTopic("Proyectos", payload)
         .then(function (response) {
-            console.log('Notification sent successfully:', response);
+            console.log('Notification sent successfully:'+`${news.categoria}`, response);
         })
         .catch(function (error) {
             console.log('Notification sent failed:', error);

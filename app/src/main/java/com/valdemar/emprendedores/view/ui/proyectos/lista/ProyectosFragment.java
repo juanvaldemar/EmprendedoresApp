@@ -80,14 +80,14 @@ public class ProyectosFragment extends Fragment {
         prefs_notificacion = getActivity().getSharedPreferences("com.valdemar.spook.intereses", getActivity().MODE_PRIVATE);
         String intereses_emprendedor = prefs_notificacion.getString("intereses","");
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
+        FirebaseMessaging.getInstance().subscribeToTopic("Proyectos");
         if(intereses_emprendedor !=null){
             String[] segmentacionCanalSplit = intereses_emprendedor.split(",");
 
             for (String i : segmentacionCanalSplit) {
-                String i_ = i.replace("[","");
-                String i__ = i_.replace("]","");
-                if(i__.trim().equalsIgnoreCase("")){
+                String i_ = i.replace("[","").trim();
+                String i__ = i_.replace("]","").trim();
+                if(i__.equalsIgnoreCase("")){
                     FirebaseMessaging.getInstance().subscribeToTopic(i__);
                 }
             }
