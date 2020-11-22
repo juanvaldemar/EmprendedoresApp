@@ -150,7 +150,7 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
                                 String i__ = i_.replace("]", "");
                                 if (i__.trim().equalsIgnoreCase(categoria)) {
 
-                                    if(!idEmprendedor.equalsIgnoreCase(user.getUid())){
+                                    if(idEmprendedor != user.getUid()){
                                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
