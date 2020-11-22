@@ -347,6 +347,7 @@ public class PerfilEmprendedorFragment extends Fragment {
                         Glide.with(getActivity().getApplicationContext())
                                 .load(mEmprendedor.getImagen())
                                 .into(mImgPerfil);
+                }
                     mTxtNombres.setText(mEmprendedor.getEdt_nombres_emprendedor());
                     mTxtDedicas.setText(mEmprendedor.getDedicas());
                     mTxtApellidos.setText(mEmprendedor.getEdt_apellidos_emprendedor());
@@ -364,11 +365,7 @@ public class PerfilEmprendedorFragment extends Fragment {
                    // intereses_ = mEmprendedor.getIntereses();
                     mTxtGradoAcademico.setText(grado_academico_);
                     mTxtIntereses.setText(i__);
-
-
-                }
-
-
+                    
             }
         }, 1000);
     }
