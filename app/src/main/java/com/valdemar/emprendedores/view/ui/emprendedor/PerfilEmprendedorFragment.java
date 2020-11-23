@@ -45,6 +45,7 @@ public class PerfilEmprendedorFragment extends Fragment {
     private ImageView mImgPerfil;
     private TextView mTxtNombres;
     private TextView mTxtGradoAcademico;
+    private TextView tituloIntereses;
     private TextView mTxtIntereses;
     private TextView mTxtApellidos;
     private TextView mTxtPais;
@@ -94,6 +95,7 @@ public class PerfilEmprendedorFragment extends Fragment {
         mTxtDedicas = (TextView) view.findViewById(R.id.txt_dedicas);
         mTxtGradoAcademico = (TextView) view.findViewById(R.id.txt_gradoAcademico);
         mTxtIntereses = (TextView) view.findViewById(R.id.mTxtIntereses);
+        tituloIntereses = (TextView) view.findViewById(R.id.tituloIntereses);
         mTxtApellidos = (TextView) view.findViewById(R.id.txt_apellidos);
         mTxtPais = (TextView) view.findViewById(R.id.txt_pais);
         mTxtCiudad = (TextView) view.findViewById(R.id.txt_ciudad);
@@ -365,6 +367,10 @@ public class PerfilEmprendedorFragment extends Fragment {
                    // intereses_ = mEmprendedor.getIntereses();
                     mTxtGradoAcademico.setText(grado_academico_);
                     mTxtIntereses.setText(i__);
+                    if(mTxtIntereses.getText().toString().isEmpty()){
+                        mTxtIntereses.setVisibility(View.GONE);
+                        tituloIntereses.setVisibility(View.GONE);
+                    }
                     
             }
         }, 1000);
@@ -476,6 +482,10 @@ public class PerfilEmprendedorFragment extends Fragment {
                     String i__ = i_.replace("]","");
 
                     mTxtIntereses.setText(i__);
+                    if(mTxtIntereses.getText().toString().isEmpty()){
+                        mTxtIntereses.setVisibility(View.GONE);
+                        tituloIntereses.setVisibility(View.GONE);
+                    }
                 } else {
                     Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_categorias);
                     Toast.makeText(getActivity(), "Primero debe registrarse como emprendedor", Toast.LENGTH_LONG).show();
