@@ -139,6 +139,7 @@ public class DescBlankFragment extends Fragment {
     private ArrayList<ItemFeed> arrayLists2 = new ArrayList<>();
     private SearchPlaceAdapter2 mAdapter;
 
+    private boolean mEmprendedorRegistrado;
 
 
     private final static int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
@@ -163,7 +164,7 @@ public class DescBlankFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-
+        verificarRegistroEmprendedor();
 
         LinearLayout layout_ = root.findViewById(R.id.container_);
         try {
@@ -471,6 +472,7 @@ public class DescBlankFragment extends Fragment {
                     btnActualizarProyecto.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+
                             Bundle args = new Bundle();
                             args.putString("ARG_KEY_PROYECTO", mPost_key);
                             Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_DescBlankFragment_to_crearProyectoFragment, args);
@@ -925,19 +927,28 @@ public class DescBlankFragment extends Fragment {
         btnPostular.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                 if(user != null){
 
-                    mDatabaseLike.child(user.getUid()).child(mPost_key).child("nombre").setValue(mDetalleProyecto.getNombre());
-                    mDatabaseLike.child(user.getUid()).child(mPost_key).child("imagen").setValue(mDetalleProyecto.getImagen());
-                    mDatabaseLike.child(user.getUid()).child(mPost_key).child("categoria").setValue(mDetalleProyecto.getCategoria());
-                    mDatabaseLike.child(user.getUid()).child(mPost_key).child("descripcion").setValue(mDetalleProyecto.getDescripcion());
-                    mDatabaseLike.child(user.getUid()).child(mPost_key).child("id_emprendedor").setValue(mDetalleProyecto.getId_emprendedor());
-                    showSnackBar("Suscrito", root);
-                    btnPostular.setText("Suscrito");
-                    btnPostular.setEnabled(false);
-                    mDatabaseLikeCount.child(user.getUid()).setValue(user.getUid() +", "+user.getDisplayName() +"," +mPost_key+","+mDetalleProyecto.getNombre());
+
+                            if(!mEmprendedorRegistrado) {
+                                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_categorias);
+                                Toast.makeText(getActivity(), "Primero debe registrarse como emprendedor", Toast.LENGTH_LONG).show();
+                            }else{
+                                mDatabaseLike.child(user.getUid()).child(mPost_key).child("nombre").setValue(mDetalleProyecto.getNombre());
+                                mDatabaseLike.child(user.getUid()).child(mPost_key).child("imagen").setValue(mDetalleProyecto.getImagen());
+                                mDatabaseLike.child(user.getUid()).child(mPost_key).child("categoria").setValue(mDetalleProyecto.getCategoria());
+                                mDatabaseLike.child(user.getUid()).child(mPost_key).child("descripcion").setValue(mDetalleProyecto.getDescripcion());
+                                mDatabaseLike.child(user.getUid()).child(mPost_key).child("id_emprendedor").setValue(mDetalleProyecto.getId_emprendedor());
+                                showSnackBar("Suscrito", root);
+                                btnPostular.setText("Suscrito");
+                                btnPostular.setEnabled(false);
+                                mDatabaseLikeCount.child(user.getUid()).setValue(user.getUid() +", "+user.getDisplayName() +"," +mPost_key+","+mDetalleProyecto.getNombre());
+                            }
+
 
                 }else{
                     showSnackBar("Necesitas Iniciar Sesión", root);
@@ -946,6 +957,34 @@ public class DescBlankFragment extends Fragment {
         });
 
     }
+
+
+    public void verificarRegistroEmprendedor(){
+        final DatabaseReference mEmprendedorReference;
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        mEmprendedorReference = FirebaseDatabase.getInstance().getReference().child("Emprendedor");
+        mEmprendedorReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot itemSpanshot: dataSnapshot.getChildren()) {
+                    String idEmprendedor = (String)itemSpanshot.child("id_emprendedor").getValue();
+                    if(idEmprendedor!=null && idEmprendedor.equals(user.getUid())){
+                        mEmprendedorRegistrado = true;
+                        break;
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
 
     private void showSnackBar(String msg, View root) {
         Snackbar
