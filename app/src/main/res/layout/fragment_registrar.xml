@@ -305,6 +305,12 @@
                             android:text="Hogar"
                             android:id="@+id/checkoutBoxHogar"/>
 
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Otros"
+                            android:id="@+id/checkBoxOtros"/>
+
                     </LinearLayout>
 
 

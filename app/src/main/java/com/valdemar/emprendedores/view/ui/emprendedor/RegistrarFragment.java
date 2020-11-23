@@ -76,7 +76,7 @@ public class RegistrarFragment extends Fragment {
     private boolean mActualizarEmprendedor;
 
     private CheckBox checkBoxComida, checkBoxRopa, checkBoxTecnologia, checkBoxSalud, checkBoxEntrenimiento, checkBoxDeportes,
-            checkBoxVideojuegos, checkBoxConsultorias, checkBoxTransportes, checkBoxMarketing, checkBoxFinanzas, checkBoxHogar;
+            checkBoxVideojuegos, checkBoxConsultorias, checkBoxTransportes, checkBoxMarketing, checkBoxFinanzas, checkBoxHogar, checkBoxOtros;
     private ArrayList<String> items;
     private SharedPreferences prefs_notificacion = null;
 
@@ -116,6 +116,7 @@ public class RegistrarFragment extends Fragment {
         checkBoxMarketing = root.findViewById(R.id.checkoutBoxMarketing);
         checkBoxFinanzas = root.findViewById(R.id.checkoutBoxFinanzas);
         checkBoxHogar = root.findViewById(R.id.checkoutBoxHogar);
+        checkBoxOtros = root.findViewById(R.id.checkBoxOtros);
 
 
         mImgFoto = root.findViewById(R.id.img_foto_emprendedor);
@@ -241,7 +242,8 @@ public class RegistrarFragment extends Fragment {
                     case "Transportes": checkBoxTransportes.setChecked(true); break;
                     case "Marketing": checkBoxMarketing.setChecked(true); break;
                     case "Finanzas": checkBoxFinanzas.setChecked(true); break;
-                    case "Hogar": checkBoxHogar.setChecked(true);
+                    case "Hogar": checkBoxHogar.setChecked(true); break;
+                    case "Otros": checkBoxOtros.setChecked(true);
                 }
             }
         }
@@ -420,6 +422,9 @@ public class RegistrarFragment extends Fragment {
         }
         if (checkBoxHogar.isChecked()) {
             counter++; items.add(checkBoxHogar.getText().toString());
+        }
+        if (checkBoxOtros.isChecked()) {
+            counter++; items.add(checkBoxOtros.getText().toString());
         }
 
         if (counter < 4) {
