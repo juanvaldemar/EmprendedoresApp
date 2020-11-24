@@ -22,6 +22,7 @@ public class SearchPlaceAdapter3 extends RecyclerView.Adapter<SearchPlaceAdapter
     public ArrayList<ItemFeed> arrayList;
     public ArrayList<ItemFeed> arrayListFiltered;
     private IModal listener;
+    public SearchPlaceAdapter3.SearchPlaceAdapterViewHolder selectedViewHolder;
 
 
 
@@ -67,7 +68,7 @@ public class SearchPlaceAdapter3 extends RecyclerView.Adapter<SearchPlaceAdapter
     }
 
     @Override
-    public void onBindViewHolder(SearchPlaceAdapterViewHolder holder, final int position)
+    public void onBindViewHolder(final SearchPlaceAdapterViewHolder holder, final int position)
     {
 
 
@@ -87,6 +88,8 @@ public class SearchPlaceAdapter3 extends RecyclerView.Adapter<SearchPlaceAdapter
         {
             @Override
             public void onClick(View view) {
+                holder.txtNameProfileAceptar.setEnabled(false);
+                selectedViewHolder = holder;
                 listener.modalAceptar(arrayListFiltered.get(position).getId_emprendedor());
 
             }
@@ -99,7 +102,7 @@ public class SearchPlaceAdapter3 extends RecyclerView.Adapter<SearchPlaceAdapter
     public class SearchPlaceAdapterViewHolder extends RecyclerView.ViewHolder
     {
         TextView txtNameProfile;
-        TextView txtNameProfileAceptar;
+        public TextView txtNameProfileAceptar;
 
         public SearchPlaceAdapterViewHolder(View itemView) {
             super(itemView);

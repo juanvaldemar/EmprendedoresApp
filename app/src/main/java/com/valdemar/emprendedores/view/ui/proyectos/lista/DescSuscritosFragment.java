@@ -255,7 +255,7 @@ public class DescSuscritosFragment extends Fragment {
 
                 DatabaseReference newPost = mDatabaseAceptadosCount2.push();
                 newPost.setValue(user.getUid());
-
+                mAdapter.selectedViewHolder.txtNameProfileAceptar.setText("Aceptado");
 
 
                 contador++;
