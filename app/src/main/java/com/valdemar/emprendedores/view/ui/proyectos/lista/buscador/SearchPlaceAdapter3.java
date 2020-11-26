@@ -8,8 +8,14 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.view.ui.proyectos.lista.ItemFeed;
 
@@ -23,6 +29,7 @@ public class SearchPlaceAdapter3 extends RecyclerView.Adapter<SearchPlaceAdapter
     public ArrayList<ItemFeed> arrayListFiltered;
     private IModal listener;
     public SearchPlaceAdapter3.SearchPlaceAdapterViewHolder selectedViewHolder;
+    DatabaseReference mDatabaseAceptadosCount2;
 
 
 
@@ -33,6 +40,8 @@ public class SearchPlaceAdapter3 extends RecyclerView.Adapter<SearchPlaceAdapter
         arrayListFiltered = arrayList;
         /*arrayListFiltered = new ArrayList<>(arrayList);*/
         this.listener = listener;
+        mDatabaseAceptadosCount2 = FirebaseDatabase.getInstance().getReference().child("HistoriasDetalle")
+                .child("count_aceptados_2").child(arrayList.get(0).getId());
 
     }
 
@@ -70,7 +79,25 @@ public class SearchPlaceAdapter3 extends RecyclerView.Adapter<SearchPlaceAdapter
     @Override
     public void onBindViewHolder(final SearchPlaceAdapterViewHolder holder, final int position)
     {
+        mDatabaseAceptadosCount2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String idEmprendedorAceptado = arrayListFiltered.get(position).getId_emprendedor();
+                for (final DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+                    String idEmprendedorChildren = eventSnapshot.getValue().toString();
+                    if(idEmprendedorChildren.equals(idEmprendedorAceptado)){
+                        holder.txtNameProfileAceptar.setText("Aceptado");
+                        holder.txtNameProfileAceptar.setEnabled(false);
+                    }
 
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         holder.txtNameProfile.setText(arrayListFiltered.get(position).getNombre());
 

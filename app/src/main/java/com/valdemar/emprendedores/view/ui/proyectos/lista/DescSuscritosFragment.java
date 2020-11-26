@@ -174,6 +174,7 @@ public class DescSuscritosFragment extends Fragment {
                         data_.setCategoria(segmentacionCanalSplit[0]);
                         data_.setCiudad(segmentacionCanalSplit[1]);
                         data_.setDescripcion(idSuscriptorTitulo);
+                        data_.setId(segmentacionCanalSplit[2]);
 
                     }
                     data_.setNombre(segmentacionCanalSplit[1]);
@@ -254,7 +255,7 @@ public class DescSuscritosFragment extends Fragment {
 
 
                 DatabaseReference newPost = mDatabaseAceptadosCount2.push();
-                newPost.setValue(user.getUid());
+                newPost.setValue(id);
                 mAdapter.selectedViewHolder.txtNameProfileAceptar.setText("Aceptado");
 
 
