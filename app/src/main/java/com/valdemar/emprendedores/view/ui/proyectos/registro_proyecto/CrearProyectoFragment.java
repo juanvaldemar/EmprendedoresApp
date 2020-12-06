@@ -126,6 +126,7 @@ public class CrearProyectoFragment extends Fragment {
     private String estadoSeleccionado;
     Spinner spinnerEstados;
     Spinner mSpnMoneda;
+    Button btnPublicarProyecto;
 
     public CrearProyectoFragment() {
         // Required empty public constructor
@@ -261,7 +262,7 @@ public class CrearProyectoFragment extends Fragment {
         });
 
 
-        Button btnPublicarProyecto = (Button) view.findViewById(R.id.btn_registrar_proyecto);
+        btnPublicarProyecto = (Button) view.findViewById(R.id.btn_registrar_proyecto);
         btnPublicarProyecto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -274,6 +275,7 @@ public class CrearProyectoFragment extends Fragment {
         });
 
         mIdProyecto = getArguments().getString("ARG_KEY_PROYECTO");
+        spinnerEstados.setVisibility(View.GONE);
         if (!TextUtils.isEmpty(mIdProyecto)) {
             mActualizarProyecto = true;
             cargarProyectoCreado();
@@ -309,6 +311,7 @@ public class CrearProyectoFragment extends Fragment {
                         R.array.estados, android.R.layout.simple_spinner_item);
                 adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+                spinnerEstados.setVisibility(View.VISIBLE);
                 spinnerEstados.setAdapter(adapter5);
 
                 if(status != null){
@@ -418,7 +421,7 @@ public class CrearProyectoFragment extends Fragment {
 
             }
         });
-
+        btnPublicarProyecto.setText("ACTUALIZAR PROYECTO");
     }
 
     public void agregarSocio() {
