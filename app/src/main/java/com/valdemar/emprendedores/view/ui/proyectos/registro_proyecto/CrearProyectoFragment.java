@@ -309,7 +309,7 @@ public class CrearProyectoFragment extends Fragment {
                         R.array.estados, android.R.layout.simple_spinner_item);
                 adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-
+                spinnerEstados.setAdapter(adapter5);
 
                 if(status != null){
                     if(status.equalsIgnoreCase("ACTIVO")){
@@ -337,7 +337,7 @@ public class CrearProyectoFragment extends Fragment {
 
                     }
                 });
-                spinnerEstados.setAdapter(adapter5);
+
 
                 String imagenProyectoUri = (String) dataSnapshot.child("imagen").getValue();
                 mImageUri = Uri.parse(imagenProyectoUri);
