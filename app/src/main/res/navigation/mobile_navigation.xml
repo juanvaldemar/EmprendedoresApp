@@ -39,7 +39,7 @@
     <fragment
         android:id="@+id/nav_home"
         android:name="com.valdemar.emprendedores.view.CategoriasFragment"
-        android:label="@string/menu_home"
+        android:label="Categorías"
         tools:layout="@layout/fragment_categorias" >
         <action
             android:id="@+id/next_action"
@@ -90,6 +90,7 @@
     <fragment
         android:id="@+id/DescSuscritos"
         android:name="com.valdemar.emprendedores.view.ui.proyectos.lista.DescSuscritosFragment"
+        android:label="Proyectos"
         tools:layout="@layout/fragment_desc_suscritos" >
 
 
@@ -122,7 +123,7 @@
     <fragment
         android:id="@+id/crearProyectoFragment"
         android:name="com.valdemar.emprendedores.view.ui.proyectos.registro_proyecto.CrearProyectoFragment"
-        android:label="CrearProyectoFragment" >
+        android:label="Proyecto" >
         <argument
             android:name="categoria"
             app:argType="com.valdemar.emprendedores.model.CategoriaProyecto" />
@@ -167,7 +168,7 @@
     <fragment
         android:id="@+id/nav_mis_proyectos_suscritos"
         android:name="com.valdemar.emprendedores.view.ui.proyectos.SuscritoFragment"
-        android:label="Mis proyectos creados"
+        android:label="Mis proyectos suscritos"
         tools:layout="@layout/fragment_suscrito" >
         <argument
             android:name="blog_id"

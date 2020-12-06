@@ -18,8 +18,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="crearproyecto.hint.socio">Qué socio necesitas?...</string>
     <string name="crearproyecto.hint.socio_descripcion">Descríbenos a ese socio ...</string>
-    <string name="registraremprendedor">RegistrarEmprendedor</string>
-    <string name="perfilemprendedor">PerfilEmprendedor</string>
+    <string name="registraremprendedor">Registrar Emprendedor</string>
+    <string name="perfilemprendedor">Perfil Emprendedor</string>
     <string name="errorlogin">El usuario y/o contraseña que ingresaste son incorrectos. Porfavor, <b>Reinténtalo</b> o <b>Créate una cuenta</b></string>
     <string name="registraremprendedor.hint.facebook">Si es www.facebook.com/alex ingresar alex</string>
     <string name="registraremprendedor.hint.instagram">Si es www.instagram.com/ana ingresar ana </string>
