@@ -141,8 +141,10 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
                     String intereses_emprendedor = (String) itemSpanshot.child("intereses").getValue();
                     String estadoTrazabilidad = (String) itemSpanshot.child("estadoTrazabilidad").getValue();
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    if (!user.getUid().equalsIgnoreCase(idEmprendedor)) {
+                    if (user.getUid().equalsIgnoreCase(idEmprendedor)) {
+
                         if (intereses_emprendedor != null) {
+
                             String[] segmentacionCanalSplit = intereses_emprendedor.split(",");
 
                             for (String i : segmentacionCanalSplit) {
@@ -184,6 +186,7 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
                                         mNotifyMgr.notify(mNotificationId, notificationBuilder.build());
                                         break;
                                     }
+
                             }
 
 
