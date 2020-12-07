@@ -10,10 +10,12 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,7 +23,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.view.ui.proyectos.lista.ItemFeed;
@@ -33,14 +34,15 @@ import java.util.ArrayList;
 
 public class InteresadosFragment extends Fragment {
 
-    private RecyclerView mRecyclerMisLecturas;
-    private DatabaseReference mDatabaseMisLecturas,mRef;
+    private RecyclerView mRecyclerProyectosInteresados;
+    private DatabaseReference mDBRefProyectosInteresados, mDBRefIDsProyectosInteresados;
     private ProgressDialog mProgress;
     private Dialog MyDialog;
     private Button mBtnPendiente,
             mBtnCancelado,
             mBtnFinalizado;
     private ArrayList<ItemFeed> arrayLists = new ArrayList<>();
+    private ArrayList<ItemFeed> listaProyectosInteresados = new ArrayList<>();
     private SearchPlaceAdapter mAdapter;
 
     private String estado_general = "";
@@ -62,8 +64,6 @@ public class InteresadosFragment extends Fragment {
 
     private void initView(final View root) {
         mProgress = new ProgressDialog(getContext());
-        mDatabaseMisLecturas = FirebaseDatabase.getInstance().getReference().child("Proyectos");
-        mDatabaseMisLecturas.keepSynced(true);
         // mAdView = (AdView) root.findViewById(R.id.adView);
         // mAdView.loadAd(adRequest);
         LinearLayoutManager layoutManagerMisLecturas
@@ -72,10 +72,10 @@ public class InteresadosFragment extends Fragment {
         layoutManagerMisLecturas.setReverseLayout(true);
         layoutManagerMisLecturas.setStackFromEnd(true);
 
-        mRecyclerMisLecturas = (RecyclerView) root.findViewById(R.id.fragmento_mis_lecturas);
-        mRecyclerMisLecturas.setHasFixedSize(true);
+        mRecyclerProyectosInteresados = (RecyclerView) root.findViewById(R.id.fragmento_mis_lecturas);
+        mRecyclerProyectosInteresados.setHasFixedSize(true);
 
-        mRecyclerMisLecturas.setLayoutManager(layoutManagerMisLecturas);
+        mRecyclerProyectosInteresados.setLayoutManager(layoutManagerMisLecturas);
 
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -84,7 +84,6 @@ public class InteresadosFragment extends Fragment {
 
         //Query queryRef = mDatabaseMisLecturas.orderByChild("IdMiLectura").equalTo(userId);
 
-        final Query queryRef = mDatabaseMisLecturas.orderByChild("id_emprendedor").equalTo(userId);
 
         mBtnPendiente = root.findViewById(R.id.mBtnPendiente);
         mBtnCancelado= root.findViewById(R.id.mBtnCancelado);
@@ -128,12 +127,12 @@ public class InteresadosFragment extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final String userId = user.getUid();
 
-        mRef = FirebaseDatabase.getInstance().getReference().child("Proyectos");
-        mRef.orderByChild("id_emprendedor").equalTo(userId);
 
 
+        mDBRefProyectosInteresados = FirebaseDatabase.getInstance().getReference().child("Proyectos");
+        mDBRefProyectosInteresados.orderByChild("id_emprendedor").equalTo(userId);
 
-        mRef.limitToFirst(50).addValueEventListener(new ValueEventListener() {
+        mDBRefProyectosInteresados.limitToFirst(50).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 arrayLists.clear();
@@ -155,11 +154,34 @@ public class InteresadosFragment extends Fragment {
 
                 }
 
-                // Collections.reverse(arrayLists);
-                mAdapter = new SearchPlaceAdapter(getContext(), arrayLists,listener);
-                mRecyclerMisLecturas.setAdapter(mAdapter);
-                mAdapter.notifyDataSetChanged();
-                mProgress.dismiss();
+                listaProyectosInteresados.clear();
+                for (final ItemFeed proyecto: arrayLists) {
+                    mDBRefIDsProyectosInteresados = FirebaseDatabase.getInstance().getReference().child("HistoriasDetalle").child("count");
+                    mDBRefIDsProyectosInteresados.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.hasChild(proyecto.getId()))
+                                listaProyectosInteresados.add(proyecto);
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAdapter = new SearchPlaceAdapter(getContext(), listaProyectosInteresados,listener);
+                        mRecyclerProyectosInteresados.setAdapter(mAdapter);
+                        mAdapter.notifyDataSetChanged();
+                        mProgress.dismiss();
+                    }
+                },1000);
+
             }
 
             @Override
@@ -167,6 +189,10 @@ public class InteresadosFragment extends Fragment {
 
             }
         });
+
+
+
+
 
     }
 
