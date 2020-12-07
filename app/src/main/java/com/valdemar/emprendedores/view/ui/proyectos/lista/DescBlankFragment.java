@@ -1177,73 +1177,79 @@ public class DescBlankFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                final Dialog MyDialog;
-                MyDialog = new Dialog(getActivity());
-                MyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                MyDialog.setContentView(R.layout.comentario_add);
-                MyDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                MyDialog.setCancelable(false);
-                Button btnModalAcessoRelato = MyDialog.findViewById(R.id.modal_need_inicia_sesion);
-                Button btnModalCancel = MyDialog.findViewById(R.id.modal_need_cancel);
-                final TextInputEditText txtComentario = MyDialog.findViewById(R.id.comentarioTextInput);
+                if(!mEmprendedorRegistrado) {
+                    Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_categorias);
+                    Toast.makeText(getActivity(), "Primero debe registrarse como emprendedor", Toast.LENGTH_LONG).show();
+                }else{
+                    final Dialog MyDialog;
+                    MyDialog = new Dialog(getActivity());
+                    MyDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    MyDialog.setContentView(R.layout.comentario_add);
+                    MyDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    MyDialog.setCancelable(false);
+                    Button btnModalAcessoRelato = MyDialog.findViewById(R.id.modal_need_inicia_sesion);
+                    Button btnModalCancel = MyDialog.findViewById(R.id.modal_need_cancel);
+                    final TextInputEditText txtComentario = MyDialog.findViewById(R.id.comentarioTextInput);
 
-                btnModalAcessoRelato.setEnabled(true);
-                btnModalAcessoRelato.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mDatabaseMisComentarios.addListenerForSingleValueEvent(new ValueEventListener() {
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                if(user != null){
-                                    Random random = new Random();
-                                    int randomNumber = random.nextInt(9999999);
-                                    if(!txtComentario.getText().toString().isEmpty()){
-                                        DatabaseReference newPost = mDatabaseMisComentarios.child(mPost_key).push();
+                    btnModalAcessoRelato.setEnabled(true);
+                    btnModalAcessoRelato.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mDatabaseMisComentarios.addListenerForSingleValueEvent(new ValueEventListener() {
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                    if(user != null){
+                                        Random random = new Random();
+                                        int randomNumber = random.nextInt(9999999);
+                                        if(!txtComentario.getText().toString().isEmpty()){
+                                            DatabaseReference newPost = mDatabaseMisComentarios.child(mPost_key).push();
 
-                                        newPost.child("foto").setValue(user.getPhotoUrl().toString());
-                                        newPost.child("comentario").setValue(txtComentario.getText().toString());
-                                        newPost.child("nombre").setValue(user.getDisplayName().toString());
-                                        newPost.child("idss").setValue(newPost.getKey());
-                                        newPost.child("idEmprendedor").setValue(user.getUid());
+                                            newPost.child("foto").setValue(user.getPhotoUrl().toString());
+                                            newPost.child("comentario").setValue(txtComentario.getText().toString());
+                                            newPost.child("nombre").setValue(user.getDisplayName().toString());
+                                            newPost.child("idss").setValue(newPost.getKey());
+                                            newPost.child("idEmprendedor").setValue(user.getUid());
 
-                                        mRecyclerComentarios.setVisibility(View.GONE);
-                                    }else{
-                                        Toast.makeText(getActivity(),"Por favor ingrese un texto válido.",Toast.LENGTH_LONG).show();
+                                            mRecyclerComentarios.setVisibility(View.GONE);
+                                        }else{
+                                            Toast.makeText(getActivity(),"Por favor ingrese un texto válido.",Toast.LENGTH_LONG).show();
 
-                                    }
+                                        }
 
                                    /* mDatabaseMisComentarios.child(mPost_key).child(String.valueOf(randomNumber)).child("foto").setValue(user.getPhotoUrl().toString());
                                     mDatabaseMisComentarios.child(mPost_key).child(String.valueOf(randomNumber)).child("comentario").setValue(txtComentario.getText().toString());
                                     mDatabaseMisComentarios.child(mPost_key).child(String.valueOf(randomNumber)).child("nombre").setValue(user.getDisplayName().toString());
                                     mRecyclerComentarios.setVisibility(View.GONE);
                                     mRecyclerComentarios.setVisibility(View.VISIBLE);*/
+                                    }
                                 }
-                            }
 
-                            public void onCancelled(DatabaseError databaseError) {
+                                public void onCancelled(DatabaseError databaseError) {
 
-                            }
-                        });
-                        MyDialog.dismiss();
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mRecyclerComentarios.setVisibility(View.VISIBLE);
+                                }
+                            });
+                            MyDialog.dismiss();
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mRecyclerComentarios.setVisibility(View.VISIBLE);
 
-                            }
-                        },500);
-                    }
-                });
+                                }
+                            },500);
+                        }
+                    });
 
-                btnModalCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                    btnModalCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
-                        MyDialog.dismiss();
-                    }
-                });
+                            MyDialog.dismiss();
+                        }
+                    });
 
-                MyDialog.show();
+                    MyDialog.show();
+                }
+
 
             }
         });
