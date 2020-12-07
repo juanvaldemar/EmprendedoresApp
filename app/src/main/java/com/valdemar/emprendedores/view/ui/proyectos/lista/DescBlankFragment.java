@@ -1089,7 +1089,7 @@ public class DescBlankFragment extends Fragment {
                     viewHolder.setMensaje(model.getComentario());
                     viewHolder.goneHora();
                     viewHolder.setImage(getActivity().getApplicationContext(), model.getFoto());
-                    viewHolder.mViewStructure.setOnClickListener(new View.OnClickListener() {
+                    viewHolder.mItem_recycler_structure_comentario.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -1146,6 +1146,25 @@ public class DescBlankFragment extends Fragment {
 
                         }
                     });
+
+                viewHolder.mPost_image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        String idEmprendedor = model.getIdEmprendedor();
+                        Bundle args = new Bundle();
+                        args.putString("idEmprendedor", idEmprendedor);
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        if(!user.getUid().equalsIgnoreCase(mDetalleProyecto.getId_emprendedor())){
+                            args.putBoolean("visitante", true);
+                        }
+
+
+                        Navigation.findNavController(view).navigate(R.id.next_action_desc,args);
+
+
+                    }
+                });
             }
 
         };

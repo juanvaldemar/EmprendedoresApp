@@ -345,7 +345,7 @@ public class PerfilEmprendedorFragment extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(!mEmprendedor.getImagen().isEmpty()){
+                if(mEmprendedor.getImagen()!=null && !mEmprendedor.getImagen().isEmpty()){
                         Glide.with(getActivity().getApplicationContext())
                                 .load(mEmprendedor.getImagen())
                                 .into(mImgPerfil);
