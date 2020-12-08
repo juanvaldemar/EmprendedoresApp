@@ -1210,7 +1210,8 @@ public class DescBlankFragment extends Fragment {
                                         if(!txtComentario.getText().toString().isEmpty()){
                                             DatabaseReference newPost = mDatabaseMisComentarios.child(mPost_key).push();
 
-                                            newPost.child("foto").setValue(user.getPhotoUrl().toString());
+                                            String uriFoto = ((mEmprendedorActual.getImagen()!=null && !mEmprendedorActual.getImagen().isEmpty()) ? mEmprendedorActual.getImagen() : user.getPhotoUrl().toString());
+                                            newPost.child("foto").setValue(uriFoto);
                                             newPost.child("comentario").setValue(txtComentario.getText().toString());
                                             newPost.child("nombre").setValue(mEmprendedorActual.getEdt_nombres_emprendedor() + " " + mEmprendedorActual.getEdt_apellidos_emprendedor());
                                             newPost.child("idss").setValue(newPost.getKey());
