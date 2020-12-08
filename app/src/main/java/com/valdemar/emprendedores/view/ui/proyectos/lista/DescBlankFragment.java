@@ -72,6 +72,7 @@ import com.valdemar.emprendedores.MenuLateralActivity;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.SplashActivity;
 import com.valdemar.emprendedores.auth.AccessRelato;
+import com.valdemar.emprendedores.model.Emprendedor;
 import com.valdemar.emprendedores.model.Proyecto;
 import com.valdemar.emprendedores.util.DownloadTask;
 import com.valdemar.emprendedores.view.ui.proyectos.Comentarios;
@@ -140,6 +141,7 @@ public class DescBlankFragment extends Fragment {
     private SearchPlaceAdapter2 mAdapter;
 
     private boolean mEmprendedorRegistrado;
+    private Emprendedor mEmprendedorActual;
 
 
     private final static int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
@@ -946,7 +948,10 @@ public class DescBlankFragment extends Fragment {
                                 showSnackBar("Suscrito", root);
                                 btnPostular.setText("Suscrito");
                                 btnPostular.setEnabled(false);
-                                mDatabaseLikeCount.child(user.getUid()).setValue(user.getUid() +", "+user.getDisplayName() +"," +mPost_key+","+mDetalleProyecto.getNombre());
+                                mDatabaseLikeCount.child(user.getUid()).setValue(user.getUid() +", "
+                                        + mEmprendedorActual.getEdt_nombres_emprendedor() + " " + mEmprendedorActual.getEdt_apellidos_emprendedor() + ","
+                                        + mPost_key+","
+                                        + mDetalleProyecto.getNombre());
                             }
 
 
@@ -970,6 +975,7 @@ public class DescBlankFragment extends Fragment {
                 for (DataSnapshot itemSpanshot: dataSnapshot.getChildren()) {
                     String idEmprendedor = (String)itemSpanshot.child("id_emprendedor").getValue();
                     if(idEmprendedor!=null && idEmprendedor.equals(user.getUid())){
+                        mEmprendedorActual = itemSpanshot.getValue(Emprendedor.class);
                         mEmprendedorRegistrado = true;
                         break;
                     }
@@ -1206,7 +1212,7 @@ public class DescBlankFragment extends Fragment {
 
                                             newPost.child("foto").setValue(user.getPhotoUrl().toString());
                                             newPost.child("comentario").setValue(txtComentario.getText().toString());
-                                            newPost.child("nombre").setValue(user.getDisplayName().toString());
+                                            newPost.child("nombre").setValue(mEmprendedorActual.getEdt_nombres_emprendedor() + " " + mEmprendedorActual.getEdt_apellidos_emprendedor());
                                             newPost.child("idss").setValue(newPost.getKey());
                                             newPost.child("idEmprendedor").setValue(user.getUid());
 

@@ -47,6 +47,7 @@ import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.model.CategoriaProyecto;
+import com.valdemar.emprendedores.model.Emprendedor;
 import com.valdemar.emprendedores.model.Proyecto;
 import com.valdemar.emprendedores.view.CategoriasFragment;
 
@@ -128,6 +129,8 @@ public class CrearProyectoFragment extends Fragment {
     Spinner mSpnMoneda;
     Button btnPublicarProyecto;
 
+    private Emprendedor mEmprendedorActual;
+
     public CrearProyectoFragment() {
         // Required empty public constructor
     }
@@ -168,6 +171,7 @@ public class CrearProyectoFragment extends Fragment {
         mActualizarProyecto = false;
         // Inflate the layout for this fragment
         mRoot = inflater.inflate(R.layout.fragment_crear_proyecto, container, false);
+        verificarRegistroEmprendedor();
         initUI(mRoot);
         return mRoot;
     }
@@ -578,7 +582,7 @@ public class CrearProyectoFragment extends Fragment {
                                     if (!mActualizarProyecto) {
                                         DatabaseReference newPost = mDatabase.push();
                                         proyecto.setEstadoTrazabilidad("ACTIVO");
-                                        proyecto.setAutor(user.getDisplayName());
+                                        proyecto.setAutor(mEmprendedorActual.getEdt_nombres_emprendedor() + " " + mEmprendedorActual.getEdt_apellidos_emprendedor());
                                         newPost.setValue(proyecto);
 
                                     } else {
@@ -636,7 +640,7 @@ public class CrearProyectoFragment extends Fragment {
         proyecto.setPais(mSpnPais.getSelectedItem().toString());
         proyecto.setCiudad(mSpnCiudad.getSelectedItem().toString());
 
-        proyecto.setAutor(user.getDisplayName());
+        proyecto.setAutor(mEmprendedorActual.getEdt_nombres_emprendedor() + " " + mEmprendedorActual.getEdt_apellidos_emprendedor());
 
         return proyecto;
     }
@@ -683,5 +687,30 @@ public class CrearProyectoFragment extends Fragment {
         Snackbar
                 .make(getActivity().findViewById(R.id.constraint_crear_proyecto), msg, Snackbar.LENGTH_SHORT)
                 .show();
+    }
+
+    public void verificarRegistroEmprendedor(){
+        final DatabaseReference mEmprendedorReference;
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        mEmprendedorReference = FirebaseDatabase.getInstance().getReference().child("Emprendedor");
+        mEmprendedorReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot itemSpanshot: dataSnapshot.getChildren()) {
+                    String idEmprendedor = (String)itemSpanshot.child("id_emprendedor").getValue();
+                    if(idEmprendedor!=null && idEmprendedor.equals(user.getUid())){
+                        mEmprendedorActual = itemSpanshot.getValue(Emprendedor.class);
+                        break;
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
