@@ -22,6 +22,8 @@ public class MiFirebaseInstanceIdService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        System.out.println("tokennnnn__"+remoteMessage);
+        System.out.println("tokennnnn__"+remoteMessage.getData());
     }
 
 }

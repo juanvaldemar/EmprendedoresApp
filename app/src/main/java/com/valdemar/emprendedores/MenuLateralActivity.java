@@ -48,6 +48,20 @@ public class MenuLateralActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("PACKAGE_NAME")) {
+
+            // do what you want
+
+            // and this for killing app if we dont want to start
+            android.os.Process.killProcess(android.os.Process.myPid());
+
+        } else {
+            System.out.println("asd");
+            //continue to app
+        }
+
+
         setContentView(R.layout.activity_menu_lateral);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

@@ -182,7 +182,7 @@ public class CategoriasFragment extends Fragment implements CategoriasAdapter.On
         listaCategorias.add(new CategoriaProyecto(4,"Entretenimiento", R.drawable.ic_categoria_entretenimiento));
         listaCategorias.add(new CategoriaProyecto(5,"Deportes", R.drawable.ic_categoria_deportes));
         listaCategorias.add(new CategoriaProyecto(6,"Videojuegos", R.drawable.ic_categoria_videojuegos));
-        listaCategorias.add(new CategoriaProyecto(7,"Consultorías", R.drawable.ic_categoria_consultorias));
+        listaCategorias.add(new CategoriaProyecto(7,"Consultorias", R.drawable.ic_categoria_consultorias));
         listaCategorias.add(new CategoriaProyecto(8,"Transportes", R.drawable.ic_categoria_transportes));
         listaCategorias.add(new CategoriaProyecto(9,"Marketing", R.drawable.ic_categoria_marketing));
         listaCategorias.add(new CategoriaProyecto(10,"Finanzas", R.drawable.ic_categoria_finanzas));
