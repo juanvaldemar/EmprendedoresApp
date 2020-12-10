@@ -71,6 +71,7 @@ exports.sendsuscrito2 = functions.database.ref('/HistoriasDetalle/count_aceptado
     const payload = {
         data: {
             title: "aceptados"+`${news}`, 
+            body: `${context.params.pushId}`,
         }
     }; 
     console.log("payload", payload)
