@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.EventListener;
 
 public class MiFirebaseMessagingService extends FirebaseMessagingService {
     public static final String TAG = "Emprendedores App";
@@ -52,12 +53,14 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Notificación; " + remoteMessage.getNotification().getBody());
             Log.d(TAG, "title; " + remoteMessage.getNotification().getTitle());
             Log.d(TAG, "url; " + remoteMessage.getNotification().getImageUrl());
+            String limpieza_imagen [] = remoteMessage.getNotification().getImageUrl().toString().split("imgemprende");
 
             if (remoteMessage.getNotification().getBody() != null) {
                 mostrarNotificacion("SPOOK",
                         remoteMessage.getNotification().getBody()
-                        , getBitmapFromURL(remoteMessage.getNotification().getImageUrl().toString())
-                        , replaceCharsLower(remoteMessage.getNotification().getTitle()));
+                        , getBitmapFromURL(limpieza_imagen[0])
+                        , replaceCharsLower(remoteMessage.getNotification().getTitle())
+                        , limpieza_imagen[1]);
 
             } else {
                 if(remoteMessage.getNotification().getTitle() != null){
@@ -69,6 +72,7 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
 
                         String limpieza_cuatro [] = limpieza_tres.split(",");
                         if(limpieza_cuatro != null){
+
 
                                 mostrarNotificacionSuscritos(limpieza_cuatro[3]);
 
@@ -126,7 +130,7 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
     private void mostrarNotificacion(String title,
                                      final String body,
                                      final Bitmap url,
-                                     final String categoria) {
+                                     final String categoria, final String id_push) {
         final Intent intent = new Intent(this, SplashActivity.class);
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -140,7 +144,7 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
                     String idEmprendedor = (String) itemSpanshot.child("id_emprendedor").getValue();
                     String intereses_emprendedor = (String) itemSpanshot.child("intereses").getValue();
                     String estadoTrazabilidad = (String) itemSpanshot.child("estadoTrazabilidad").getValue();
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     if (user.getUid().equalsIgnoreCase(idEmprendedor)) {
 
                         if (intereses_emprendedor != null) {
@@ -151,40 +155,52 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
                                 String i_ = i.replace("[", "");
                                 String i__ = i_.replace("]", "");
                                 if (i__.trim().equalsIgnoreCase(categoria)) {
+                                    System.out.println("oaijsd");
+                                        mDatabaseNotificacion.child(id_push).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                    String idEmprendedorproyecto = (String) dataSnapshot.child("id_emprendedor").getValue();
+                                                    if(!idEmprendedorproyecto.equalsIgnoreCase(user.getUid())){
+                                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
+
+                                                        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+
+                                                        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext())
+                                                                .setSmallIcon(R.mipmap.ic_launcher)
+                                                                .setContentTitle("Emprendedores App")
+                                                                .setContentText(body)
+                                                                .setAutoCancel(true)
+                                                                .setSound(soundUri)
+                                                                .setStyle(new NotificationCompat.BigPictureStyle()
+                                                                        .bigPicture(url).bigLargeIcon(null)
+                                                                )
+                                                                .setContentIntent(pendingIntent);
 
 
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                                                        int mNotificationId = (int) System.currentTimeMillis();
+                                                        // NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-                                        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+                                                        NotificationManager mNotifyMgr =
+                                                                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                                            int importance = NotificationManager.IMPORTANCE_HIGH;
+                                                            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "News", importance);
 
-                                        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext())
-                                                .setSmallIcon(R.mipmap.ic_launcher)
-                                                .setContentTitle("Emprendedores App")
-                                                .setContentText(body)
-                                                .setAutoCancel(true)
-                                                .setSound(soundUri)
-                                                .setStyle(new NotificationCompat.BigPictureStyle()
-                                                        .bigPicture(url).bigLargeIcon(null)
-                                                )
-                                                .setContentIntent(pendingIntent);
+                                                            notificationBuilder.setChannelId(NOTIFICATION_CHANNEL_ID);
+                                                            mNotifyMgr.createNotificationChannel(notificationChannel);
+                                                        }
 
+                                                        mNotifyMgr.notify(mNotificationId, notificationBuilder.build());
+                                                    }
+                                            }
 
-                                        int mNotificationId = (int) System.currentTimeMillis();
-                                        // NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                        NotificationManager mNotifyMgr =
-                                                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                                            int importance = NotificationManager.IMPORTANCE_HIGH;
-                                            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "News", importance);
+                                            }
+                                        });
 
-                                            notificationBuilder.setChannelId(NOTIFICATION_CHANNEL_ID);
-                                            mNotifyMgr.createNotificationChannel(notificationChannel);
-                                        }
-
-                                        mNotifyMgr.notify(mNotificationId, notificationBuilder.build());
-                                        break;
                                     }
 
                             }
@@ -225,39 +241,45 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
                     String imagen = (String) itemSpanshot.child("imagen").getValue();
 
 
-                    if(itemSpanshot.getKey().equalsIgnoreCase(id_transaccion)){
-                        if(idEmprendedor.equalsIgnoreCase(user.getUid())){
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                        if(itemSpanshot.getKey().equalsIgnoreCase(id_transaccion)){
+                            if(nombreEmprendedor.length() > 60){
+                                if(idEmprendedor.equalsIgnoreCase(user.getUid())){
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
-                            Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+                                    Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
 
-                            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext())
-                                    .setSmallIcon(R.mipmap.ic_launcher)
-                                    .setContentTitle("Emprendedores App")
-                                    .setContentText("Tienes un suscrito en "+nombreEmprendedor)
-                                    .setAutoCancel(true)
-                                    .setSound(soundUri)
-                                    .setContentIntent(pendingIntent);
+                                    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext())
+                                            .setSmallIcon(R.mipmap.ic_launcher)
+                                            .setContentTitle("Emprendedores App")
+                                            .setContentText("Tienes un suscrito en "+nombreEmprendedor)
+                                            .setAutoCancel(true)
+                                            .setSound(soundUri)
+                                            .setContentIntent(pendingIntent);
 
 
-                            int mNotificationId = (int) System.currentTimeMillis();
-                            // NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                                    int mNotificationId = (int) System.currentTimeMillis();
+                                    // NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-                            NotificationManager mNotifyMgr =
-                                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                                int importance = NotificationManager.IMPORTANCE_HIGH;
-                                NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "News", importance);
+                                    NotificationManager mNotifyMgr =
+                                            (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                        int importance = NotificationManager.IMPORTANCE_HIGH;
+                                        NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "News", importance);
 
-                                notificationBuilder.setChannelId(NOTIFICATION_CHANNEL_ID);
-                                mNotifyMgr.createNotificationChannel(notificationChannel);
+                                        notificationBuilder.setChannelId(NOTIFICATION_CHANNEL_ID);
+                                        mNotifyMgr.createNotificationChannel(notificationChannel);
+                                    }
+
+                                    mNotifyMgr.notify(mNotificationId, notificationBuilder.build());
+                                    break;
+                                }
                             }
 
-                            mNotifyMgr.notify(mNotificationId, notificationBuilder.build());
-                            break;
                         }
-                    }
+
+
+
 
                 }
             }
@@ -281,64 +303,42 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         mDatabaseNotificacion = FirebaseDatabase.getInstance().getReference().child("Proyectos");
 
+        if(titulo.length() > 30){
+            if(user.getUid().equalsIgnoreCase(id_transaccion)){
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
-        if(user.getUid().equalsIgnoreCase(id_transaccion)){
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
 
-            Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext())
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .setContentTitle("Emprendedores App")
-                    .setContentText("Ahora eres socio de un proyecto "+titulo)
-                    .setAutoCancel(true)
-                    .setSound(soundUri)
-                    .setContentIntent(pendingIntent);
+                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext())
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle("Emprendedores App")
+                        .setContentText("Ahora eres socio de un proyecto "+titulo)
+                        .setAutoCancel(true)
+                        .setSound(soundUri)
+                        .setContentIntent(pendingIntent);
 
 
-            int mNotificationId = (int) System.currentTimeMillis();
-            // NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                int mNotificationId = (int) System.currentTimeMillis();
+                // NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-            NotificationManager mNotifyMgr =
-                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                int importance = NotificationManager.IMPORTANCE_HIGH;
-                NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "News", importance);
+                NotificationManager mNotifyMgr =
+                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    int importance = NotificationManager.IMPORTANCE_HIGH;
+                    NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "News", importance);
 
-                notificationBuilder.setChannelId(NOTIFICATION_CHANNEL_ID);
-                mNotifyMgr.createNotificationChannel(notificationChannel);
+                    notificationBuilder.setChannelId(NOTIFICATION_CHANNEL_ID);
+                    mNotifyMgr.createNotificationChannel(notificationChannel);
+                }
+
+                mNotifyMgr.notify(mNotificationId, notificationBuilder.build());
+
             }
 
-            mNotifyMgr.notify(mNotificationId, notificationBuilder.build());
 
         }
 
-
-
-        mDatabaseNotificacion.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot itemSpanshot : dataSnapshot.getChildren()) {
-                    String idEmprendedor = (String) itemSpanshot.child("id_emprendedor").getValue();
-                    String nombreEmprendedor = (String) itemSpanshot.child("nombre").getValue();
-                    String imagen = (String) itemSpanshot.child("imagen").getValue();
-
-
-                   // if(idEmprendedor.equalsIgnoreCase(id_transaccion)){
-                     //   if(idEmprendedor.equalsIgnoreCase(user.getUid())){
-
-                      //  }
-                   // }
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
 
     }
