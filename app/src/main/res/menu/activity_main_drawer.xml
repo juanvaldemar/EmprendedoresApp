@@ -41,6 +41,20 @@
 
     </group>
 
+    <item android:title="Empresa">
+        <menu>
+            <item
+                android:id="@+id/nav_registrar_empresa"
+                android:icon="@android:drawable/ic_menu_add"
+                android:title="Registrar Empresa" />
+
+            <item
+                android:id="@+id/nav_directorio_empresas"
+                android:icon="@android:drawable/ic_menu_agenda"
+                android:title="Directorio" />
+
+        </menu>
+    </item>
     <item android:title="Extra">
         <menu>
             <item
@@ -53,6 +67,10 @@
                 android:icon="@drawable/ic_out"
                 android:title="Cerrar Sesión" />
 
+            <item
+                android:id="@+id/nav_listar_empresa"
+                android:icon="@drawable/ic_out"
+                android:title="Listar Empresas" />
 
             <item
                 android:id="@+id/nav_search"

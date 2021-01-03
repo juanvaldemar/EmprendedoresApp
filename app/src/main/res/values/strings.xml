@@ -24,6 +24,7 @@
     <string name="registraremprendedor.hint.facebook">Si es www.facebook.com/alex ingresar alex</string>
     <string name="registraremprendedor.hint.instagram">Si es www.instagram.com/ana ingresar ana </string>
     <string name="registraremprendedor.hint.twitter">Si es www.twitter.com/jorge ingresar jorge</string>
+    <string name="registraremprendedor.hint.linkedin">Si es www.linkdein.com/jorge ingresar jorge</string>
 
     <string-array name="dia">
         <item>Día</item>
