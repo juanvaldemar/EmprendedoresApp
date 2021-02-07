@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.ui.empresa.RegistrarEmpresaFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            app:layout_constraintBottom_toTopOf="@id/btn_registrar_proyecto"
+
+            android:layout_height="0dp">
+            <LinearLayout
+                android:id="@+id/ll_registro_empresa"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:orientation="vertical">
+
+
+                <EditText
+                    android:id="@+id/edt_nombre_empresa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:hint="Nombre o Razón Social"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    android:maxLength="23"
+                    android:maxLines="1"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/design_one"
+                    android:textColor="@color/black"
+                    android:nextFocusForward="@id/spinner_tipo_doc_empresa"
+                    android:gravity="left" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <Spinner
+                        android:id="@+id/spinner_tipo_doc_empresa"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:textSize="14sp"
+                        android:padding="14dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp" />
+                    <EditText
+                        android:id="@+id/edt_nro_documento_empresa"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:padding="14dp"
+                        android:hint="Número de Documento"
+                        android:textSize="14sp"
+                        android:layout_marginTop="10dp"
+                        android:maxLength="11"
+                        android:maxLines="1"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/design_one"
+                        android:textColor="@color/black"
+                        android:nextFocusForward="@id/edt_correo_electronico"
+                        android:gravity="left" />
+
+                </LinearLayout>
+
+                <Spinner
+                    android:id="@+id/spinner_categoria_empresa"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp" />
+
+                <EditText
+                    android:id="@+id/edt_correo_electronico"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:hint="Correo electrónico"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    android:maxLength="23"
+                    android:maxLines="1"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/design_one"
+                    android:textColor="@color/black"
+                    android:nextFocusForward="@id/edt_descripcion_proyecto"
+                    android:gravity="left" />
+
+            <LinearLayout
+                android:id="@+id/ll_telefonos_empresa"
+                android:visibility="visible"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/edt_telefono_empresa"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:hint="Télefono fijo"
+                    android:layout_marginRight="8dp"
+                    android:textSize="14sp"
+                    android:inputType="phone"
+                    android:layout_marginTop="10dp"
+                    android:maxLength="9"
+                    android:lines="1"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/design_one"
+                    android:textColor="@color/black"
+                    android:nextFocusForward="@id/edt_descripcion_proyecto"
+                    android:gravity="left" />
+
+                <EditText
+                    android:id="@+id/edt_celular_empresa"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:hint="Celular/WhatsApp"
+                    android:textSize="14sp"
+                    android:inputType="phone"
+                    android:layout_marginTop="10dp"
+                    android:maxLength="9"
+                    android:lines="1"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/design_one"
+                    android:textColor="@color/black"
+                    android:nextFocusForward="@id/edt_descripcion_proyecto"
+                    android:gravity="left" />
+            </LinearLayout>
+
+
+                <EditText
+                    android:id="@+id/edt_contacto_empresa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:hint="Nombre Completo del Contacto"
+                    android:editable="false"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    android:maxLength="23"
+                    android:maxLines="1"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/design_one"
+                    android:textColor="@color/black"
+                    android:nextFocusForward="@id/edt_descripcion_proyecto"
+                    android:gravity="left" />
+
+                <EditText
+                        android:id="@+id/edt_sitio_web"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:hint="URL de la página web de la empresa"
+                    android:editable="false"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    android:maxLength="23"
+                    android:maxLines="1"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/design_one"
+                    android:textColor="@color/black"
+                    android:nextFocusForward="@id/edt_descripcion_proyecto"
+                    android:gravity="left" />
+
+                <Spinner
+                    android:id="@+id/spinner_comercio_exterior"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp" />
+
+                <Spinner
+                    android:id="@+id/spinner_contrata_estado"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp" />
+
+                <EditText
+                    android:id="@+id/edt_descripcion_actividad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="10dp"
+                    android:hint="Describe tu actividad principal ..."
+                    android:background="@drawable/design_one"
+                    android:inputType="textMultiLine"
+                    android:maxLength="120"
+                    android:lines="3"
+                    android:layout_marginTop="10dp"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:nextFocusForward="@id/spinner_pais"
+                    android:gravity="left" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ubicación de la Empresa"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spinner_pais"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp" />
+
+                    <Spinner
+                        android:id="@+id/spinner_ciudad"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edt_direccion_empresa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:hint="Dirección de la empresa"
+                    android:editable="false"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    android:maxLength="23"
+                    android:maxLines="1"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/design_one"
+                    android:textColor="@color/black"
+                    android:nextFocusForward="@id/btn_subir_foto_video"
+                    android:gravity="left" />
+
+
+                <LinearLayout
+                    android:id="@+id/ll_foto_empresa"
+                    android:visibility="visible"
+                    android:orientation="vertical"
+                    android:layout_margin="8dp"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Sube una foto o video de la Empresa"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:layout_marginBottom="15dp" />
+
+                    <ImageButton
+                        android:id="@+id/btn_subir_foto_video"
+                        android:background="@drawable/design_one"
+                        android:layout_gravity="center"
+                        android:padding="14dp"
+                        android:src="@drawable/agregar_foto"
+                        android:layout_width="128dp"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:background="@drawable/design_one"
+                    android:layout_width="match_parent"
+                    android:padding="5dp"
+                    android:layout_height="192dp">
+
+                    <ImageView
+                        android:visibility="visible"
+                        android:scaleType="centerCrop"
+                        android:id="@+id/img_foto_proyecto"
+                        android:src="@drawable/foto_proyecto_default"
+                        android:layout_width="match_parent"
+                        android:layout_height="185dp"/>
+
+                    <VideoView
+                        android:visibility="gone"
+                        android:id="@+id/videoview_proyecto"
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="185dp"/>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <ImageButton
+                        android:layout_width="50dp"
+                        android:layout_gravity="center"
+                        android:layout_height="50dp"
+                        android:layout_marginRight="10dp"
+                        android:text="F"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:background="@drawable/ic_facebook"
+                        android:color="@color/black"
+                        />
+                    <EditText
+                        android:id="@+id/edt_facebook"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="14dp"
+                        android:textSize="14sp"
+                        android:lines="1"
+                        android:maxLength="38"
+                        android:background="@drawable/design_one"
+                        android:hint="@string/registraremprendedor.hint.facebook"
+                        android:textColor="@color/black"
+                        android:nextFocusForward="@id/edt_descripcion_proyecto"
+                        android:gravity="left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+                    <ImageButton
+                        android:layout_width="50dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_height="50dp"
+                        android:layout_marginRight="10dp"
+                        android:text="i"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:background="@drawable/ic_instagram"
+                        android:color="@color/black"
+                        />
+                    <EditText
+                        android:id="@+id/edt_instagram"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="14dp"
+                        android:textSize="14sp"
+                        android:lines="1"
+                        android:maxLength="38"
+                        android:hint="@string/registraremprendedor.hint.instagram"
+                        android:background="@drawable/design_one"
+                        android:textColor="@color/black"
+                        android:gravity="left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+                    <Button
+                        android:layout_width="50dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_height="50dp"
+                        android:layout_marginEnd="10dp"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:background="@drawable/ic_linkedin"
+                        android:color="@color/black"
+                        />
+
+                    <EditText
+                        android:id="@+id/edt_linkedin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="14dp"
+                        android:textSize="14sp"
+                        android:lines="1"
+                        android:maxLength="38"
+                        android:hint="@string/registraremprendedor.hint.linkedin"
+                        android:background="@drawable/design_one"
+                        android:textColor="@color/black"
+                        android:gravity="left" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </ScrollView>
+
+
+        <Button
+            android:id="@+id/btn_registrar_empresa"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="Registrar Empresa" />
+
+    </LinearLayout>
+
+</FrameLayout>
