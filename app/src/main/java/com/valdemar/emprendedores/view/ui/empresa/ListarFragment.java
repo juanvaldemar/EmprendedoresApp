@@ -52,7 +52,7 @@ public class ListarFragment extends Fragment {
         layoutManager.setStackFromEnd(true);
 
         recyclerViewList.setLayoutManager(layoutManager);
-
+//puta malparida
         FirebaseRecyclerAdapter<Empresa, EmpresaViewHolder> firebaseRecyclerAdaptermRecyclerEpisodiosPerdidos =
                 new FirebaseRecyclerAdapter<Empresa, EmpresaViewHolder>(
                         Empresa.class,
