@@ -53,18 +53,16 @@
                     <Spinner
                         android:id="@+id/spinner_tipo_doc_empresa"
                         android:layout_marginTop="10dp"
-                        android:layout_marginLeft="5dp"
                         android:layout_weight="1"
                         android:textSize="14sp"
-                        android:padding="14dp"
                         android:layout_marginBottom="10dp"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="50dp" />
                     <EditText
                         android:id="@+id/edt_nro_documento_empresa"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3"
+                        android:layout_weight="2"
                         android:padding="14dp"
                         android:hint="Número de Documento"
                         android:textSize="14sp"
@@ -291,14 +289,14 @@
                     <ImageView
                         android:visibility="visible"
                         android:scaleType="centerCrop"
-                        android:id="@+id/img_foto_proyecto"
+                        android:id="@+id/img_foto_empresa"
                         android:src="@drawable/foto_proyecto_default"
                         android:layout_width="match_parent"
                         android:layout_height="185dp"/>
 
                     <VideoView
                         android:visibility="gone"
-                        android:id="@+id/videoview_proyecto"
+                        android:id="@+id/videoview_empresa"
                         android:layout_centerInParent="true"
                         android:layout_width="wrap_content"
                         android:layout_height="185dp"/>

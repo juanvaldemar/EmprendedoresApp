@@ -108,6 +108,31 @@
         <item>Euros</item>
     </string-array>
 
+    <string-array name="tipoDocumento">
+        <item>RUC</item>
+        <item>DNI</item>
+    </string-array>
+
+    <string-array name="categoriaEmpresa">
+        <item>Alimentación</item>
+        <item>Comercio</item>
+        <item>Manufactura</item>
+        <item>Minería</item>
+        <item>Transporte</item>
+        <item>Servicios</item>
+    </string-array>
+
+    <string-array name="comercioExterior">
+        <item>Importador</item>
+        <item>Exportador</item>
+        <item>Imp/Export</item>
+        <item>Ninguno</item>
+    </string-array>
+
+    <string-array name="contrataEstado">
+        <item>Contrata con Estado</item>
+        <item>NO Contrata con Estado</item>
+    </string-array>
 
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="fcm_message">FCM Message</string>
