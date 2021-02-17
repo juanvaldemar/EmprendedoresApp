@@ -149,7 +149,11 @@
         android:label="Cerrar Sesión"
         tools:layout="@layout/fragment_logout" />
 
-
+    <fragment
+        android:id="@+id/nav_listar_empresa"
+        android:name="com.valdemar.emprendedores.view.ui.empresa.ListarFragment"
+        android:label="Listar Empresa"
+        tools:layout="@layout/fragment_logout" />
 
     <fragment
         android:id="@+id/nav_mis_proyectos_creados"

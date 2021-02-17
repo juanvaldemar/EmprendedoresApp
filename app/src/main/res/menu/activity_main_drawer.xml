@@ -67,6 +67,10 @@
                 android:icon="@drawable/ic_out"
                 android:title="Cerrar Sesión" />
 
+            <item
+                android:id="@+id/nav_listar_empresa"
+                android:icon="@drawable/ic_out"
+                android:title="Listar Empresas" />
 
             <item
                 android:id="@+id/nav_search"
