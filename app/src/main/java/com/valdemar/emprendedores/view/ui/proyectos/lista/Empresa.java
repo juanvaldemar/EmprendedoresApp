@@ -4,6 +4,9 @@ public class Empresa {
     private String id;
     private String nombre;
     private String razon;
+    private String descripcion;
+    private String imagen;
+
 
     public Empresa() {
     }
@@ -30,5 +33,21 @@ public class Empresa {
 
     public void setRazon(String razon) {
         this.razon = razon;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 }

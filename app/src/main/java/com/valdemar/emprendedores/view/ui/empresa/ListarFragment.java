@@ -52,18 +52,20 @@ public class ListarFragment extends Fragment {
         layoutManager.setStackFromEnd(true);
 
         recyclerViewList.setLayoutManager(layoutManager);
-//puta malparida
+
         FirebaseRecyclerAdapter<Empresa, EmpresaViewHolder> firebaseRecyclerAdaptermRecyclerEpisodiosPerdidos =
                 new FirebaseRecyclerAdapter<Empresa, EmpresaViewHolder>(
                         Empresa.class,
-                        R.layout.album_card,
+                        R.layout.design_structure_relato_menu,
                         EmpresaViewHolder.class,
                         mDatabase
                 ) {
                     @Override
-                    protected void populateViewHolder(EmpresaViewHolder empresaViewHolder, Empresa empresa, int i) {
-                        empresaViewHolder.setNombre(empresa.getNombre());
-                        empresaViewHolder.setRazon(empresa.getRazon());
+                    protected void populateViewHolder(EmpresaViewHolder empresaViewHolder, Empresa modelo, int i) {
+                        empresaViewHolder.setNombre(modelo.getNombre());
+                        empresaViewHolder.setRazon(modelo.getDescripcion());
+                        empresaViewHolder.setRazon(modelo.getRazon());
+                        empresaViewHolder.setImage(getActivity(),modelo.getImagen());
                     }
                 };
 
