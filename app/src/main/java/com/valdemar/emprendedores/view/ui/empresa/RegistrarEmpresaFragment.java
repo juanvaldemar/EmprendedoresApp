@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,12 @@ import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.valdemar.emprendedores.R;
+import com.valdemar.emprendedores.model.Empresa;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -62,6 +68,10 @@ public class RegistrarEmpresaFragment extends Fragment {
     private Uri mVideoUri = null;
     private boolean mFotoSubida;
     private boolean mVideoSubido;
+
+    private DatabaseReference mDatabaseEmpresa = FirebaseDatabase.getInstance().getReference().child("Empresa");
+    FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+    private View mRoot;
 
     public RegistrarEmpresaFragment() {
         // Required empty public constructor
@@ -146,6 +156,7 @@ public class RegistrarEmpresaFragment extends Fragment {
             }
         });
 
+        mRoot = view;
         return view;
     }
 
@@ -232,9 +243,36 @@ public class RegistrarEmpresaFragment extends Fragment {
     private void registrarEmpresa(View v) {
         hideSoftKeyboard();
         if (validarCampos()) {
-
+            Empresa nuevoRegistroEmpresa = initDataEmpresa();
+            DatabaseReference nuevaEmpresaRef = mDatabaseEmpresa.push();
+            nuevaEmpresaRef.setValue(nuevoRegistroEmpresa);
+            Navigation.findNavController(mRoot).navigate(R.id.next_action_to_lista_empresas);
         }
 
+    }
+
+    private Empresa initDataEmpresa() {
+        Empresa empresa = new Empresa();
+        empresa.setCategoria(spinner_categoria_empresa.getSelectedItem().toString());
+        empresa.setCelular(edt_celular_empresa.getText().toString());
+        empresa.setCiudad(spinner_ciudad.getSelectedItem().toString());
+        empresa.setComercioExterior(spinner_comercio_exterior.getSelectedItem().toString());
+        empresa.setContacto(edt_contacto_empresa.getText().toString());
+        empresa.setContrataEstado(spinner_contrata_estado.getSelectedItem().toString());
+        empresa.setDescripcion(edt_descripcion_actividad.getText().toString());
+        empresa.setDireccion(edt_direccion_empresa.getText().toString());
+        empresa.setEdt_facebook(edt_facebook.getText().toString());
+        empresa.setEdt_instagram(edt_instagram.getText().toString());
+        empresa.setEdt_linkedin(edt_linkedin.getText().toString());
+        empresa.setNombre(edt_nombre_empresa.getText().toString());
+        empresa.setNumeroDocumento(edt_nro_documento_empresa.getText().toString());
+        empresa.setPais(spinner_pais.getSelectedItem().toString());
+        empresa.setSitioWeb(edt_sitio_web.getText().toString());
+        empresa.setTelefono(edt_telefono_empresa.getText().toString());
+        empresa.setTipoDocumento(spinner_tipo_doc_empresa.getSelectedItem().toString());
+
+        empresa.setImagen("https://firebasestorage.googleapis.com/v0/b/app-emprendedores.appspot.com/o/Proyectos_images%2F39629?alt=media&token=dac47c80-79b8-4735-9905-e62f4114da28");
+        return empresa;
     }
 
     public void hideSoftKeyboard() {

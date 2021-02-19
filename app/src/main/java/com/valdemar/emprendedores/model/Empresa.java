@@ -36,11 +36,11 @@ public class Empresa {
     String ciudad;
     @SerializedName("direccion")
     String direccion;
-    @SerializedName("imagen")
+    @SerializedName("edt_facebook")
     String edt_facebook;
-    @SerializedName("imagen")
+    @SerializedName("edt_instagram")
     String edt_instagram;
-    @SerializedName("imagen")
+    @SerializedName("edt_linkedin")
     String edt_linkedin;
     @SerializedName("imagen")
     String imagen;
@@ -195,5 +195,13 @@ public class Empresa {
 
     public void setEdt_linkedin(String edt_linkedin) {
         this.edt_linkedin = edt_linkedin;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 }
