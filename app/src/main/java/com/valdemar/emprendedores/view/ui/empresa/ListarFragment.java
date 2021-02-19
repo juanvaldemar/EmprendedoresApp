@@ -43,10 +43,10 @@ public class ListarFragment extends Fragment {
         recyclerViewList = (RecyclerView) root.findViewById(R.id.recyclerViewList);
         recyclerViewList.setHasFixedSize(true);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("empresa");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Empresa");
 
         LinearLayoutManager layoutManager
-                = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+                = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false);
 
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
@@ -56,7 +56,7 @@ public class ListarFragment extends Fragment {
         FirebaseRecyclerAdapter<Empresa, EmpresaViewHolder> firebaseRecyclerAdaptermRecyclerEpisodiosPerdidos =
                 new FirebaseRecyclerAdapter<Empresa, EmpresaViewHolder>(
                         Empresa.class,
-                        R.layout.design_structure_relato_menu,
+                        R.layout.design_structure_relato_menu_2,
                         EmpresaViewHolder.class,
                         mDatabase
                 ) {
@@ -65,7 +65,6 @@ public class ListarFragment extends Fragment {
                         empresaViewHolder.setNombre(modelo.getNombre());
                         empresaViewHolder.setRazon(modelo.getDescripcion());
                         empresaViewHolder.setRazon(modelo.getRazon());
-                        empresaViewHolder.setImage(getActivity(),modelo.getImagen());
                     }
                 };
 
