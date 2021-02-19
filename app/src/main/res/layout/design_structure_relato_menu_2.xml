@@ -11,15 +11,6 @@
     android:orientation="vertical">
 
 
-    <FrameLayout
-        android:id="@+id/item_recycler_structure_background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black"
-        android:alpha=".8"
-        >
-    </FrameLayout>
-
 
 
 
@@ -29,7 +20,7 @@
         android:layout_alignParentBottom="true"
         android:id="@+id/item_recycler_structure_linear"
         android:background="@color/black"
-        android:alpha=".4"
+        android:alpha=".8"
         android:paddingTop="5dp"
         android:weightSum="1"
         android:orientation="vertical">
@@ -50,13 +41,41 @@
             android:layout_height="wrap_content"
             android:gravity="left"
             android:layout_marginLeft="8dp"
+
             android:text="Categoria"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:textColor="@color/white"
             android:layout_weight=".5"
             android:textSize="12sp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="8dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Categoria ..."
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:id="@+id/txtCategoria"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Celular ..."
+                android:textColor="@color/white"
+                android:layout_weight="1"
+                android:id="@+id/txtCelular"/>
+        </LinearLayout>
+
     </LinearLayout>
+
+
 
 
 </RelativeLayout>

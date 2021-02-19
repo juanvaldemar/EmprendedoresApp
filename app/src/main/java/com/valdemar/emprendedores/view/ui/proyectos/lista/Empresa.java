@@ -6,6 +6,9 @@ public class Empresa {
     private String razon;
     private String descripcion;
     private String imagen;
+    private String categoria;
+    private String telefono;
+    private String celular;
 
 
     public Empresa() {
@@ -49,5 +52,29 @@ public class Empresa {
 
     public void setImagen(String imagen) {
         this.imagen = imagen;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getCelular() {
+        return celular;
+    }
+
+    public void setCelular(String celular) {
+        this.celular = celular;
     }
 }
