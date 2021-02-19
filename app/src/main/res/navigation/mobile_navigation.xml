@@ -223,6 +223,7 @@
     <fragment
         android:id="@+id/nav_directorio_empresas"
         android:name="com.valdemar.emprendedores.view.ui.empresa.DirectorioEmpresasFragment"
-        android:label="@layout/fragment_directorio_empresas"/>
+        android:label="Por gil"/>
+
 
 </navigation>

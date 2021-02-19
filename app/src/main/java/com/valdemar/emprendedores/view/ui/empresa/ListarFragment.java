@@ -43,27 +43,29 @@ public class ListarFragment extends Fragment {
         recyclerViewList = (RecyclerView) root.findViewById(R.id.recyclerViewList);
         recyclerViewList.setHasFixedSize(true);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("empresa");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Empresa");
 
         LinearLayoutManager layoutManager
-                = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+                = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false);
 
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
 
         recyclerViewList.setLayoutManager(layoutManager);
-//puta malparida
+
         FirebaseRecyclerAdapter<Empresa, EmpresaViewHolder> firebaseRecyclerAdaptermRecyclerEpisodiosPerdidos =
                 new FirebaseRecyclerAdapter<Empresa, EmpresaViewHolder>(
                         Empresa.class,
-                        R.layout.album_card,
+                        R.layout.design_structure_relato_menu_2,
                         EmpresaViewHolder.class,
                         mDatabase
                 ) {
                     @Override
-                    protected void populateViewHolder(EmpresaViewHolder empresaViewHolder, Empresa empresa, int i) {
-                        empresaViewHolder.setNombre(empresa.getNombre());
-                        empresaViewHolder.setRazon(empresa.getRazon());
+                    protected void populateViewHolder(EmpresaViewHolder empresaViewHolder, Empresa modelo, int i) {
+                        empresaViewHolder.setNombre(modelo.getNombre());
+                        empresaViewHolder.setRazon(modelo.getDescripcion());
+                        empresaViewHolder.setCategoria("Categoria: "+modelo.getCategoria());
+                        empresaViewHolder.setCelular("Celular: "+modelo.getCelular());
                     }
                 };
 

@@ -16,6 +16,8 @@ public class EmpresaViewHolder extends RecyclerView.ViewHolder{
     public View mViewStructure_h;
     public TextView mItem_recycler_structure_title_h;
     public TextView mItem_recycler_structure_send_by_h;
+    public TextView txtCategoria;
+    public TextView txtCelular;
     public ImageView mPost_image_h;
 
 
@@ -26,25 +28,26 @@ public class EmpresaViewHolder extends RecyclerView.ViewHolder{
 
     public void setNombre(String title){
         //mItem_recycler_structure_title.setTypeface(Pacifico);
-        mItem_recycler_structure_title_h = mViewStructure_h.findViewById(R.id.title_album);
+        mItem_recycler_structure_title_h = mViewStructure_h.findViewById(R.id.item_recycler_structure_title);
         mItem_recycler_structure_title_h.setText(title);
     }
     public void setRazon(String title){
         //mItem_recycler_structure_title.setTypeface(Pacifico);
-        mItem_recycler_structure_send_by_h = mViewStructure_h.findViewById(R.id.send_by_album);
+        mItem_recycler_structure_send_by_h = mViewStructure_h.findViewById(R.id.item_recycler_structure_category);
         mItem_recycler_structure_send_by_h.setText(title);
     }
-
-    public void setImage(Context context, String image){
-        mPost_image_h = mViewStructure_h.findViewById(R.id.thumbnail);
-
-        Glide.with(context)
-                .load(image)
-                //.thumbnail(Glide.with(context).load(R.drawable.b))
-                //.thumbnail(Glide.with(context).load(R.drawable.item_placeholder))
-                .into(mPost_image_h);
-
+    public void setCelular(String title){
+        //mItem_recycler_structure_title.setTypeface(Pacifico);
+        txtCelular = mViewStructure_h.findViewById(R.id.txtCelular);
+        txtCelular.setText(title);
     }
+    public void setCategoria(String title){
+        //mItem_recycler_structure_title.setTypeface(Pacifico);
+        txtCategoria = mViewStructure_h.findViewById(R.id.txtCategoria);
+        txtCategoria.setText(title);
+    }
+
+
 
 
 }
