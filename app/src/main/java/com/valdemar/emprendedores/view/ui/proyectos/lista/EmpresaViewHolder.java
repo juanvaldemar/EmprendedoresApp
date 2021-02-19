@@ -35,15 +35,7 @@ public class EmpresaViewHolder extends RecyclerView.ViewHolder{
         mItem_recycler_structure_send_by_h.setText(title);
     }
 
-    public void setImage(Context context, String image){
-        mPost_image_h = mViewStructure_h.findViewById(R.id.item_recycler_structure_imagen);
-        Glide.with(context)
-                .load(image)
-                //.thumbnail(Glide.with(context).load(R.drawable.b))
-                //.thumbnail(Glide.with(context).load(R.drawable.item_placeholder))
-                .into(mPost_image_h);
 
-    }
 
 
 }

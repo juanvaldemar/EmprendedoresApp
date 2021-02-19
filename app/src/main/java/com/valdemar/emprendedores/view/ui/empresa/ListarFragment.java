@@ -64,7 +64,6 @@ public class ListarFragment extends Fragment {
                     protected void populateViewHolder(EmpresaViewHolder empresaViewHolder, Empresa modelo, int i) {
                         empresaViewHolder.setNombre(modelo.getNombre());
                         empresaViewHolder.setRazon(modelo.getDescripcion());
-                        empresaViewHolder.setRazon(modelo.getRazon());
                     }
                 };
 

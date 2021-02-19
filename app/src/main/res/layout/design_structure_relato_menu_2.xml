@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:layout_marginTop="10dp"
@@ -16,70 +16,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black"
-        android:alpha=".4"
+        android:alpha=".8"
         >
     </FrameLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_margin="10dp"
-        android:layout_alignParentEnd="true">
-        <ImageView
-            android:visibility="gone"
-            android:id="@+id/me_gusta_icon"
-            android:layout_marginRight="2dp"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="@drawable/ic_fb_like"
-            />
-        <ImageView
-            android:visibility="gone"
-            android:id="@+id/me_encanta_icon"
-            android:layout_marginRight="2dp"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="@drawable/ic_fb_love"
-            />
-        <ImageView
-            android:visibility="gone"
-            android:id="@+id/me_asombra_icon"
-            android:layout_marginRight="2dp"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="@drawable/ic_fb_wow"
-            />
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/txt_nro_reactions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" "
-            android:textColor="@color/white"/>
-    </LinearLayout>
 
-    <ImageView
-        android:id="@+id/reaction_icon"
-        android:layout_margin="10dp"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:visibility="gone"
-        android:gravity="right"
-        android:tag="empty_reaction"
-        android:background="@drawable/favorite_flaco"
-        />
-    <TextView
-        android:id="@+id/item_recycler_structure_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:text="Vida y Muerte"
-        android:textColor="@color/white"
-        android:layout_marginLeft="8dp"
-        android:layout_above="@+id/item_recycler_structure_linear"
-        android:textSize="18sp" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -90,7 +32,18 @@
         android:alpha=".4"
         android:paddingTop="5dp"
         android:weightSum="1"
-        android:orientation="horizontal">
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_recycler_structure_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="Vida y Muerte"
+            android:textColor="@color/white"
+            android:layout_marginLeft="8dp"
+            android:layout_above="@+id/item_recycler_structure_linear"
+            android:textSize="18sp" />
         <TextView
             android:id="@+id/item_recycler_structure_category"
             android:layout_width="wrap_content"
@@ -102,34 +55,8 @@
             android:textColor="@color/white"
             android:layout_weight=".5"
             android:textSize="12sp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:layout_marginLeft="2dp"
-            android:text=""
-            android:layout_marginBottom="10dp"
-            android:textColor="#dadada"
-            android:textSize="12sp"/>
-        <TextView
-            android:id="@+id/item_recycler_structure_author"
-            android:layout_weight=".5"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="#dadada"
-            android:textSize="12sp"/>
+
     </LinearLayout>
 
-
-    <TextView
-        android:id="@+id/item_recycler_structure_desc"
-        android:visibility="gone"
-        android:text="PAUSA"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 </RelativeLayout>
