@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container_registrar_empresa"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.ui.empresa.RegistrarEmpresaFragment">
@@ -175,6 +176,11 @@
                     android:textColor="@color/black"
                     android:nextFocusForward="@id/edt_descripcion_proyecto"
                     android:gravity="left" />
+
+                <Spinner
+                    android:id="@+id/spinner_modalidad_empresa"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp" />
 
                 <Spinner
                     android:id="@+id/spinner_comercio_exterior"

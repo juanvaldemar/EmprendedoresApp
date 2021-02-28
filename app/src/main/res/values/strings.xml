@@ -122,6 +122,12 @@
         <item>Servicios</item>
     </string-array>
 
+    <string-array name="modalidadEmpresa">
+        <item>Establecimiento</item>
+        <item>Virtual</item>
+        <item>Establecimiento y Virtual</item>
+    </string-array>
+
     <string-array name="comercioExterior">
         <item>Importador</item>
         <item>Exportador</item>
