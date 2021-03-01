@@ -363,6 +363,16 @@ public class RegistrarEmpresaFragment extends Fragment {
             }
         }
 
+        if(!Validaciones.validarCorreo(edt_correo_electronico.getText().toString())){
+            showSnackBar("Correo electrónico incorrecto");
+            return false;
+        }
+
+        if(!Validaciones.validarSitioWeb(edt_sitio_web.getText().toString())){
+            showSnackBar("URL Sitio web incorrecto");
+            return false;
+        }
+
         return true;
     }
 
