@@ -1,5 +1,6 @@
 package com.valdemar.emprendedores.view.ui.empresa;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaMetadataRetriever;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,13 +27,21 @@ import android.widget.Spinner;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.model.Empresa;
+import com.valdemar.emprendedores.util.Validaciones;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -50,6 +60,7 @@ public class RegistrarEmpresaFragment extends Fragment {
     private EditText edt_celular_empresa;
     private EditText edt_contacto_empresa;
     private EditText edt_sitio_web;
+    private Spinner spinner_modalidad_empresa;
     private Spinner spinner_comercio_exterior;
     private Spinner spinner_contrata_estado;
     private EditText edt_descripcion_actividad;
@@ -57,7 +68,6 @@ public class RegistrarEmpresaFragment extends Fragment {
     private Spinner spinner_ciudad;
     private EditText edt_direccion_empresa;
     private ImageButton btn_subir_foto_video;
-    private ImageView img_foto_proyecto;
     private VideoView mVideoView;
     private EditText edt_facebook;
     private EditText edt_instagram;
@@ -71,7 +81,9 @@ public class RegistrarEmpresaFragment extends Fragment {
 
     private DatabaseReference mDatabaseEmpresa = FirebaseDatabase.getInstance().getReference().child("Empresa");
     FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+    private StorageReference mStorage;
     private View mRoot;
+    private ProgressDialog mProgress;
 
     public RegistrarEmpresaFragment() {
         // Required empty public constructor
@@ -80,6 +92,7 @@ public class RegistrarEmpresaFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mProgress = new ProgressDialog(getActivity());
         if (getArguments() != null) {
         }
     }
@@ -91,21 +104,22 @@ public class RegistrarEmpresaFragment extends Fragment {
         mImgFoto = (ImageView) view.findViewById(R.id.img_foto_empresa);
         edt_nombre_empresa = (EditText) view.findViewById(R.id.edt_nombre_empresa);
         spinner_tipo_doc_empresa = (Spinner) view.findViewById(R.id.spinner_tipo_doc_empresa);
-        edt_nro_documento_empresa = (EditText) view.findViewById(R.id.edt_nro_documento_empresa);;
+        edt_nro_documento_empresa = (EditText) view.findViewById(R.id.edt_nro_documento_empresa);
+        ;
         spinner_categoria_empresa = (Spinner) view.findViewById(R.id.spinner_categoria_empresa);
         edt_correo_electronico = (EditText) view.findViewById(R.id.edt_correo_electronico);
-        edt_telefono_empresa =  (EditText) view.findViewById(R.id.edt_telefono_empresa);
+        edt_telefono_empresa = (EditText) view.findViewById(R.id.edt_telefono_empresa);
         edt_celular_empresa = (EditText) view.findViewById(R.id.edt_celular_empresa);
         edt_contacto_empresa = (EditText) view.findViewById(R.id.edt_contacto_empresa);
         edt_sitio_web = (EditText) view.findViewById(R.id.edt_sitio_web);
         spinner_comercio_exterior = (Spinner) view.findViewById(R.id.spinner_comercio_exterior);
+        spinner_modalidad_empresa = (Spinner) view.findViewById(R.id.spinner_modalidad_empresa);
         spinner_contrata_estado = (Spinner) view.findViewById(R.id.spinner_contrata_estado);
         edt_descripcion_actividad = (EditText) view.findViewById(R.id.edt_descripcion_actividad);
         spinner_pais = (Spinner) view.findViewById(R.id.spinner_pais);
         spinner_ciudad = (Spinner) view.findViewById(R.id.spinner_ciudad);
         edt_direccion_empresa = (EditText) view.findViewById(R.id.edt_direccion_empresa);
         btn_subir_foto_video = (ImageButton) view.findViewById(R.id.btn_subir_foto_video);
-        img_foto_proyecto = (ImageView) view.findViewById(R.id.img_foto_empresa);
         mVideoView = (VideoView) view.findViewById(R.id.videoview_empresa);
         edt_facebook = (EditText) view.findViewById(R.id.edt_facebook);
         edt_instagram = (EditText) view.findViewById(R.id.edt_instagram);
@@ -122,6 +136,11 @@ public class RegistrarEmpresaFragment extends Fragment {
         spnCategoriaEmpresa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_categoria_empresa.setAdapter(spnCategoriaEmpresa);
 
+        ArrayAdapter<CharSequence> spnModalidadEmpresa = ArrayAdapter.createFromResource(getActivity(),
+                R.array.modalidadEmpresa, android.R.layout.simple_spinner_item);
+        spnModalidadEmpresa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_modalidad_empresa.setAdapter(spnModalidadEmpresa);
+
         ArrayAdapter<CharSequence> spnComercioExterior = ArrayAdapter.createFromResource(getActivity(),
                 R.array.comercioExterior, android.R.layout.simple_spinner_item);
         spnComercioExterior.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -131,7 +150,7 @@ public class RegistrarEmpresaFragment extends Fragment {
                 R.array.contrataEstado, android.R.layout.simple_spinner_item);
         spnComercioExterior.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_contrata_estado.setAdapter(spnContrataEstado);
-        
+
         ArrayAdapter<CharSequence> spnPaisAdapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.pais, android.R.layout.simple_spinner_item);
         spnPaisAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -141,7 +160,7 @@ public class RegistrarEmpresaFragment extends Fragment {
                 R.array.ciudad, android.R.layout.simple_spinner_item);
         spnCiudadAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_ciudad.setAdapter(spnCiudadAdapter);
-        
+
         btn_subir_foto_video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -195,8 +214,8 @@ public class RegistrarEmpresaFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            switch (requestCode){
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
                 case FOTO_GALLERY_REQUEST:
                     mVideoView.setVisibility(View.GONE);
                     mImgFoto.setVisibility(View.VISIBLE);
@@ -214,51 +233,70 @@ public class RegistrarEmpresaFragment extends Fragment {
                     retriever.setDataSource(getActivity(), mVideoUri);
                     String duracionVideoString = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
                     long duracionVideoMiliSegundos = Long.parseLong(duracionVideoString);
-                    double duracionVideoSegundos = duracionVideoMiliSegundos/1000.0;
+                    double duracionVideoSegundos = duracionVideoMiliSegundos / 1000.0;
                     retriever.release();
                     //Toast.makeText(getActivity(),"Duracion en s: " + duracionVideoSegundos, Toast.LENGTH_LONG).show();
-                    if(duracionVideoSegundos > 60.0) {
+                    if (duracionVideoSegundos > 60.0) {
                         showSnackBar("El video excede el tiempo limite - 60 segundos");
                         return;
                     }
                     mImgFoto.setVisibility(View.GONE);
                     mVideoView.setVisibility(View.VISIBLE);
                     mImageUri = mVideoUri;
-                    MediaController mediaController= new MediaController(getActivity());
+                    MediaController mediaController = new MediaController(getActivity());
                     mVideoView.setVideoURI(mVideoUri);
                     mVideoView.setMediaController(mediaController);
                     mVideoView.start();
                     mVideoSubido = true;
-                    mFotoSubida = true;
+                    mFotoSubida = false;
             }
         }
     }
 
     public void showSnackBar(String msg) {
         Snackbar
-                .make(getActivity().findViewById(R.id.constraint_crear_proyecto), msg, Snackbar.LENGTH_SHORT)
+                .make(getActivity().findViewById(R.id.container_registrar_empresa), msg, Snackbar.LENGTH_LONG)
                 .show();
     }
 
     private void registrarEmpresa(View v) {
         hideSoftKeyboard();
         if (validarCampos()) {
-            Empresa nuevoRegistroEmpresa = initDataEmpresa();
-            DatabaseReference nuevaEmpresaRef = mDatabaseEmpresa.push();
-            nuevaEmpresaRef.setValue(nuevoRegistroEmpresa);
-            Navigation.findNavController(mRoot).navigate(R.id.next_action_to_lista_empresas);
+            final Empresa nuevoRegistroEmpresa = initDataEmpresa();
+            if (mFotoSubida || mVideoSubido) {
+                mStorage = FirebaseStorage.getInstance().getReference();
+                final StorageReference filepath = mStorage.child("Empresas_images").child(mImageUri.getLastPathSegment());
+                filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
+                        filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                String uploadUrl = uri.toString();
+                                nuevoRegistroEmpresa.setImagen(uploadUrl);
+                                guardarEmpresa(nuevoRegistroEmpresa);
+                            }
+                        });
+                    }
+                });
+            } else {
+                guardarEmpresa(nuevoRegistroEmpresa);
+            }
+
         }
 
     }
 
     private Empresa initDataEmpresa() {
-        Empresa empresa = new Empresa();
+        final Empresa empresa = new Empresa();
         empresa.setCategoria(spinner_categoria_empresa.getSelectedItem().toString());
         empresa.setCelular(edt_celular_empresa.getText().toString());
         empresa.setCiudad(spinner_ciudad.getSelectedItem().toString());
         empresa.setComercioExterior(spinner_comercio_exterior.getSelectedItem().toString());
         empresa.setContacto(edt_contacto_empresa.getText().toString());
+        empresa.setCorreoElectronico(edt_correo_electronico.getText().toString());
         empresa.setContrataEstado(spinner_contrata_estado.getSelectedItem().toString());
+        empresa.setModalidadEmpresa(spinner_modalidad_empresa.getSelectedItem().toString());
         empresa.setDescripcion(edt_descripcion_actividad.getText().toString());
         empresa.setDireccion(edt_direccion_empresa.getText().toString());
         empresa.setEdt_facebook(edt_facebook.getText().toString());
@@ -270,9 +308,16 @@ public class RegistrarEmpresaFragment extends Fragment {
         empresa.setSitioWeb(edt_sitio_web.getText().toString());
         empresa.setTelefono(edt_telefono_empresa.getText().toString());
         empresa.setTipoDocumento(spinner_tipo_doc_empresa.getSelectedItem().toString());
-
-        empresa.setImagen("https://firebasestorage.googleapis.com/v0/b/app-emprendedores.appspot.com/o/Proyectos_images%2F39629?alt=media&token=dac47c80-79b8-4735-9905-e62f4114da28");
+        empresa.setVideoSubido(mVideoSubido ? "true" : "false");
         return empresa;
+    }
+
+    private void guardarEmpresa(Empresa nuevoRegistroEmpresa) {
+        DatabaseReference nuevaEmpresaRef = mDatabaseEmpresa.push();
+        nuevaEmpresaRef.setValue(nuevoRegistroEmpresa);
+        mProgress.show();
+        Navigation.findNavController(mRoot).navigate(R.id.next_action_to_lista_empresas);
+        mProgress.dismiss();
     }
 
     public void hideSoftKeyboard() {
@@ -283,6 +328,43 @@ public class RegistrarEmpresaFragment extends Fragment {
     }
 
     private boolean validarCampos() {
+        if (!(Validaciones.validarEditText(edt_nombre_empresa)
+                && Validaciones.validarEditText(edt_nro_documento_empresa)
+                && Validaciones.validarEditText(edt_telefono_empresa) && Validaciones.validarEditText(edt_celular_empresa)
+                && Validaciones.validarEditText(edt_contacto_empresa)
+                && Validaciones.validarEditText(edt_descripcion_actividad)
+                && Validaciones.validarEditText(edt_direccion_empresa)
+                && !spinner_pais.getSelectedItem().toString().equals("País")
+                && !spinner_ciudad.getSelectedItem().toString().equals("Ciudad")
+                && (mFotoSubida || mVideoSubido))) {
+            showSnackBar("Campos incompletos y/o falta subir foto o video");
+            return false;
+        }
+
+        if (!Validaciones.validarTelefono("TEL", edt_telefono_empresa.getText().toString())) {
+            showSnackBar("Telefono formato: (0 + codigo ciudad) + número, ejem: 014337889");
+            return false;
+        }
+        if (!Validaciones.validarTelefono("CEL", edt_celular_empresa.getText().toString())) {
+            showSnackBar("Celular formato: longitud e inicio con 9 ");
+            return false;
+        }
+        String tipoDocumentoEmpresa = spinner_tipo_doc_empresa.getSelectedItem().toString();
+        if (!Validaciones.validarDocumento(tipoDocumentoEmpresa
+                , edt_nro_documento_empresa.getText().toString())) {
+            if(tipoDocumentoEmpresa.equalsIgnoreCase("DNI")){
+                showSnackBar("DNI formato: 8 dígitos");
+                return false;
+            }
+
+            if(tipoDocumentoEmpresa.equalsIgnoreCase("RUC")){
+                showSnackBar("RUC formato: 11 dígitos y empezar con 15 o 20");
+                return false;
+            }
+        }
+
         return true;
     }
+
+
 }

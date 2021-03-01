@@ -24,6 +24,8 @@ public class Empresa {
     String contacto;
     @SerializedName("sitioWeb")
     String sitioWeb;
+    @SerializedName("modalidadEmpresa")
+    String modalidadEmpresa;
     @SerializedName("comercioExterior")
     String comercioExterior;
     @SerializedName("contrataEstado")
@@ -44,6 +46,8 @@ public class Empresa {
     String edt_linkedin;
     @SerializedName("imagen")
     String imagen;
+    @SerializedName("videoSubido")
+    String videoSubido;
 
     public String getKey() {
         return key;
@@ -203,5 +207,21 @@ public class Empresa {
 
     public void setImagen(String imagen) {
         this.imagen = imagen;
+    }
+
+    public String getModalidadEmpresa() {
+        return modalidadEmpresa;
+    }
+
+    public void setModalidadEmpresa(String modalidadEmpresa) {
+        this.modalidadEmpresa = modalidadEmpresa;
+    }
+
+    public String getVideoSubido() {
+        return videoSubido;
+    }
+
+    public void setVideoSubido(String videoSubido) {
+        this.videoSubido = videoSubido;
     }
 }
