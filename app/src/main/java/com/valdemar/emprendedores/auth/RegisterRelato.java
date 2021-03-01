@@ -29,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.valdemar.emprendedores.MenuLateralActivity;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.util.ValidarEmail;
+import com.valdemar.emprendedores.view.ui.ClasificacionActivity;
 
 public class RegisterRelato extends AppCompatActivity {
 
@@ -186,7 +187,9 @@ public class RegisterRelato extends AppCompatActivity {
     }
 
     public void createRegister(){
-        Intent i = new Intent(RegisterRelato.this, MenuLateralActivity.class);
+    //    Intent i = new Intent(RegisterRelato.this, MenuLateralActivity.class);
+        Intent i = new Intent(RegisterRelato.this, ClasificacionActivity.class);
+
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         i.putExtra("registrarse",true);
         finish();

@@ -46,6 +46,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.valdemar.emprendedores.MenuLateralActivity;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.util.ValidarEmail;
+import com.valdemar.emprendedores.view.ui.ClasificacionActivity;
 
 import java.util.Arrays;
 
@@ -427,7 +428,7 @@ public class AccessRelato extends AppCompatActivity {
         }
 
         mProgress.dismiss();
-        Intent i = new Intent(AccessRelato.this, MenuLateralActivity.class);
+        Intent i = new Intent(AccessRelato.this, ClasificacionActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(i);
         finish();

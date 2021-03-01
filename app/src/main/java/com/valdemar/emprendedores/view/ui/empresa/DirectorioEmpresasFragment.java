@@ -3,64 +3,66 @@ package com.valdemar.emprendedores.view.ui.empresa;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.valdemar.emprendedores.R;
+import com.valdemar.emprendedores.view.ui.proyectos.lista.Empresa;
+import com.valdemar.emprendedores.view.ui.proyectos.lista.EmpresaViewHolder;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DirectorioEmpresasFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DirectorioEmpresasFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private RecyclerView recyclerViewList;
+    private DatabaseReference mDatabase;
 
     public DirectorioEmpresasFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DirectorioFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DirectorioEmpresasFragment newInstance(String param1, String param2) {
-        DirectorioEmpresasFragment fragment = new DirectorioEmpresasFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_directorio_empresas, container, false);
+
+        View root = inflater.inflate(R.layout.fragment_listar, container, false);
+        recyclerViewList = (RecyclerView) root.findViewById(R.id.recyclerViewList);
+        recyclerViewList.setHasFixedSize(true);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Empresa");
+
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
+
+        recyclerViewList.setLayoutManager(layoutManager);
+
+        FirebaseRecyclerAdapter<Empresa, EmpresaViewHolder> firebaseRecyclerAdaptermRecyclerEpisodiosPerdidos =
+                new FirebaseRecyclerAdapter<Empresa, EmpresaViewHolder>(
+                        Empresa.class,
+                        R.layout.design_structure_relato_menu_2,
+                        EmpresaViewHolder.class,
+                        mDatabase
+                ) {
+                    @Override
+                    protected void populateViewHolder(EmpresaViewHolder empresaViewHolder, Empresa modelo, int i) {
+                        empresaViewHolder.setNombre(modelo.getNombre());
+                        empresaViewHolder.setRazon(modelo.getDescripcion());
+                        empresaViewHolder.setCategoria("Categoria: "+modelo.getCategoria());
+                        empresaViewHolder.setCelular("Celular: "+modelo.getCelular());
+                    }
+                };
+
+        recyclerViewList.setAdapter(firebaseRecyclerAdaptermRecyclerEpisodiosPerdidos);
+        return root;
+
     }
 }
