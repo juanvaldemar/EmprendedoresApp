@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,9 +37,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
 import com.valdemar.emprendedores.R;
+import com.valdemar.emprendedores.model.CategoriaProyecto;
 import com.valdemar.emprendedores.model.Empresa;
 import com.valdemar.emprendedores.util.Validaciones;
+import com.valdemar.emprendedores.view.CategoriasFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -84,6 +88,8 @@ public class RegistrarEmpresaFragment extends Fragment {
     private StorageReference mStorage;
     private View mRoot;
     private ProgressDialog mProgress;
+    private Empresa mEmpresa;
+    private String mKeyEmpresa;
 
     public RegistrarEmpresaFragment() {
         // Required empty public constructor
@@ -94,6 +100,11 @@ public class RegistrarEmpresaFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mProgress = new ProgressDialog(getActivity());
         if (getArguments() != null) {
+            String jsonString = getArguments().getString("ARG_EMPRESA_SELECCIONADA");
+            if (!TextUtils.isEmpty(jsonString)) {
+                mEmpresa = (new Gson()).fromJson(jsonString, Empresa.class);
+            }
+            mKeyEmpresa = getArguments().getString("ARG_KEY_EMPRESA");
         }
     }
 
@@ -105,7 +116,6 @@ public class RegistrarEmpresaFragment extends Fragment {
         edt_nombre_empresa = (EditText) view.findViewById(R.id.edt_nombre_empresa);
         spinner_tipo_doc_empresa = (Spinner) view.findViewById(R.id.spinner_tipo_doc_empresa);
         edt_nro_documento_empresa = (EditText) view.findViewById(R.id.edt_nro_documento_empresa);
-        ;
         spinner_categoria_empresa = (Spinner) view.findViewById(R.id.spinner_categoria_empresa);
         edt_correo_electronico = (EditText) view.findViewById(R.id.edt_correo_electronico);
         edt_telefono_empresa = (EditText) view.findViewById(R.id.edt_telefono_empresa);
@@ -175,8 +185,58 @@ public class RegistrarEmpresaFragment extends Fragment {
             }
         });
 
+        if (mEmpresa != null)
+            cargarDataEmpresa();
         mRoot = view;
         return view;
+    }
+
+    private void cargarDataEmpresa() {
+        mImageUri = Uri.parse(mEmpresa.getImagen());
+        String videoSubido = mEmpresa.getVideoSubido();
+        if(videoSubido.equalsIgnoreCase("true")) {
+            mImgFoto.setVisibility(View.GONE);
+            mVideoView.setVisibility(View.VISIBLE);
+            MediaController mediaController= new MediaController(getActivity());
+            mVideoView.setVideoURI(mImageUri);
+            mVideoView.setMediaController(mediaController);
+            mVideoView.start();
+            mVideoSubido = true;
+            mFotoSubida = false;
+        } else {
+            mVideoView.setVisibility(View.GONE);
+            mImgFoto.setVisibility(View.VISIBLE);
+            Glide.with(getActivity().getApplicationContext())
+                    .load(mImageUri)
+                    .into(mImgFoto);
+            mFotoSubida = true;
+            mVideoSubido = false;
+        }
+        edt_nombre_empresa.setText(mEmpresa.getNombre() != null ? mEmpresa.getNombre() : "");
+        setearSpinner(spinner_tipo_doc_empresa, mEmpresa.getTipoDocumento());
+        edt_nro_documento_empresa.setText(mEmpresa.getNumeroDocumento() != null ? mEmpresa.getNumeroDocumento() : "");
+        setearSpinner(spinner_categoria_empresa, mEmpresa.getCategoria());
+        edt_correo_electronico.setText(mEmpresa.getCorreoElectronico() != null ? mEmpresa.getCorreoElectronico() : "");
+        edt_telefono_empresa.setText(mEmpresa.getTelefono() != null ? mEmpresa.getTelefono() : "");
+        edt_celular_empresa.setText(mEmpresa.getCelular() != null ? mEmpresa.getCelular() : "");
+        edt_contacto_empresa.setText(mEmpresa.getContacto() != null ? mEmpresa.getContacto() : "");
+        edt_sitio_web.setText(mEmpresa.getSitioWeb() != null ? mEmpresa.getSitioWeb() : "");
+        setearSpinner(spinner_comercio_exterior, mEmpresa.getComercioExterior());
+        setearSpinner(spinner_modalidad_empresa, mEmpresa.getModalidadEmpresa());
+        setearSpinner(spinner_contrata_estado, mEmpresa.getContrataEstado());
+        setearSpinner(spinner_pais, mEmpresa.getPais());
+        setearSpinner(spinner_ciudad, mEmpresa.getCiudad());
+        edt_descripcion_actividad.setText(mEmpresa.getDescripcion() != null ? mEmpresa.getDescripcion() : "");
+        edt_direccion_empresa.setText(mEmpresa.getDireccion() != null ? mEmpresa.getDireccion() : "");
+        edt_facebook.setText(mEmpresa.getEdt_facebook() != null ? mEmpresa.getEdt_facebook() : "");
+        edt_instagram.setText(mEmpresa.getEdt_instagram() != null ? mEmpresa.getEdt_instagram() : "");
+        edt_linkedin.setText(mEmpresa.getEdt_linkedin() != null ? mEmpresa.getEdt_linkedin() : "");
+        btn_registrar_empresa.setText("Actualizar Empresa");
+    }
+
+    private void setearSpinner(Spinner spinner, String valor) {
+        ArrayAdapter<CharSequence> spnAdapter = (ArrayAdapter<CharSequence>) spinner.getAdapter();
+        spinner.setSelection(spnAdapter.getPosition(valor));
     }
 
     private void mostrarOpcionesSubir() {
@@ -314,8 +374,15 @@ public class RegistrarEmpresaFragment extends Fragment {
     }
 
     private void guardarEmpresa(Empresa nuevoRegistroEmpresa) {
-        DatabaseReference nuevaEmpresaRef = mDatabaseEmpresa.push();
-        nuevaEmpresaRef.setValue(nuevoRegistroEmpresa);
+        DatabaseReference nuevaEmpresaRef;
+        if(mEmpresa == null) {
+            nuevaEmpresaRef = mDatabaseEmpresa.push();
+            nuevaEmpresaRef.setValue(nuevoRegistroEmpresa);
+        }else{
+            Map<String, Object> proyectoHashMap = new HashMap<>();
+            proyectoHashMap.put(mKeyEmpresa, nuevoRegistroEmpresa);
+            mDatabaseEmpresa.updateChildren(proyectoHashMap);
+        }
         mProgress.show();
         Navigation.findNavController(mRoot).navigate(R.id.next_action_to_lista_empresas);
         mProgress.dismiss();
@@ -353,23 +420,23 @@ public class RegistrarEmpresaFragment extends Fragment {
         String tipoDocumentoEmpresa = spinner_tipo_doc_empresa.getSelectedItem().toString();
         if (!Validaciones.validarDocumento(tipoDocumentoEmpresa
                 , edt_nro_documento_empresa.getText().toString())) {
-            if(tipoDocumentoEmpresa.equalsIgnoreCase("DNI")){
+            if (tipoDocumentoEmpresa.equalsIgnoreCase("DNI")) {
                 showSnackBar("DNI formato: 8 dígitos");
                 return false;
             }
 
-            if(tipoDocumentoEmpresa.equalsIgnoreCase("RUC")){
+            if (tipoDocumentoEmpresa.equalsIgnoreCase("RUC")) {
                 showSnackBar("RUC formato: 11 dígitos y empezar con 15 o 20");
                 return false;
             }
         }
 
-        if(!Validaciones.validarCorreo(edt_correo_electronico.getText().toString())){
+        if (!Validaciones.validarCorreo(edt_correo_electronico.getText().toString())) {
             showSnackBar("Correo electrónico incorrecto");
             return false;
         }
 
-        if(!Validaciones.validarSitioWeb(edt_sitio_web.getText().toString())){
+        if (!Validaciones.validarSitioWeb(edt_sitio_web.getText().toString())) {
             showSnackBar("URL Sitio web incorrecto");
             return false;
         }

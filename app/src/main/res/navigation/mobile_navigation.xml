@@ -235,7 +235,17 @@
     <fragment
         android:id="@+id/DetalleEmpresaFragment"
         android:name="com.valdemar.emprendedores.view.ui.empresa.DetalleEmpresaFragment"
-        android:label="Detalle de Empresa"/>
+        android:label="Detalle de Empresa">
+        <argument
+            android:name="ARG_EMPRESA_EMPRESA"
+            app:argType="string" />
+        <argument
+            android:name="ARG_KEY_EMPRESA"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_DetalleEmpresaFragment_to_registrarEmpresaFragment"
+            app:destination="@id/nav_registrar_empresa" />
+    </fragment>
 
 
 </navigation>

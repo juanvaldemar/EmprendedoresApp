@@ -1,5 +1,6 @@
 package com.valdemar.emprendedores.view.ui.empresa;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -29,6 +30,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.model.Emprendedor;
 import com.valdemar.emprendedores.model.Empresa;
@@ -51,6 +53,9 @@ public class DetalleEmpresaFragment extends Fragment {
     private Emprendedor mEmprendedorActual;
     private DatabaseReference mDatabase;
     private Empresa mEmpresa = new Empresa();
+    private String mLinkFB = "";
+    private String mLinkIG = "";
+    private String mLinkLN = "";
 
     private TextView txt_nombre_empresa;
     private TextView txt_descripcion_empresa;
@@ -62,13 +67,16 @@ public class DetalleEmpresaFragment extends Fragment {
     private TextView txt_contacto_autorizado;
     private TextView txt_tipo_local_empresa;
     private TextView txt_importa_estado_empresa;
+    private TextView txt_url;
 
     private VideoView mVideoView;
     private ImageView mImage_paralax;
+    private Button btn_editar_empresa;
 
-    private ImageButton btn_facebook;
-    private ImageButton btn_instagram;
-    private ImageButton btn_linkedin;
+    private ImageButton mButtonFB;
+    private ImageButton mButtonIG;
+    private ImageButton mButtonLN;
+
 
     public DetalleEmpresaFragment() {
         // Required empty public constructor
@@ -113,6 +121,40 @@ public class DetalleEmpresaFragment extends Fragment {
         txt_contacto_autorizado = (TextView) root.findViewById(R.id.txt_contacto_autorizado);
         txt_tipo_local_empresa = (TextView) root.findViewById(R.id.txt_tipo_local_empresa);
         txt_importa_estado_empresa = (TextView) root.findViewById(R.id.txt_importa_estado_empresa);
+        txt_url = (TextView) root.findViewById(R.id.txt_url);
+        mButtonFB = (ImageButton) root.findViewById(R.id.btn_facebook);
+        mButtonIG = (ImageButton) root.findViewById(R.id.btn_instagram);
+        mButtonLN = (ImageButton) root.findViewById(R.id.btn_linkedin);
+        mButtonFB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mLinkFB.isEmpty()) {
+                    Toast.makeText(getContext(), "No hay cuenta registrada", Toast.LENGTH_LONG).show();
+                } else {
+                    startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://www.facebook.com/" + mLinkFB)));
+                }
+            }
+        });
+        mButtonIG.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mLinkIG.isEmpty()) {
+                    Toast.makeText(getContext(), "No hay cuenta registrada", Toast.LENGTH_LONG).show();
+                } else {
+                    startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://www.instagram.com/" + mLinkIG)));
+                }
+            }
+        });
+        mButtonLN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mLinkLN.isEmpty()) {
+                    Toast.makeText(getContext(), "No hay cuenta registrada", Toast.LENGTH_LONG).show();
+                } else {
+                    startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://www.linkedin.com/" + mLinkLN)));
+                }
+            }
+        });
 
         mVideoView = (VideoView) root.findViewById(R.id.videoview_proyecto);
         mImage_paralax = (ImageView) root.findViewById(R.id.image_paralax);
@@ -166,7 +208,7 @@ public class DetalleEmpresaFragment extends Fragment {
                 String ciudad = (String) dataSnapshot.child("ciudad").getValue();
                 mEmpresa.setCiudad(ciudad);
                 String direccion = (String) dataSnapshot.child("direccion").getValue();
-                mEmpresa.setCelular(direccion);
+                mEmpresa.setDireccion(direccion);
                 txt_direccion_empresa.setText(direccion + " - " + ciudad + " - " + pais);
 
                 String comercioExterior = (String) dataSnapshot.child("comercioExterior").getValue();
@@ -180,16 +222,28 @@ public class DetalleEmpresaFragment extends Fragment {
                 txt_correo_empresa.setText("Email: " + correoElectronico);
 
                 String contactoAutorizado = (String) dataSnapshot.child("contacto").getValue();
-                mEmpresa.setCorreoElectronico(correoElectronico);
+                mEmpresa.setContacto(contactoAutorizado);
                 txt_contacto_autorizado.setText("Nombre del Contacto: " + contactoAutorizado);
 
-                String modadlidadEmpresa = (String) dataSnapshot.child("modadlidadEmpresa").getValue();
-                mEmpresa.setModalidadEmpresa(modadlidadEmpresa);
-                txt_tipo_local_empresa.setText("Modalidad de Ventas: " + contactoAutorizado);
+                String sitioWeb = (String) dataSnapshot.child("sitioWeb").getValue();
+                mEmpresa.setSitioWeb(sitioWeb);
+                txt_url.setText("Sitio Web: " + sitioWeb);
 
                 String modalidadEmpresa = (String) dataSnapshot.child("modalidadEmpresa").getValue();
-                mEmpresa.setCorreoElectronico(correoElectronico);
-                txt_tipo_local_empresa.setText("Tipo de Local: " + modalidadEmpresa);
+                mEmpresa.setModalidadEmpresa(modalidadEmpresa);
+                txt_tipo_local_empresa.setText("Modalidad de Ventas: " + modalidadEmpresa);
+
+                mLinkFB = (String) dataSnapshot.child("edt_facebook").getValue();
+                mEmpresa.setEdt_facebook(mLinkFB);
+
+                mLinkIG = (String) dataSnapshot.child("edt_instagram").getValue();
+                mEmpresa.setEdt_instagram(mLinkIG);
+
+                mLinkLN = (String) dataSnapshot.child("edt_linkedin").getValue();
+                mEmpresa.setEdt_linkedin(mLinkLN);
+
+                mEmpresa.setVideoSubido((String) dataSnapshot.child("videoSubido").getValue());
+
 
                 String id_user = (String) dataSnapshot.child("id_user").getValue();
                 mEmpresa.setId_user(id_user);
@@ -235,8 +289,10 @@ public class DetalleEmpresaFragment extends Fragment {
                         @Override
                         public void onClick(View v) {
                             Bundle args = new Bundle();
+                            String json = new Gson().toJson(mEmpresa);
+                            args.putString("ARG_EMPRESA_SELECCIONADA", json);
                             args.putString("ARG_KEY_EMPRESA", mPost_key);
-                            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_DescBlankFragment_to_crearProyectoFragment, args);
+                            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_DetalleEmpresaFragment_to_registrarEmpresaFragment, args);
                         }
                     });
 
