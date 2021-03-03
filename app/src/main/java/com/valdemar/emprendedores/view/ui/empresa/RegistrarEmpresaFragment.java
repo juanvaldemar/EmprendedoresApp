@@ -289,6 +289,7 @@ public class RegistrarEmpresaFragment extends Fragment {
 
     private Empresa initDataEmpresa() {
         final Empresa empresa = new Empresa();
+        empresa.setId_user(FirebaseAuth.getInstance().getCurrentUser().getUid());
         empresa.setCategoria(spinner_categoria_empresa.getSelectedItem().toString());
         empresa.setCelular(edt_celular_empresa.getText().toString());
         empresa.setCiudad(spinner_ciudad.getSelectedItem().toString());

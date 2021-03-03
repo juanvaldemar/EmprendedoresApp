@@ -223,7 +223,19 @@
     <fragment
         android:id="@+id/nav_directorio_empresas"
         android:name="com.valdemar.emprendedores.view.ui.empresa.DirectorioEmpresasFragment"
-        android:label="Directorio"/>
+        android:label="Directorio">
+        <argument
+            android:name="key_empresa"
+            app:argType="string" />
+        <action
+            android:id="@+id/next_action_empresa_desc"
+            app:destination="@id/DetalleEmpresaFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/DetalleEmpresaFragment"
+        android:name="com.valdemar.emprendedores.view.ui.empresa.DetalleEmpresaFragment"
+        android:label="Detalle de Empresa"/>
 
 
 </navigation>

@@ -48,6 +48,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="10dp"
+            android:lines="2"
             android:layout_weight=".5"
             android:gravity="left"
             android:text="Categoria"

@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class Empresa {
 
-    @SerializedName("key")
-    String key;
+    @SerializedName("id_user")
+    String id_user;
     @SerializedName("nombre")
     String nombre;
     @SerializedName("tipoDocumento")
@@ -49,12 +49,12 @@ public class Empresa {
     @SerializedName("videoSubido")
     String videoSubido;
 
-    public String getKey() {
-        return key;
+    public String getId_user() {
+        return id_user;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setId_user(String id_user) {
+        this.id_user = id_user;
     }
 
     public String getNombre() {

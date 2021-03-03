@@ -202,8 +202,8 @@
                     android:hint="Describe tu actividad principal ..."
                     android:background="@drawable/design_one"
                     android:inputType="textMultiLine"
-                    android:maxLength="120"
-                    android:lines="3"
+                    android:maxLength="480"
+                    android:lines="5"
                     android:layout_marginTop="10dp"
                     android:text=""
                     android:textColor="@color/black"
@@ -382,7 +382,7 @@
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:background="@drawable/ic_linkedin"
-                        android:color="@color/black"
+                        android:color="@color/white"
                         />
 
                     <EditText
