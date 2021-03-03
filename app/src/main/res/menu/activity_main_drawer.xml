@@ -7,7 +7,7 @@
         <item
             android:id="@+id/nav_categorias"
             android:icon="@drawable/ic_categoria_otros"
-            android:title="Registro emprendedor" />
+            android:title="Regístrate Emprendedor" />
         <item
             android:id="@+id/nav_perfil_emprendedor"
             android:icon="@drawable/person_ic"
@@ -15,7 +15,7 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Registro de proyecto" />
+            android:title="Crea tu Proyecto" />
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
@@ -25,12 +25,12 @@
         <item
             android:id="@+id/nav_mis_proyectos_creados"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Mis proyectos creados" />
+            android:title="Mis Proyectos" />
 
         <item
             android:id="@+id/nav_mis_proyectos_suscritos"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Mis proyectos suscritos" />
+            android:title="Proyectos Suscritos" />
 
         <item
             android:id="@+id/nav_mis_interesados"

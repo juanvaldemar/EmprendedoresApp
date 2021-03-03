@@ -123,7 +123,7 @@
     <fragment
         android:id="@+id/crearProyectoFragment"
         android:name="com.valdemar.emprendedores.view.ui.proyectos.registro_proyecto.CrearProyectoFragment"
-        android:label="Proyecto" >
+        android:label="Crea tu Proyecto" >
         <argument
             android:name="categoria"
             app:argType="com.valdemar.emprendedores.model.CategoriaProyecto" />
@@ -194,7 +194,7 @@
     <fragment
         android:id="@+id/nav_mis_interesados"
         android:name="com.valdemar.emprendedores.view.ui.proyectos.InteresadosFragment"
-        android:label="Proyectos con postulaciones"
+        android:label="Elige a tus socios"
         tools:layout="@layout/fragment_interesados" >
         <argument
             android:name="blog_id"

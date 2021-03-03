@@ -16,8 +16,8 @@
     <string name="menu_slideshow">Slideshow</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="crearproyecto.hint.socio">Qué socio necesitas?...</string>
-    <string name="crearproyecto.hint.socio_descripcion">Descríbenos a ese socio ...</string>
+    <string name="crearproyecto.hint.socio">¿Quiénes serán tus socios?...</string>
+    <string name="crearproyecto.hint.socio_descripcion">Descríbenos al socio requerido...</string>
     <string name="registraremprendedor">Registrar Emprendedor</string>
     <string name="perfilemprendedor">Perfil Emprendedor</string>
     <string name="errorlogin">El usuario y/o contraseña que ingresaste son incorrectos. Porfavor, <b>Reinténtalo</b> o <b>Créate una cuenta</b></string>
@@ -33,6 +33,26 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>6</item>
+        <item>6</item>
+        <item>6</item>
         <item>6</item>
         <item>6</item>
     </string-array>
@@ -83,10 +103,10 @@
     </string-array>
 
     <string-array name="gradoAcademico">
-        <item>Grado Academico</item>
-        <item>Bachiller</item>
-        <item>Títulado</item>
-        <item>Colegiado</item>
+        <item>Educación básica</item>
+        <item>Técnico superior</item>
+        <item>Universitario</item>
+        <item>Postgrado</item>
     </string-array>
 
     <string-array name="intereses">
@@ -142,4 +162,7 @@
 
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="fcm_message">FCM Message</string>
+    <string name="info_beneficios">Objetivo: Resaltar el principal(es) beneficios del proyecto, puedes describir lo siguiente: \n\n1. Experiencia \n2. Tiempo de retorno de la inversión \n3. Ganancia del 10% de lo invertido(Porcentaje de ganancia respecto a la inversión) \n4. Certificados</string>
+    <string name="descripcion_proyecto">Coméntanos acerca de tu proyecto... \n\nObjetivo: Vende tu proyecto emprendedor! puedes describir lo siguiente: \n\n1. La idea del proyecto, lo que se quiere conseguir del proyecto \n2. Equipo de trabajo \n3. Locación del proyecto \n4. Beneficios (mayor detalle) \n5. Público objetivo</string>
+
 </resources>

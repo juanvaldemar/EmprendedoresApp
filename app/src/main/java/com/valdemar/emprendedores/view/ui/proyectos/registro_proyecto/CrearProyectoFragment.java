@@ -81,6 +81,7 @@ public class CrearProyectoFragment extends Fragment {
     private LinearLayout mLLSocio4;
     private LinearLayout mLLSocio5;
     private ImageView mImgFoto;
+    private Button btnBeneficio;
 
     private EditText edt_inversion_proyecto;
     private EditText edt_beneficio_proyecto;
@@ -184,7 +185,7 @@ public class CrearProyectoFragment extends Fragment {
         edt_inversion_proyecto = (EditText) view.findViewById(R.id.edt_inversion_proyecto);
         edt_beneficio_proyecto = (EditText) view.findViewById(R.id.edt_beneficio_proyecto);
         edt_fecha_proyecto = (EditText) view.findViewById(R.id.edt_fecha_proyecto);
-        SimpleDateFormat ISO_8601_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat ISO_8601_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
         String now = ISO_8601_FORMAT.format(new Date());
         edt_fecha_proyecto.setText(now);
 
@@ -219,6 +220,14 @@ public class CrearProyectoFragment extends Fragment {
                 R.array.moneda, android.R.layout.simple_spinner_item);
         spnMonedaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpnMoneda.setAdapter(spnMonedaAdapter);
+
+        btnBeneficio = (Button) view.findViewById(R.id.btn_beneficio);
+        btnBeneficio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarMensajeDialog();
+            }
+        });
 
         ImageButton btnSubirFotoVideo = (ImageButton) view.findViewById(R.id.btn_subir_foto_video);
         mImgFoto = (ImageView) view.findViewById(R.id.img_foto_proyecto);
@@ -534,6 +543,21 @@ public class CrearProyectoFragment extends Fragment {
             InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         }
+    }
+
+    private void mostrarMensajeDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = this.getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.dialog_beneficio, null));
+
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        builder.show();
     }
 
     private void registrarProyecto(View v) {

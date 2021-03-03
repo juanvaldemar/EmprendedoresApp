@@ -72,6 +72,7 @@
                             android:layout_marginBottom="15dp"
                             android:textColor="@color/black"
                             android:textSize="18sp"
+                            android:maxLength="30"
                             tools:text="Juan" />
                     </LinearLayout>
 
@@ -93,6 +94,7 @@
                             android:layout_marginBottom="15dp"
                             android:textColor="@color/black"
                             android:textSize="18sp"
+                            android:maxLength="30"
                             tools:text="Salas Soto" />
                     </LinearLayout>
                 </LinearLayout>
@@ -110,6 +112,7 @@
                     android:layout_marginBottom="15dp"
                     android:textColor="@color/black"
                     android:textSize="18sp"
+                    android:maxLength="150"
                     tools:text="Juan" />
 
 
