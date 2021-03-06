@@ -50,8 +50,6 @@ public class MenuLateralActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
-
-
         setContentView(R.layout.activity_menu_lateral);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -76,13 +74,21 @@ public class MenuLateralActivity extends AppCompatActivity {
         NavGraph graph = navInflater.inflate(R.navigation.mobile_navigation);
         Bundle extras = getIntent().getExtras();
         boolean registrarse = false;
+        String tipoAcceso = "";
         if (extras != null) {
             registrarse = extras.getBoolean("registrarse");
+            tipoAcceso = getIntent().getExtras().getString("TIPO_ACCESO");
         }
-        if(registrarse){
+        if (registrarse) {
             graph.setStartDestination(R.id.nav_categorias);
-        }else{
-            graph.setStartDestination(R.id.nav_gallery);
+        } else {
+            switch (tipoAcceso) {
+                case "EMPRESA":
+                    graph.setStartDestination(R.id.nav_directorio_empresas);
+                    break;
+                default:
+                    graph.setStartDestination(R.id.nav_gallery);
+            }
         }
         navController.setGraph(graph);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
@@ -90,8 +96,8 @@ public class MenuLateralActivity extends AppCompatActivity {
         verificarRegistroEmprendedor();
     }
 
-    
-    public void verificarRegistroEmprendedor(){
+
+    public void verificarRegistroEmprendedor() {
         final DatabaseReference mEmprendedorReference;
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -99,9 +105,9 @@ public class MenuLateralActivity extends AppCompatActivity {
         mEmprendedorReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot itemSpanshot: dataSnapshot.getChildren()) {
-                    String idEmprendedor = (String)itemSpanshot.child("id_emprendedor").getValue();
-                    if(idEmprendedor!=null && idEmprendedor.equals(user.getUid())){
+                for (DataSnapshot itemSpanshot : dataSnapshot.getChildren()) {
+                    String idEmprendedor = (String) itemSpanshot.child("id_emprendedor").getValue();
+                    if (idEmprendedor != null && idEmprendedor.equals(user.getUid())) {
                         MenuItem registrarEmprendedorMenuItem = navigationView.getMenu().findItem(R.id.nav_categorias);
                         registrarEmprendedorMenuItem.setVisible(false);
                         break;
