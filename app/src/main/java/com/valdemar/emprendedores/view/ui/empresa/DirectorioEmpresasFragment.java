@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.view.ui.proyectos.lista.Empresa;
 import com.valdemar.emprendedores.view.ui.proyectos.lista.EmpresaViewHolder;
@@ -38,12 +39,10 @@ public class DirectorioEmpresasFragment extends Fragment {
         recyclerViewList.setHasFixedSize(true);
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Empresa");
+        Query query = mDatabase.orderByChild("nombre");
 
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-
-        layoutManager.setReverseLayout(true);
-        layoutManager.setStackFromEnd(true);
 
         recyclerViewList.setLayoutManager(layoutManager);
 
@@ -52,7 +51,7 @@ public class DirectorioEmpresasFragment extends Fragment {
                         Empresa.class,
                         R.layout.design_structure_relato_menu_2,
                         EmpresaViewHolder.class,
-                        mDatabase
+                        query
                 ) {
                     @Override
                     protected void populateViewHolder(EmpresaViewHolder empresaViewHolder, Empresa modelo, int i) {
