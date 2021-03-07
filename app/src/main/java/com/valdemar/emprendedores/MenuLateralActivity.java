@@ -1,35 +1,22 @@
 package com.valdemar.emprendedores;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Menu;
-import android.widget.Toast;
+import android.widget.Switch;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.internal.NavigationMenu;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.valdemar.emprendedores.view.CategoriasFragment;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.NavGraph;
 import androidx.navigation.NavInflater;
 import androidx.navigation.Navigation;
@@ -66,60 +53,56 @@ public class MenuLateralActivity extends AppCompatActivity {
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_categorias,
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_registrar_empresa, R.id.nav_directorio_empresas)
+                R.id.nav_perfil_emprendedor,
+                R.id.nav_home,
+                R.id.nav_gallery,
+                R.id.nav_mis_proyectos_creados,
+                R.id.nav_mis_proyectos_suscritos,
+                R.id.nav_mis_interesados,
+                R.id.nav_registrar_empresa,
+                R.id.nav_perfil_empresa,
+                R.id.nav_directorio_empresas)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavInflater navInflater = navController.getNavInflater();
         NavGraph graph = navInflater.inflate(R.navigation.mobile_navigation);
         Bundle extras = getIntent().getExtras();
-        boolean registrarse = false;
-        String tipoAcceso = "";
         if (extras != null) {
-            registrarse = extras.getBoolean("registrarse");
-            tipoAcceso = getIntent().getExtras().getString("TIPO_ACCESO");
-        }
-        if (registrarse) {
-            graph.setStartDestination(R.id.nav_categorias);
-        } else {
-            switch (tipoAcceso) {
+            String requiereRegistro = "";
+            requiereRegistro = getIntent().getExtras().getString("REQUIERE_REGISTRO");
+            switch (requiereRegistro) {
                 case "EMPRESA":
-                    graph.setStartDestination(R.id.nav_directorio_empresas);
+                    graph.setStartDestination(R.id.nav_registrar_empresa);
+                    break;
+                case "EMPRENDEDOR":
+                    graph.setStartDestination(R.id.nav_categorias);
                     break;
                 default:
+                    String tipoAcceso = "";
+                    tipoAcceso = getIntent().getExtras().getString("TIPO_ACCESO");
                     graph.setStartDestination(R.id.nav_gallery);
+                    if(tipoAcceso.equalsIgnoreCase("Emprendedor"))
+                        ocultarOpcionRegistroEmprendedor();
+                    else
+                        ocultarOpcionRegistroEmpresa();
             }
+        } else {
+            graph.setStartDestination(R.id.nav_categorias);
         }
         navController.setGraph(graph);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        verificarRegistroEmprendedor();
     }
 
+    public void ocultarOpcionRegistroEmprendedor() {
+        MenuItem registrarEmprendedorMenuItem = navigationView.getMenu().findItem(R.id.nav_categorias);
+        registrarEmprendedorMenuItem.setVisible(false);
+    }
 
-    public void verificarRegistroEmprendedor() {
-        final DatabaseReference mEmprendedorReference;
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        mEmprendedorReference = FirebaseDatabase.getInstance().getReference().child("Emprendedor");
-        mEmprendedorReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot itemSpanshot : dataSnapshot.getChildren()) {
-                    String idEmprendedor = (String) itemSpanshot.child("id_emprendedor").getValue();
-                    if (idEmprendedor != null && idEmprendedor.equals(user.getUid())) {
-                        MenuItem registrarEmprendedorMenuItem = navigationView.getMenu().findItem(R.id.nav_categorias);
-                        registrarEmprendedorMenuItem.setVisible(false);
-                        break;
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-
+    public void ocultarOpcionRegistroEmpresa() {
+        MenuItem registrarEmpresaMenuItem = navigationView.getMenu().findItem(R.id.nav_registrar_empresa);
+        registrarEmpresaMenuItem.setVisible(false);
     }
 
     @Override

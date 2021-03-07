@@ -11,7 +11,7 @@
         <item
             android:id="@+id/nav_perfil_emprendedor"
             android:icon="@drawable/person_ic"
-            android:title="Perfil" />
+            android:title="Perfil Emprendedor" />
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_camera"
@@ -47,6 +47,11 @@
                 android:id="@+id/nav_registrar_empresa"
                 android:icon="@android:drawable/ic_menu_add"
                 android:title="Registrar Empresa" />
+
+            <item
+                android:id="@+id/nav_perfil_empresa"
+                android:icon="@drawable/person_ic"
+                android:title="Perfil Empresa" />
 
             <item
                 android:id="@+id/nav_directorio_empresas"

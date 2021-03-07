@@ -42,6 +42,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
+import com.valdemar.emprendedores.MenuLateralActivity;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.model.Emprendedor;
 import com.valdemar.emprendedores.view.ui.dialog.DatePickerFragment;
@@ -354,6 +355,7 @@ public class RegistrarFragment extends Fragment {
                                         newPost.child("fechaRegistro").setValue(sdfFechaRegistro.format(todayDate));
 
                                         mProgresDialog.dismiss();
+                                        ((MenuLateralActivity)getActivity()).ocultarOpcionRegistroEmprendedor();
                                         Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.next_action_to_lista);
                                     }
                                 });
@@ -397,6 +399,7 @@ public class RegistrarFragment extends Fragment {
                         Date todayDate = new Date();
                         newPost.child("fechaRegistro").setValue(sdfFechaRegistro.format(todayDate));
                         mProgresDialog.dismiss();
+                        ((MenuLateralActivity)getActivity()).ocultarOpcionRegistroEmprendedor();
                         Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.next_action_to_lista);
 
 

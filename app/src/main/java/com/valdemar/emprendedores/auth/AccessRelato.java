@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -43,6 +44,11 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.valdemar.emprendedores.MenuLateralActivity;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.util.ValidarEmail;
@@ -428,10 +434,7 @@ public class AccessRelato extends AppCompatActivity {
         }
 
         mProgress.dismiss();
-        Intent i = new Intent(AccessRelato.this, ClasificacionActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(i);
-        finish();
+        verificarRegistroTipoUsuario("Emprendedor", "id_emprendedor");
 
         Log.v("accesoPermitido", "Ingresando");
         showSnackBar("Acceso Permitido ...");
@@ -440,6 +443,52 @@ public class AccessRelato extends AppCompatActivity {
         prefs_notificacion.edit().putBoolean("prefs_notificacion", true).commit();
 
 
+    }
+
+    public void verificarRegistroTipoUsuario(final String nodo, final String idTipoUsuario){
+        final DatabaseReference mEmprendedorReference;
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        mEmprendedorReference = FirebaseDatabase.getInstance().getReference().child(nodo);
+        mEmprendedorReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot itemSpanshot: dataSnapshot.getChildren()) {
+                    String idUser = (String)itemSpanshot.child(idTipoUsuario).getValue();
+                    if(idUser!=null && idUser.equals(user.getUid())){
+                        redireccionarListaProyectos(nodo);
+                        return;
+                    }
+                }
+                if(nodo.equals("Empresa")){
+                    redireccionarMenuCondicional();
+                }
+                else
+                    verificarRegistroTipoUsuario("Empresa", "id_user");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void redireccionarMenuCondicional(){
+        Intent i = new Intent(AccessRelato.this, ClasificacionActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(i);
+        finish();
+    }
+
+    private void redireccionarListaProyectos(String opcion){
+        Intent i = new Intent(AccessRelato.this, MenuLateralActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        i.putExtra("ARG_OCULTAR_OPCION", opcion);
+        startActivity(i);
+        finish();
     }
 
     public void showSnackBar(String msg) {

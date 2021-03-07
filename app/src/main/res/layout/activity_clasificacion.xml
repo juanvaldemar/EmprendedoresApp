@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
         android:gravity="center_horizontal"
-        android:text="Elige una opción"
+        android:text="Yo soy"
         android:textColor="@color/black"
         android:textSize="25sp" />
 
@@ -27,12 +27,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginLeft="50dp"
+            android:layout_marginRight="100dp"
+            android:layout_marginLeft="100dp"
             android:background="@color/black"
             android:gravity="center"
             android:textAllCaps="false"
-            android:text="Entrar como Emprendedor"
+            android:text="Emprendedor"
             android:textColor="@color/white"
             android:textSize="18sp"
 
@@ -43,15 +43,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginLeft="50dp"
+            android:layout_marginRight="100dp"
+            android:layout_marginLeft="100dp"
             android:background="@color/black"
             android:gravity="center"
             android:textAllCaps="false"
-            android:text="Entrar como Empresa"
+            android:text="Empresa"
             android:textColor="@color/white"
             android:textSize="18sp"
-
             />
 
     </LinearLayout>

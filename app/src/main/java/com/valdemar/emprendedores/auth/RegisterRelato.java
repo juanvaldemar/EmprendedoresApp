@@ -173,8 +173,7 @@ public class RegisterRelato extends AppCompatActivity {
                                     });
 
                             mProgress.dismiss();
-
-                            createRegister();
+                            redireccionarMenuCondicional();
                             showSnackBar("Creando Cuenta");
 
                         } else {
@@ -186,12 +185,9 @@ public class RegisterRelato extends AppCompatActivity {
                 });
     }
 
-    public void createRegister(){
-    //    Intent i = new Intent(RegisterRelato.this, MenuLateralActivity.class);
+    public void redireccionarMenuCondicional(){
         Intent i = new Intent(RegisterRelato.this, ClasificacionActivity.class);
-
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        i.putExtra("registrarse",true);
         finish();
         startActivity(i);
 

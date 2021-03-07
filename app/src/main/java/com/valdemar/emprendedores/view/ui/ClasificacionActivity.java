@@ -31,7 +31,7 @@ public class ClasificacionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(ClasificacionActivity.this, MenuLateralActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                i.putExtra("TIPO_ACCESO", "EMPRENDEDOR");
+                i.putExtra("REQUIERE_REGISTRO", "EMPRENDEDOR");
                 startActivity(i);
                 finish();
             }
@@ -42,7 +42,7 @@ public class ClasificacionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(ClasificacionActivity.this, MenuLateralActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                i.putExtra("TIPO_ACCESO", "EMPRESA");
+                i.putExtra("REQUIERE_REGISTRO", "EMPRESA");
                 startActivity(i);
                 finish();
             }

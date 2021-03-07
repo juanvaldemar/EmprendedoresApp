@@ -38,6 +38,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
+import com.valdemar.emprendedores.MenuLateralActivity;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.model.CategoriaProyecto;
 import com.valdemar.emprendedores.model.Empresa;
@@ -384,6 +385,7 @@ public class RegistrarEmpresaFragment extends Fragment {
             mDatabaseEmpresa.updateChildren(proyectoHashMap);
         }
         mProgress.show();
+        ((MenuLateralActivity)getActivity()).ocultarOpcionRegistroEmpresa();
         Navigation.findNavController(mRoot).navigate(R.id.next_action_to_lista_empresas);
         mProgress.dismiss();
     }
