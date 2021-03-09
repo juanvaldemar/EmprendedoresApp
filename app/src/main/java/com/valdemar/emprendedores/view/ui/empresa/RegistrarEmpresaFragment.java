@@ -83,6 +83,7 @@ public class RegistrarEmpresaFragment extends Fragment {
     private Uri mVideoUri = null;
     private boolean mFotoSubida;
     private boolean mVideoSubido;
+    private String mUriFotoVideoAnterior = "";
 
     private DatabaseReference mDatabaseEmpresa = FirebaseDatabase.getInstance().getReference().child("Empresa");
     FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -194,6 +195,7 @@ public class RegistrarEmpresaFragment extends Fragment {
 
     private void cargarDataEmpresa() {
         mImageUri = Uri.parse(mEmpresa.getImagen());
+        mUriFotoVideoAnterior = mImageUri.toString();
         String videoSubido = mEmpresa.getVideoSubido();
         if(videoSubido.equalsIgnoreCase("true")) {
             mImgFoto.setVisibility(View.GONE);
@@ -324,7 +326,7 @@ public class RegistrarEmpresaFragment extends Fragment {
         hideSoftKeyboard();
         if (validarCampos()) {
             final Empresa nuevoRegistroEmpresa = initDataEmpresa();
-            if (mFotoSubida || mVideoSubido) {
+            if (!mImageUri.toString().equals(mUriFotoVideoAnterior)) {
                 mStorage = FirebaseStorage.getInstance().getReference();
                 final StorageReference filepath = mStorage.child("Empresas_images").child(mImageUri.getLastPathSegment());
                 filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -341,6 +343,7 @@ public class RegistrarEmpresaFragment extends Fragment {
                     }
                 });
             } else {
+                nuevoRegistroEmpresa.setImagen(mImageUri.toString());
                 guardarEmpresa(nuevoRegistroEmpresa);
             }
 
