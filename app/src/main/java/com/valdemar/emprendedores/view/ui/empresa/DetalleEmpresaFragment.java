@@ -102,6 +102,7 @@ public class DetalleEmpresaFragment extends Fragment {
                 cargarDataEmpresaByIdUser(query);
             } else {
                 Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_DetalleEmpresaFragment_to_registrarEmpresaFragment);
+                Toast.makeText(getActivity(), "Primero debe registrarse como empresa", Toast.LENGTH_LONG).show();
             }
 
         }
@@ -189,6 +190,7 @@ public class DetalleEmpresaFragment extends Fragment {
                     populateData(dataSnapshot.getChildren().iterator().next());
                 } else {
                     Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_DetalleEmpresaFragment_to_registrarEmpresaFragment);
+                    Toast.makeText(getActivity(), "Primero debe registrarse como empresa", Toast.LENGTH_LONG).show();
                 }
 
             }
