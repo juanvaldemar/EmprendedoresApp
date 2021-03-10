@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +18,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.valdemar.emprendedores.R;
+import com.valdemar.emprendedores.view.ui.proyectos.lista.Category;
+import com.valdemar.emprendedores.view.ui.proyectos.lista.CategoryViewHolder;
 import com.valdemar.emprendedores.view.ui.proyectos.lista.Empresa;
 import com.valdemar.emprendedores.view.ui.proyectos.lista.EmpresaViewHolder;
 
 public class DirectorioEmpresasFragment extends Fragment {
 
     private RecyclerView recyclerViewList;
+    private RecyclerView mRecyclerEpisodiosPerdidos;
     private DatabaseReference mDatabase;
+    private DatabaseReference mDatabaseCategorias;
 
     public DirectorioEmpresasFragment() {
         // Required empty public constructor
@@ -41,12 +46,12 @@ public class DirectorioEmpresasFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Empresa");
         Query query = mDatabase.orderByChild("nombre");
 
+        // RecyclerView de la Lista de Empresas
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false);
 
         recyclerViewList.setLayoutManager(layoutManager);
-
-        FirebaseRecyclerAdapter<Empresa, EmpresaViewHolder> firebaseRecyclerAdaptermRecyclerEpisodiosPerdidos =
+        FirebaseRecyclerAdapter<Empresa, EmpresaViewHolder> firebaseEmpresasRecyclerAdapter =
                 new FirebaseRecyclerAdapter<Empresa, EmpresaViewHolder>(
                         Empresa.class,
                         R.layout.design_structure_relato_menu_2,
@@ -76,7 +81,57 @@ public class DirectorioEmpresasFragment extends Fragment {
                     }
                 };
 
-        recyclerViewList.setAdapter(firebaseRecyclerAdaptermRecyclerEpisodiosPerdidos);
+        recyclerViewList.setAdapter(firebaseEmpresasRecyclerAdapter);
+
+        // RecyclerView de las Categorias de las empresas
+        LinearLayoutManager layoutManagermRecyclerEpisodiosPerdidos
+                = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+
+        mRecyclerEpisodiosPerdidos = (RecyclerView) root.findViewById(R.id.asd);
+        mRecyclerEpisodiosPerdidos.setHasFixedSize(true);
+        mRecyclerEpisodiosPerdidos.setLayoutManager(layoutManagermRecyclerEpisodiosPerdidos);
+
+        mDatabaseCategorias = FirebaseDatabase.getInstance().getReference().child("categoriasEmpresa");
+
+        FirebaseRecyclerAdapter<Category, CategoryViewHolder> firebaseRecyclerAdaptermRecyclerEpisodiosPerdidos =
+                new FirebaseRecyclerAdapter<Category, CategoryViewHolder>(
+                        Category.class,
+                        R.layout.album_card,
+                        CategoryViewHolder.class ,
+                        mDatabaseCategorias
+                ) {
+                    @Override
+                    protected void populateViewHolder(CategoryViewHolder viewHolder, final Category model, int position) {
+                        //post_key = getRef(position).getKey();
+                        viewHolder.setTitle(model.getCategoria());
+                        viewHolder.setSendBy(model.getCategoria());
+
+                        viewHolder.setImage(getActivity().getApplicationContext(),
+                                model.getImagen());
+
+                        Log.v("Seguimiento","dentro");
+
+                        /*viewHolder.mViewStructure_h.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                allSpook(mPost_categoria,listener);
+                                spinner5.setSelection(0);
+                                spinner6.setSelection(0);
+                                spinner6.setVisibility(View.GONE);
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mAdapter.getFilter().filter(model.getCategoria());
+                                    }
+                                },500);
+
+                            }
+                        });*/
+
+                    }
+                };
+
+        mRecyclerEpisodiosPerdidos.setAdapter(firebaseRecyclerAdaptermRecyclerEpisodiosPerdidos);
         return root;
 
     }

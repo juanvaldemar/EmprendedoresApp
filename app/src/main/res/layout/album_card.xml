@@ -13,17 +13,11 @@
     <ImageView
         android:id="@+id/thumbnail"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:padding="10dp"
-        android:foregroundGravity="center"
-        android:scaleType="centerCrop" />
+        android:layout_height="83dp"
+        android:background="@color/gray"
+        android:padding="8dp"
+        android:foregroundGravity="center" />
 
-    <FrameLayout
-        android:id="@+id/item_recycler_structure_background_h"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha=".0"
-        android:background="@color/black" />
 
     <TextView
         android:id="@+id/title_album"
@@ -73,11 +67,10 @@
             android:id="@+id/send_by_album"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
             android:gravity="center"
             android:text="Publicado por:"
             android:textColor="#dadada"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 
