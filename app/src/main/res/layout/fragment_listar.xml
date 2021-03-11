@@ -11,6 +11,22 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/mSearch"
+            android:layout_width="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content"
+            android:padding="6dp"
+            app:closeIcon="@drawable/com_facebook_close"
+            app:searchIcon="@drawable/ic_baseline_search_24"
+            app:searchHintIcon="@drawable/ic_baseline_search_24"
+            app:queryHint="Buscar empresa"
+            android:textAlignment="center"
+            app:iconifiedByDefault="false"
+            android:layout_alignParentBottom="true"
+            android:background="#3a3937"
+            android:text="" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/asd"
             android:layout_width="match_parent"

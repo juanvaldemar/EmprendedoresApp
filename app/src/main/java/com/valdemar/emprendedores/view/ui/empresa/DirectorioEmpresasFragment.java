@@ -1,7 +1,10 @@
 package com.valdemar.emprendedores.view.ui.empresa;
 
+import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
@@ -28,8 +32,11 @@ public class DirectorioEmpresasFragment extends Fragment {
     private RecyclerView mRecyclerListaEmpresas;
     private RecyclerView mRecyclerCategoriasEmpresa;
     private DatabaseReference mDatabaseEmpresas;
+    private SearchView mSearch;
     private DatabaseReference mDatabaseCategoriasEmpresa;
     private FirebaseRecyclerAdapter<Empresa, EmpresaViewHolder> firebaseEmpresasRecyclerAdapter;
+
+    private ProgressDialog mProgress;
 
     public DirectorioEmpresasFragment() {
         // Required empty public constructor
@@ -41,6 +48,46 @@ public class DirectorioEmpresasFragment extends Fragment {
         // Inflate the layout for this fragment
 
         final View root = inflater.inflate(R.layout.fragment_listar, container, false);
+
+        mSearch = (SearchView) root.findViewById(R.id.mSearch);
+
+        final EditText txtSearch = ((EditText)mSearch.findViewById(R.id.search_src_text));
+        txtSearch.setHintTextColor(Color.GRAY);
+        txtSearch.setTextColor(Color.WHITE);
+        txtSearch.setLinkTextColor(Color.GRAY);
+        txtSearch.setPadding(10,0,0,0);
+
+        mSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(final String newText) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Query queryBusquedaEmpresa = mDatabaseEmpresas.orderByChild("nombre")
+                                .startAt(newText).endAt(newText + "\uf8ff");
+
+                        setFirebaseEmpresasRecyclerAdapter(queryBusquedaEmpresa, root);
+                    }
+                },600);
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+
+            }
+        });
+
+        mSearch.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                return false;
+            }
+        });
+
         mRecyclerListaEmpresas = (RecyclerView) root.findViewById(R.id.recyclerViewList);
         mRecyclerListaEmpresas.setHasFixedSize(true);
 
@@ -94,6 +141,11 @@ public class DirectorioEmpresasFragment extends Fragment {
                 };
 
         mRecyclerCategoriasEmpresa.setAdapter(firebaseRecyclerAdaptermRecyclerEpisodiosPerdidos);
+
+        mProgress = new ProgressDialog(getActivity());
+        mProgress.setMessage("Cargando ...");
+        mProgress.setCancelable(false);
+        mProgress.show();
         return root;
 
     }
@@ -127,6 +179,7 @@ public class DirectorioEmpresasFragment extends Fragment {
                                 }, 100);
                             }
                         });
+                        mProgress.dismiss();
                     }
                 };
 
