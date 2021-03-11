@@ -100,7 +100,6 @@ public class RegistrarEmpresaFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mProgress = new ProgressDialog(getActivity());
         if (getArguments() != null) {
             String jsonString = getArguments().getString("ARG_EMPRESA_SELECCIONADA");
             if (!TextUtils.isEmpty(jsonString)) {
@@ -327,6 +326,10 @@ public class RegistrarEmpresaFragment extends Fragment {
         if (validarCampos()) {
             final Empresa nuevoRegistroEmpresa = initDataEmpresa();
             if (!mImageUri.toString().equals(mUriFotoVideoAnterior)) {
+                mProgress = new ProgressDialog(getActivity());
+                mProgress.setMessage("Registrando ...");
+                mProgress.setCancelable(false);
+                mProgress.show();
                 mStorage = FirebaseStorage.getInstance().getReference();
                 final StorageReference filepath = mStorage.child("Empresas_images").child(mImageUri.getLastPathSegment());
                 filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -387,7 +390,6 @@ public class RegistrarEmpresaFragment extends Fragment {
             proyectoHashMap.put(mKeyEmpresa, nuevoRegistroEmpresa);
             mDatabaseEmpresa.updateChildren(proyectoHashMap);
         }
-        mProgress.show();
         ((MenuLateralActivity)getActivity()).ocultarOpcionRegistroEmpresa();
         Navigation.findNavController(mRoot).navigate(R.id.next_action_to_lista_empresas);
         mProgress.dismiss();
