@@ -88,8 +88,6 @@ public class MenuLateralActivity extends AppCompatActivity {
                     else
                         ocultarOpcionRegistroEmpresa();
             }
-        } else {
-            graph.setStartDestination(R.id.nav_categorias);
         }
         navController.setGraph(graph);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
