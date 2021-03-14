@@ -21,6 +21,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -63,6 +64,7 @@ public class DetalleEmpresaFragment extends Fragment {
 
     private VideoView mVideoView;
     private ImageView mImage_paralax;
+    private FloatingActionButton mShareEmpresa;
 
     private ImageButton mButtonFB;
     private ImageButton mButtonIG;
@@ -107,7 +109,7 @@ public class DetalleEmpresaFragment extends Fragment {
             }
 
         }
-        ((MenuLateralActivity)getActivity()).activarBackPressed();
+        ((MenuLateralActivity) getActivity()).activarBackPressed();
         return root;
     }
 
@@ -162,6 +164,18 @@ public class DetalleEmpresaFragment extends Fragment {
         mImage_paralax = (ImageView) root.findViewById(R.id.image_paralax);
         mBtnActualizarProyecto = root.findViewById(R.id.btn_editar_empresa);
         mBtnActualizarProyecto.setVisibility(View.GONE);
+        mShareEmpresa = (FloatingActionButton) root.findViewById(R.id.fab_share_empresa);
+        mShareEmpresa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "Hola, te comparto esta Empresa : \n"
+                        + mEmpresa.getNombre() +  "\nPara verla, descárgate el App StartO en el siguiente enlace : \n www.google.play.com");
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+            }
+        });
     }
 
     private void cargarDataEmpresaByNodo(String idNodoEmpresa) {

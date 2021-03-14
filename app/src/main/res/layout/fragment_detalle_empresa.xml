@@ -49,12 +49,12 @@
                 </FrameLayout>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fav_favorite"
+                    android:id="@+id/fab_share_empresa"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|bottom"
                     android:src="@drawable/ic_share"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:contentDescription="Compartir empresa"
                     android:layout_margin="16dp" />
 
