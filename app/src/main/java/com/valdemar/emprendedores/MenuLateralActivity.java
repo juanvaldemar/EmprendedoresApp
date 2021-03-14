@@ -31,6 +31,7 @@ public class MenuLateralActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private DatabaseReference mDatabase;
     NavigationView navigationView;
+    private boolean mBackPressedActivado = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +111,20 @@ public class MenuLateralActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mBackPressedActivado){
+            super.onBackPressed();
+            mBackPressedActivado = false;
+        }
+
+        //create a dialog to ask yes no question whether or not the user wants to exit
+    }
+
+    public void activarBackPressed(){
+        mBackPressedActivado = true;
     }
 
 }

@@ -30,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.valdemar.emprendedores.MenuLateralActivity;
 import com.valdemar.emprendedores.R;
 import com.valdemar.emprendedores.model.Emprendedor;
 import com.valdemar.emprendedores.model.Empresa;
@@ -106,7 +107,7 @@ public class DetalleEmpresaFragment extends Fragment {
             }
 
         }
-
+        ((MenuLateralActivity)getActivity()).activarBackPressed();
         return root;
     }
 

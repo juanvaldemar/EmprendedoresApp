@@ -189,7 +189,7 @@ public class DescBlankFragment extends Fragment {
         }
 
 
-
+        ((MenuLateralActivity)getActivity()).activarBackPressed();
 
         return root;
     }

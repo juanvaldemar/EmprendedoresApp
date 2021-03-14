@@ -486,7 +486,8 @@ public class AccessRelato extends AppCompatActivity {
     private void redireccionarListaProyectos(String opcion){
         Intent i = new Intent(AccessRelato.this, MenuLateralActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        i.putExtra("ARG_OCULTAR_OPCION", opcion);
+        i.putExtra("REQUIERE_REGISTRO", opcion);
+        i.putExtra("TIPO_ACCESO", opcion);
         startActivity(i);
         finish();
     }
