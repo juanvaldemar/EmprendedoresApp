@@ -53,8 +53,8 @@ public class ProyectosFragment extends Fragment {
 
 
     private SearchView mSearch;
-    private RecyclerView rvSearch,mRecyclerEpisodiosPerdidos;
-    private DatabaseReference mRef,mDatabase;
+    private RecyclerView rvSearch, mRecyclerEpisodiosPerdidos;
+    private DatabaseReference mRef, mDatabase;
     private SearchPlaceAdapter mAdapter;
     ArrayList<ItemFeed> arrayLists = new ArrayList<>();
 
@@ -63,12 +63,13 @@ public class ProyectosFragment extends Fragment {
 
     private String tmp = "";
 
-    private Spinner spinner5,spinner6;
+    private Spinner spinner5, spinner6;
     private ProgressDialog mProgress;
 
     private String post_key;
     private SharedPreferences prefs_notificacion = null;
     private DatabaseReference mDatabase2;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -78,36 +79,36 @@ public class ProyectosFragment extends Fragment {
         FirebaseMessaging.getInstance().subscribeToTopic("sendsuscrito");
         FirebaseMessaging.getInstance().subscribeToTopic("sendsuscrito2");
         prefs_notificacion = getActivity().getSharedPreferences("com.valdemar.spook.intereses", getActivity().MODE_PRIVATE);
-        String intereses_emprendedor = prefs_notificacion.getString("intereses","");
+        String intereses_emprendedor = prefs_notificacion.getString("intereses", "");
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseMessaging.getInstance().subscribeToTopic("Proyectos");
-        if(intereses_emprendedor !=null){
+        if (intereses_emprendedor != null) {
             String[] segmentacionCanalSplit = intereses_emprendedor.split(",");
 
             for (String i : segmentacionCanalSplit) {
-                String i_ = i.replace("[","").trim();
-                String i__ = i_.replace("]","").trim();
-                if(i__.equalsIgnoreCase("")){
+                String i_ = i.replace("[", "").trim();
+                String i__ = i_.replace("]", "").trim();
+                if (i__.equalsIgnoreCase("")) {
                     FirebaseMessaging.getInstance().subscribeToTopic(i__);
                 }
             }
-        }else{
+        } else {
             mDatabase2.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    for (DataSnapshot itemSpanshot: dataSnapshot.getChildren()) {
-                        String idEmprendedor = (String)itemSpanshot.child("id_emprendedor").getValue();
-                        String intereses_emprendedor = (String)itemSpanshot.child("intereses").getValue();
-                        if(user.getUid().equalsIgnoreCase(idEmprendedor)) {
+                    for (DataSnapshot itemSpanshot : dataSnapshot.getChildren()) {
+                        String idEmprendedor = (String) itemSpanshot.child("id_emprendedor").getValue();
+                        String intereses_emprendedor = (String) itemSpanshot.child("intereses").getValue();
+                        if (user.getUid().equalsIgnoreCase(idEmprendedor)) {
                             if (intereses_emprendedor != null) {
 
                                 String[] segmentacionCanalSplit = intereses_emprendedor.split(",");
 
                                 for (String i : segmentacionCanalSplit) {
-                                    String i_ = i.replace("[","");
-                                    String i__ = i_.replace("]","");
-                                    if(i__.trim().equalsIgnoreCase("")){
+                                    String i_ = i.replace("[", "");
+                                    String i__ = i_.replace("]", "");
+                                    if (i__.trim().equalsIgnoreCase("")) {
                                         FirebaseMessaging.getInstance().subscribeToTopic(i__);
                                     }
                                 }
@@ -140,7 +141,7 @@ public class ProyectosFragment extends Fragment {
 
             @Override
             public void modalIniciarDetail(String id) {
-                viewDetails(id,view);
+                viewDetails(id, view);
 
             }
 
@@ -151,15 +152,11 @@ public class ProyectosFragment extends Fragment {
 
         };
 
-        initView(view,listener);
-
-
-
+        initView(view, listener);
 
 
         return view;
     }
-
 
 
     private void initView(final View view, final IModal listener) {
@@ -191,17 +188,17 @@ public class ProyectosFragment extends Fragment {
 
         mRef = FirebaseDatabase.getInstance().getReference().child("Proyectos");
         //mRef.keepSynced(true);
-        allSpook(mPost_categoria,listener);
+        allSpook(mPost_categoria, listener);
 
 
         //searchView of place
         mSearch = (SearchView) view.findViewById(R.id.mSearch);
 
-        final EditText txtSearch = ((EditText)mSearch.findViewById(R.id.search_src_text));
+        final EditText txtSearch = ((EditText) mSearch.findViewById(R.id.search_src_text));
         txtSearch.setHintTextColor(Color.WHITE);
         txtSearch.setTextColor(Color.WHITE);
         txtSearch.setLinkTextColor(Color.WHITE);
-        txtSearch.setPadding(10,0,0,0);
+        txtSearch.setPadding(10, 0, 0, 0);
         initCategoria(view);
 
         mSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -209,31 +206,31 @@ public class ProyectosFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(final String newText) {
                 System.out.println(newText);
-                allSpook(mPost_categoria,listener);
+                allSpook(mPost_categoria, listener);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(mAdapter!=null){
-                            if(!newText.isEmpty()){
+                        if (mAdapter != null) {
+                            if (!newText.isEmpty()) {
                                 mAdapter.getFilter().filter(newText);
-                            }else{
-                                allSpook(mPost_categoria,listener);
+                            } else {
+                                allSpook(mPost_categoria, listener);
 
                             }
                         }
                     }
-                },600);
+                }, 600);
 
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(newText.length() == 0){
+                if (newText.length() == 0) {
                     System.out.println("asdasdasd");
                 }
-                if(newText.isEmpty()){
-                    allSpook(mPost_categoria,listener);
+                if (newText.isEmpty()) {
+                    allSpook(mPost_categoria, listener);
 
                 }
                 return false;
@@ -244,11 +241,10 @@ public class ProyectosFragment extends Fragment {
         mSearch.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                allSpook(mPost_categoria,listener);
+                allSpook(mPost_categoria, listener);
                 return false;
             }
         });
-
 
 
         mRecyclerEpisodiosPerdidos = (RecyclerView) view.findViewById(R.id.asd);
@@ -260,8 +256,6 @@ public class ProyectosFragment extends Fragment {
         LinearLayoutManager layoutManagermRecyclerEpisodiosPerdidos
                 = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
 
-        layoutManagermRecyclerEpisodiosPerdidos.setReverseLayout(true);
-        layoutManagermRecyclerEpisodiosPerdidos.setStackFromEnd(true);
 
         mRecyclerEpisodiosPerdidos.setLayoutManager(layoutManagermRecyclerEpisodiosPerdidos);
 
@@ -275,18 +269,17 @@ public class ProyectosFragment extends Fragment {
                     @Override
                     protected void populateViewHolder(CategoryViewHolder viewHolder, final Category model, int position) {
                         post_key = getRef(position).getKey();
-                        viewHolder.setTitle(model.getTitulo());
-                        viewHolder.setSendBy(model.getTitulo());
+                        viewHolder.setTitle(model.getCategoria());
+                        viewHolder.setSendBy(model.getCategoria());
 
-                        viewHolder.setImage(getActivity().getApplicationContext(),
-                                model.getImagen());
+                        viewHolder.setImage(getActivity().getApplicationContext(), obtenerCategoriaImagen(model.getCategoria()));
 
-                        Log.v("Seguimiento","dentro");
+                        Log.v("Seguimiento", "dentro");
 
                         viewHolder.mViewStructure_h.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                allSpook(mPost_categoria,listener);
+                                allSpook(mPost_categoria, listener);
                                 spinner5.setSelection(0);
                                 spinner6.setSelection(0);
                                 spinner6.setVisibility(View.GONE);
@@ -295,7 +288,7 @@ public class ProyectosFragment extends Fragment {
                                     public void run() {
                                         mAdapter.getFilter().filter(model.getCategoria());
                                     }
-                                },500);
+                                }, 500);
 
                             }
                         });
@@ -306,15 +299,32 @@ public class ProyectosFragment extends Fragment {
         mRecyclerEpisodiosPerdidos.setAdapter(firebaseRecyclerAdaptermRecyclerEpisodiosPerdidos);
 
 
-
     }
 
-    private void viewDetails(String post_key, View view){
+    private int obtenerCategoriaImagen(String categoria) {
+
+        switch (categoria){
+            case "Comida": return R.drawable.ic_categoria_comida;
+            case "Ropa": return R.drawable.ic_categoria_ropa;
+            case "Tecnologia": return R.drawable.ic_categoria_tecnologia;
+            case "Salud": return R.drawable.ic_categoria_salud;
+            case "Entretenimiento": return R.drawable.ic_categoria_entretenimiento;
+            case "Deportes": return R.drawable.ic_categoria_deportes;
+            case "Videojuegos": return R.drawable.ic_categoria_videojuegos;
+            case "Consultorias": return R.drawable.ic_categoria_consultorias;
+            case "Transportes": return R.drawable.ic_categoria_transportes;
+            case "Hogar": return R.drawable.ic_categoria_hogar;
+            case "Otros": return R.drawable.ic_categoria_otros;
+        }
+        return R.drawable.ic_categoria_comida;
+    }
+
+    private void viewDetails(String post_key, View view) {
 
         Bundle args = new Bundle();
         args.putString("blog_id", post_key);
 
-        Navigation.findNavController(view).navigate(R.id.next_action_desc,args);
+        Navigation.findNavController(view).navigate(R.id.next_action_desc, args);
 
 
     }
@@ -341,7 +351,7 @@ public class ProyectosFragment extends Fragment {
 
             @Override
             public void modalIniciarDetail(String id) {
-                viewDetails(id,view);
+                viewDetails(id, view);
             }
 
             @Override
@@ -351,37 +361,30 @@ public class ProyectosFragment extends Fragment {
 
         };
 
-        spinner5.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-
+        spinner5.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
 
                 String selectedItem = parent.getItemAtPosition(position).toString();
-                if(!selectedItem.equalsIgnoreCase("país"))
-                {
-                    if(!tmp.isEmpty()){
-                        if(!tmp.equalsIgnoreCase(selectedItem)){
+                if (!selectedItem.equalsIgnoreCase("país")) {
+                    if (!tmp.isEmpty()) {
+                        if (!tmp.equalsIgnoreCase(selectedItem)) {
                             spinner6.setSelection(0);
                         }
                     }
 
                     tmp = selectedItem;
-                    allSpook(mPost_categoria,listener);
+                    allSpook(mPost_categoria, listener);
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             mAdapter.getFilter().filter(spinner5.getSelectedItem().toString());
                             spinner6.setVisibility(View.VISIBLE);
-                            spinner6.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-                            {
-                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-                                {
+                            spinner6.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     String selectedItem = parent.getItemAtPosition(position).toString();
-                                    if(!selectedItem.equalsIgnoreCase("Ciudad"))
-                                    {
-                                        allSpook(mPost_categoria,listener);
+                                    if (!selectedItem.equalsIgnoreCase("Ciudad")) {
+                                        allSpook(mPost_categoria, listener);
 
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
@@ -392,43 +395,43 @@ public class ProyectosFragment extends Fragment {
                                                     public void run() {
                                                         mAdapter.getFilter().filter(spinner6.getSelectedItem().toString());
                                                     }
-                                                },100);
+                                                }, 100);
                                             }
-                                        },100);
+                                        }, 100);
 
-                                    }else{
-                                        allSpook(mPost_categoria,listener);
+                                    } else {
+                                        allSpook(mPost_categoria, listener);
 
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
                                                 mAdapter.getFilter().filter(spinner5.getSelectedItem().toString());
                                             }
-                                        },100);
+                                        }, 100);
                                     }
 
                                     //  Toast.makeText(getContext(),"Identificador "+selectedItem,Toast.LENGTH_LONG).show();
                                 } // to close the onItemSelected
-                                public void onNothingSelected(AdapterView<?> parent)
-                                {
+
+                                public void onNothingSelected(AdapterView<?> parent) {
 
                                 }
                             });
                         }
-                    },600);
+                    }, 600);
 
                     // filterRecycler(root,spinner5.getSelectedItem().toString(),null,null);
 
-                }else{
+                } else {
                     spinner6.setVisibility(View.GONE);
-                    allSpook(mPost_categoria,listener);
+                    allSpook(mPost_categoria, listener);
                 }
 
                 //  Toast.makeText(getContext(),"Identificador "+selectedItem,Toast.LENGTH_LONG).show();
 
             } // to close the onItemSelected
-            public void onNothingSelected(AdapterView<?> parent)
-            {
+
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
@@ -437,7 +440,7 @@ public class ProyectosFragment extends Fragment {
         btnLimpiar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                allSpook(mPost_categoria,listener);
+                allSpook(mPost_categoria, listener);
                 spinner5.setSelection(0);
                 spinner6.setSelection(0);
                 spinner6.setVisibility(View.GONE);
@@ -460,8 +463,8 @@ public class ProyectosFragment extends Fragment {
                     String ids = eventSnapshot.getKey();
                     ItemFeed category = eventSnapshot.getValue(ItemFeed.class);
                     category.setId(ids);
-                    if(category.getEstadoTrazabilidad() != null){
-                        if(!category.getEstadoTrazabilidad().equalsIgnoreCase("DEBAJA")){
+                    if (category.getEstadoTrazabilidad() != null) {
+                        if (!category.getEstadoTrazabilidad().equalsIgnoreCase("DEBAJA")) {
                             arrayLists.add(category);
                         }
                     }
@@ -470,18 +473,19 @@ public class ProyectosFragment extends Fragment {
 
 
                 // Collections.reverse(arrayLists);
-                mAdapter = new SearchPlaceAdapter(getContext(), arrayLists,listener);
+                mAdapter = new SearchPlaceAdapter(getContext(), arrayLists, listener);
                 rvSearch.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
                 mProgress.dismiss();
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
     }
 
-    private void viewDetailsChatStyle(String post_key){
+    private void viewDetailsChatStyle(String post_key) {
         /*
             DescBlankFragment descBlankFragment = new DescBlankFragment();
 

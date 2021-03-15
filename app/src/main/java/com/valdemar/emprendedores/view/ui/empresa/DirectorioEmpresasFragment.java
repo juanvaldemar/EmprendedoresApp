@@ -124,8 +124,7 @@ public class DirectorioEmpresasFragment extends Fragment {
                         viewHolder.setTitle(model.getCategoria());
                         viewHolder.setSendBy(model.getCategoria());
 
-                        viewHolder.setImage(getActivity().getApplicationContext(),
-                                model.getImagen());
+                        viewHolder.setImage(getActivity().getApplicationContext(),obtenerCategoriaImagen(model.getCategoria()));
 
                         Log.v("Seguimiento","dentro");
 
@@ -185,6 +184,26 @@ public class DirectorioEmpresasFragment extends Fragment {
 
         mRecyclerListaEmpresas.setAdapter(firebaseEmpresasRecyclerAdapter);
 
+    }
+
+    private int obtenerCategoriaImagen(String categoria) {
+
+        switch (categoria){
+            case "Comida": return R.drawable.ic_categoria_comida;
+            case "Ropa": return R.drawable.ic_categoria_ropa;
+            case "Tecnologia": return R.drawable.ic_categoria_tecnologia;
+            case "Salud": return R.drawable.ic_categoria_salud;
+            case "Entretenimiento": return R.drawable.ic_categoria_entretenimiento;
+            case "Deportes": return R.drawable.ic_categoria_deportes;
+            case "Videojuegos": return R.drawable.ic_categoria_videojuegos;
+            case "Consultorias": return R.drawable.ic_categoria_consultorias;
+            case "Transportes": return R.drawable.ic_categoria_transportes;
+            case "Hogar": return R.drawable.ic_categoria_hogar;
+            case "Import/Export": return R.drawable.ic_categoria_importexport;
+            case "Bienes Raices": return R.drawable.ic_categoria_bienesraices;
+            case "Otros": return R.drawable.ic_categoria_otros;
+        }
+        return R.drawable.ic_categoria_comida;
     }
 
     private void viewDetails(String post_key, View view) {

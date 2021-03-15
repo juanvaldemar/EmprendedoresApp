@@ -1,5 +1,6 @@
 package com.valdemar.emprendedores.view;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -178,14 +179,13 @@ public class CategoriasFragment extends Fragment implements CategoriasAdapter.On
         listaCategorias.add(new CategoriaProyecto(0,"Comida", R.drawable.ic_categoria_comida));
         listaCategorias.add(new CategoriaProyecto(1,"Ropa", R.drawable.ic_categoria_ropa));
         listaCategorias.add(new CategoriaProyecto(2,"Tecnologia", R.drawable.ic_categoria_tecnologia));
-        listaCategorias.add(new CategoriaProyecto(3,"Salud", R.drawable.ic_categoria_salud));
+        listaCategorias.add(new CategoriaProyecto(3,"Salud", R.drawable.ic_salud));
         listaCategorias.add(new CategoriaProyecto(4,"Entretenimiento", R.drawable.ic_categoria_entretenimiento));
         listaCategorias.add(new CategoriaProyecto(5,"Deportes", R.drawable.ic_categoria_deportes));
         listaCategorias.add(new CategoriaProyecto(6,"Videojuegos", R.drawable.ic_categoria_videojuegos));
         listaCategorias.add(new CategoriaProyecto(7,"Consultorias", R.drawable.ic_categoria_consultorias));
         listaCategorias.add(new CategoriaProyecto(8,"Transportes", R.drawable.ic_categoria_transportes));
         listaCategorias.add(new CategoriaProyecto(9,"Marketing", R.drawable.ic_categoria_marketing));
-        listaCategorias.add(new CategoriaProyecto(10,"Finanzas", R.drawable.ic_categoria_finanzas));
         listaCategorias.add(new CategoriaProyecto(11,"Hogar", R.drawable.ic_categoria_hogar));
         listaCategorias.add(new CategoriaProyecto(12,"Otros", R.drawable.ic_categoria_otros));
 
