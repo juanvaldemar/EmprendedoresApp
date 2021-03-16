@@ -134,12 +134,20 @@
     </string-array>
 
     <string-array name="categoriaEmpresa">
-        <item>Alimentación</item>
-        <item>Comercio</item>
-        <item>Manufactura</item>
-        <item>Minería</item>
-        <item>Transporte</item>
-        <item>Servicios</item>
+        <item>Comida</item>
+        <item>Ropa</item>
+        <item>Tecnologia</item>
+        <item>Salud</item>
+        <item>Entretenimiento</item>
+        <item>Deportes</item>
+        <item>Videojuegos</item>
+        <item>Consultorias</item>
+        <item>Transportes</item>
+        <item>Marketing</item>
+        <item>Hogar</item>
+        <item>Import/Export</item>
+        <item>Bienes Raices</item>
+        <item>Otros</item>
     </string-array>
 
     <string-array name="modalidadEmpresa">
