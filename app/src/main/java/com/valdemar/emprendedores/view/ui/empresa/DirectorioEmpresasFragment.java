@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.ScrollingTabContainerView;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -15,7 +16,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
@@ -33,10 +37,12 @@ public class DirectorioEmpresasFragment extends Fragment {
     private RecyclerView mRecyclerCategoriasEmpresa;
     private DatabaseReference mDatabaseEmpresas;
     private SearchView mSearch;
+    private Spinner mSpinnerCiudad;
     private DatabaseReference mDatabaseCategoriasEmpresa;
     private FirebaseRecyclerAdapter<Empresa, EmpresaViewHolder> firebaseEmpresasRecyclerAdapter;
 
     private ProgressDialog mProgress;
+    LinearLayoutManager layoutManagerEmpresas;
 
     public DirectorioEmpresasFragment() {
         // Required empty public constructor
@@ -50,6 +56,29 @@ public class DirectorioEmpresasFragment extends Fragment {
         final View root = inflater.inflate(R.layout.fragment_listar, container, false);
 
         mSearch = (SearchView) root.findViewById(R.id.mSearch);
+        mSpinnerCiudad = root.findViewById(R.id.spinner_ciudad);
+
+        ArrayAdapter<CharSequence> adapterCiudad = ArrayAdapter.createFromResource(getActivity(),
+                R.array.ciudad, android.R.layout.simple_spinner_item);
+        adapterCiudad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinnerCiudad.setAdapter(adapterCiudad);
+
+        mSpinnerCiudad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(!mSpinnerCiudad.getSelectedItem().toString().equalsIgnoreCase("ciudad")){
+                    Query queryCiudad = mDatabaseEmpresas.orderByChild("ciudad").equalTo(mSpinnerCiudad.getSelectedItem().toString());
+                    setFirebaseEmpresasRecyclerAdapter(queryCiudad, root);
+                } else {
+                    setFirebaseEmpresasRecyclerAdapter(mDatabaseEmpresas.orderByChild("nombre"), root);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         final EditText txtSearch = ((EditText)mSearch.findViewById(R.id.search_src_text));
         txtSearch.setHintTextColor(Color.GRAY);
@@ -95,19 +124,19 @@ public class DirectorioEmpresasFragment extends Fragment {
         Query queryNombres = mDatabaseEmpresas.orderByChild("nombre");
 
         // RecyclerView de la Lista de Empresas
-        LinearLayoutManager layoutManager
+        layoutManagerEmpresas
                 = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false);
 
-        mRecyclerListaEmpresas.setLayoutManager(layoutManager);
+        mRecyclerListaEmpresas.setLayoutManager(layoutManagerEmpresas);
         setFirebaseEmpresasRecyclerAdapter(queryNombres, root);
 
         // RecyclerView de las Categorias de las empresas
-        LinearLayoutManager layoutManagermRecyclerEpisodiosPerdidos
+        LinearLayoutManager layoutManagermRecyclerCategoriasEmpresas
                 = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
 
         mRecyclerCategoriasEmpresa = (RecyclerView) root.findViewById(R.id.asd);
         mRecyclerCategoriasEmpresa.setHasFixedSize(true);
-        mRecyclerCategoriasEmpresa.setLayoutManager(layoutManagermRecyclerEpisodiosPerdidos);
+        mRecyclerCategoriasEmpresa.setLayoutManager(layoutManagermRecyclerCategoriasEmpresas);
 
         mDatabaseCategoriasEmpresa = FirebaseDatabase.getInstance().getReference().child("categoriasEmpresa");
 
@@ -183,7 +212,9 @@ public class DirectorioEmpresasFragment extends Fragment {
                 };
 
         mRecyclerListaEmpresas.setAdapter(firebaseEmpresasRecyclerAdapter);
-
+        layoutManagerEmpresas.setReverseLayout(false);
+        //LinearLayoutManager linearLayoutManager1 = (LinearLayoutManager) mRecyclerListaEmpresas.getLayoutManager();
+        //linearLayoutManager1.setReverseLayout(false);
     }
 
     private int obtenerCategoriaImagen(String categoria) {

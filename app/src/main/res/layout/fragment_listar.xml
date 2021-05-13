@@ -27,6 +27,13 @@
             android:background="#3a3937"
             android:text="" />
 
+        <Spinner
+            android:id="@+id/spinner_ciudad"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:paddingLeft="50dp"
+            android:layout_height="40dp" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/asd"
             android:layout_width="match_parent"
