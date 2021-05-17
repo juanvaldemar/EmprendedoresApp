@@ -70,6 +70,9 @@ public class PerfilEmprendedorFragment extends Fragment {
     private SearchPlaceAdapter mAdapter;
 
     private FirebaseUser user;
+
+    private ImageView imgchat;
+
     public PerfilEmprendedorFragment() {
         // Required empty public constructor
     }
@@ -90,6 +93,8 @@ public class PerfilEmprendedorFragment extends Fragment {
 
 
     private void initUI(View view) {
+        imgchat = view.findViewById(R.id.imgchat);
+
         mImgPerfil = (ImageView) view.findViewById(R.id.img_foto_emprendedor);
         mTxtNombres = (TextView) view.findViewById(R.id.txt_nombres);
         mTxtDedicas = (TextView) view.findViewById(R.id.txt_dedicas);
