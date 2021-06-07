@@ -37,7 +37,10 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="Proyectos con postulaciones" />
 
-
+        <item
+            android:id="@+id/nav_chat"
+            android:icon="@android:drawable/stat_notify_chat"
+            android:title="Chats" />
 
     </group>
 

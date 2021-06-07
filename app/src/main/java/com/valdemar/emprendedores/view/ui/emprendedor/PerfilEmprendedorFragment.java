@@ -61,6 +61,7 @@ public class PerfilEmprendedorFragment extends Fragment {
     private String mLinkTW = "";
     private String grado_academico_ = "";
     private String intereses_ = "";
+    private ImageView imgchat;
     private DataSnapshot mItemSnapshot;
     Button btnVerProyectosCreados,btnEditarperfil;
 
@@ -71,7 +72,7 @@ public class PerfilEmprendedorFragment extends Fragment {
 
     private FirebaseUser user;
 
-    private ImageView imgchat;
+    private ImageView imgChat;
 
     public PerfilEmprendedorFragment() {
         // Required empty public constructor
@@ -135,6 +136,14 @@ public class PerfilEmprendedorFragment extends Fragment {
                 } else {
                     startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://www.twitter.com/" + mLinkTW)));
                 }
+            }
+        });
+
+        imgChat = (ImageView) view.findViewById(R.id.imgchat);
+        imgChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_mis_proyectos_creados);
             }
         });
 

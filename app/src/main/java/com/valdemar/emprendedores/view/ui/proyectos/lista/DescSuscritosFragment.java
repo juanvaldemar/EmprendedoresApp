@@ -44,6 +44,7 @@ import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.SearchPlaceAd
 import com.valdemar.emprendedores.view.ui.proyectos.lista.buscador.SearchPlaceAdapter3;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class DescSuscritosFragment extends Fragment {

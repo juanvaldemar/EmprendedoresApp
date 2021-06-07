@@ -62,6 +62,7 @@ public class MenuLateralActivity extends AppCompatActivity {
                 R.id.nav_mis_interesados,
                 R.id.nav_registrar_empresa,
                 R.id.nav_perfil_empresa,
+                R.id.nav_chat,
                 R.id.nav_directorio_empresas)
                 .setDrawerLayout(drawer)
                 .build();
